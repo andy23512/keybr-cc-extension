@@ -6,19 +6,26 @@
   padding: 16px;
   position: fixed;
   z-index: 10;
-  background-color: var(--Keyboard-frame__color, #404040);
+  background-color: var(--Keyboard-frame__color);
   border-radius: 10px;
 }
 
 .fill-current {
-  fill: currentColor;
+  fill: var(--KeyboardKey-symbol__color);
+  cursor: default;
+  font-family: var(--default-font-family);
+  user-select: none;
 }
+
 .stroke-white {
-  stroke: white;
+  fill: var(--KeyboardKey-button__color);
+  stroke: var(--KeyboardKey-symbol__color);
 }
+
 .material-icons {
   visibility: hidden;
 }
+
 .fill-alnitak-500 {
-  fill: #0fe8fb;
+  fill: var(--KeyboardKey-pointer__color);
 }

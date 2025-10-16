@@ -65,6 +65,6 @@ function updateHighlight() {
       .querySelector(
         `[ng-reflect-position-code="${positionCode}"] [data-type="highlight"]`
       )
-      ?.setAttribute("opacity", "1");
+      ?.setAttribute("opacity", "0.5");
   }
 }
