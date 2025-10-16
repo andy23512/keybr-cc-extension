@@ -5,7 +5,7 @@ const srcDir = path.join(__dirname, "..", "src");
 
 module.exports = {
   entry: {
-    content_script: path.join(srcDir, "content_script.ts"),
+    content_script: path.join(srcDir, "content_script.tsx"),
   },
   output: {
     path: path.join(__dirname, "../dist/js"),
@@ -32,6 +32,10 @@ module.exports = {
         options: {
           esModule: false,
         },
+      },
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"],
       },
     ],
   },

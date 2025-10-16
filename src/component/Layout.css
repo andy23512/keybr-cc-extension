@@ -1,0 +1,24 @@
+.layout {
+  bottom: 0px;
+  color: white;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 16px;
+  position: fixed;
+  z-index: 10;
+  background-color: var(--Keyboard-frame__color, #404040);
+  border-radius: 10px;
+}
+
+.fill-current {
+  fill: currentColor;
+}
+.stroke-white {
+  stroke: white;
+}
+.material-icons {
+  visibility: hidden;
+}
+.fill-alnitak-500 {
+  fill: #0fe8fb;
+}

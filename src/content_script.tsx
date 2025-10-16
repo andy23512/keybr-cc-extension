@@ -1,6 +1,6 @@
-import cc1Layout from "./layout/cc1-layout.svg";
-import m4gLayout from "./layout/m4g-layout.svg";
-console.log(cc1Layout, m4gLayout);
+import React from "react";
+import ReactDOM from "react-dom/client";
+import Layout from "./component/Layout";
 let currentText: string | null = null;
 const CHARACTER_TO_POS = {
   w: 6,
@@ -40,42 +40,17 @@ function getCurrentText() {
   }
 }
 setInterval(getCurrentText, 100);
-buildLayout();
 updateHighlight();
-function buildLayout() {
-  const layout = cc1Layout;
-  const layoutContainer = document.createElement("div");
-  layoutContainer.classList.add("layout-container");
-  layoutContainer.innerHTML = layout;
-  window.document.body.appendChild(layoutContainer);
-  const styleSheet = document.createElement("style");
-  styleSheet.textContent = `
-    .layout-container {
-      background-color: #333;
-      bottom: 0px;
-      color: white;
-      height: 16rem;
-      left: 0px;
-      padding: 16px;
-      position: fixed;
-      width: 100%;
-      z-index: 10;
-    }
-    .fill-current {
-      fill: currentColor;
-    }
-    .stroke-white {
-      stroke: white;
-    }
-    .material-icons {
-      visibility: hidden;
-    }
-    .fill-alnitak-500 {
-      fill: #0fe8fb;
-    }
-  `;
-  document.head.appendChild(styleSheet);
-}
+const appContainer = document.createElement("div");
+appContainer.id = "keybr-cc-extension-root";
+document.body.appendChild(appContainer);
+const root = ReactDOM.createRoot(appContainer);
+root.render(
+  <React.StrictMode>
+    <Layout />
+  </React.StrictMode>
+);
+
 function updateHighlight() {
   document
     .querySelectorAll('[data-type="highlight"]')
