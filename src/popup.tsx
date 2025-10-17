@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { Layout } from "./model/layout.model";
+import { LayoutType } from "./model/layout.model";
 
 const Popup = () => {
-  const [layout, setLayout] = useState<Layout>("cc1");
+  const [layout, setLayout] = useState<LayoutType>("cc1");
   const [status, setStatus] = useState<string>("");
 
   useEffect(() => {
@@ -43,7 +43,7 @@ const Popup = () => {
         <select
           title="layout"
           value={layout}
-          onChange={(event) => setLayout(event.target.value as Layout)}
+          onChange={(event) => setLayout(event.target.value as LayoutType)}
         >
           <option value="cc1">CharaChorder One/Two</option>
           <option value="m4g">Master Forge</option>
