@@ -5,10 +5,16 @@
   "description": "An unofficial Chrome extension for showing layout of CharaChorder 3D input devices at keybr.com.",
   "version": "1.0",
 
+  "action": {
+    "default_popup": "popup.html"
+  },
+
   "content_scripts": [
     {
       "matches": ["https://www.keybr.com/*"],
       "js": ["js/vendor.js", "js/content_script.js"]
     }
-  ]
+  ],
+
+  "permissions": ["storage"]
 }
