@@ -1,7 +1,21 @@
-@font-face {
-  font-family: "Material Icons";
-  font-style: normal;
-  font-weight: 400;
-  src: url(chrome-extension://__MSG_@@extension_id__/material-symbols-rounded-latin-full-normal.min.woff2)
-    format("woff2");
+/** Mozilla Firefox */
+@-moz-document url-prefix() {
+  @font-face {
+    font-family: "Material Icons";
+    font-style: normal;
+    font-weight: 400;
+    src: url(moz-extension://__MSG_@@extension_id__/material-symbols-rounded-latin-full-normal.min.woff2)
+      format("woff2");
+  }
+}
+
+/** Chrominum */
+@media screen and (-webkit-min-device-pixel-ratio: 0) and (min-resolution: 0.001dpcm) {
+  @font-face {
+    font-family: "Material Icons";
+    font-style: normal;
+    font-weight: 400;
+    src: url(chrome-extension://__MSG_@@extension_id__/material-symbols-rounded-latin-full-normal.min.woff2)
+      format("woff2");
+  }
 }
