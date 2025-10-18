@@ -2,3 +2,4 @@ npm-debug.log
 node_modules/
 dist/
 tmp/
+src/asset/material-symbols-rounded-latin-full-normal.min.woff2
