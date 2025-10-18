@@ -5,7 +5,6 @@ import {
   KeyLabel,
   KeyLabelType,
 } from "../model/device-layout.model";
-import "./key-label.component.css";
 
 interface KeyLabelComponentProps {
   x: number;
@@ -52,12 +51,15 @@ const KeyLabelComponent: React.FC<KeyLabelComponentProps> = ({
     }
   }
   return (
-    <g className="key-label">
+    <g>
       {labels?.map((label, index) => (
         <text
-          className={classNames("fill-current transition-opacity", {
-            "material-icons": label.type === KeyLabelType.Icon,
-          })}
+          className={classNames(
+            "fill-(--KeyboardKey-symbol__color) cursor-default select-none transition-opacity",
+            {
+              "material-icons": label.type === KeyLabelType.Icon,
+            }
+          )}
           key={index}
           x={x}
           y={y}

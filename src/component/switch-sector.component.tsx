@@ -76,14 +76,14 @@ const SwitchSectorComponent: React.FC<SwitchSectorComponentProps> = ({
   const textY = center.y + textRadius * sin(degree);
 
   return (
-    <g className="switch-sector">
+    <g>
       <path
-        className="switch-sector-button"
+        className="fill-(--KeyboardKey-button__color) stroke-(--KeyboardKey-symbol__color)"
         d={sectorPath}
         strokeWidth={strokeWidth}
       ></path>
       <path
-        className="highlight"
+        className="fill-(--KeyboardKey-pointer__color)"
         d={sectorPath + " Z"}
         opacity={
           highlightKeyCombination?.positionCodes?.includes(positionCode)

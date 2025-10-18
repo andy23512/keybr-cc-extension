@@ -36,7 +36,7 @@ const SwitchComponent: React.FC<SwitchComponentProps> = ({
 }) => {
   const r = (rotationDirection === "cw" ? 1 : -1) * rotation;
   return (
-    <g className="switch">
+    <g>
       {SECTORS.map((sector) => (
         <SwitchSectorComponent
           key={sector.direction}
@@ -52,7 +52,7 @@ const SwitchComponent: React.FC<SwitchComponentProps> = ({
         />
       ))}
       <circle
-        className="highlight"
+        className="fill-(--KeyboardKey-pointer__color)"
         cx={center.x}
         cy={center.y}
         r="53.68"

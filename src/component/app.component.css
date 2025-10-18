@@ -3,17 +3,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.app {
-  padding: 8px;
-  background-color: var(--Keyboard-frame__color);
-  border-radius: 8px;
-  font-family: var(--default-font-family);
-  position: absolute;
-  bottom: 100px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
 .material-icons {
   font-family: "Material Icons";
   font-weight: normal;
