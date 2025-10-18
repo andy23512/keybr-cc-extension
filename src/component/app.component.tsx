@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import { useEffect, useState } from "react";
 import Draggable from "react-draggable";
 import {
@@ -195,7 +196,14 @@ function AppComponent() {
 
   return (
     <Draggable>
-      <div className="p-2 bg-(--Keyboard-frame__color) rounded-lg font-(family-name:--default-font-family) absolute bottom-[100px] left-1/2 -translate-x-1/2 cursor-move">
+      <div
+        className={classNames(
+          "p-2 bg-(--Keyboard-frame__color) rounded-lg font-(family-name:--default-font-family) absolute bottom-[100px] left-1/2 -translate-x-1/2 cursor-move",
+          {
+            invisible: !currentCharacter,
+          }
+        )}
+      >
         <LayoutComponent
           layout={layout}
           keyLabelMap={keyLabelMap}
