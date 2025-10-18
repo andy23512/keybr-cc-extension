@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
+import browser from "webextension-polyfill";
 import { Layout } from "./model/layout.model";
 
 const Popup = () => {
@@ -7,33 +8,28 @@ const Popup = () => {
   const [status, setStatus] = useState<string>("");
 
   useEffect(() => {
-    // Restores select box and checkbox state using the preferences
-    // stored in chrome.storage.
-    chrome.storage.sync.get(
-      {
+    browser.storage.local
+      .get({
         layout: "cc1",
-      },
-      (items) => {
-        setLayout(items.layout);
-      }
-    );
+      })
+      .then((items) => {
+        setLayout(items.layout as Layout);
+      });
   }, []);
 
   const saveOptions = () => {
-    // Saves options to chrome.storage.sync.
-    chrome.storage.sync.set(
-      {
+    browser.storage.local
+      .set({
         layout,
-      },
-      () => {
+      })
+      .then(() => {
         // Update status to let user know options were saved.
         setStatus("Options saved.");
         const id = setTimeout(() => {
           setStatus("");
         }, 1000);
         return () => clearTimeout(id);
-      }
-    );
+      });
   };
 
   return (

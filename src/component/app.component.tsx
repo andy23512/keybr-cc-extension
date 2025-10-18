@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import { useEffect, useState } from "react";
 import Draggable from "react-draggable";
+import browser, { Storage } from "webextension-polyfill";
 import {
   CC1_DEFAULT_DEVICE_LAYOUT,
   M4G_DEFAULT_DEVICE_LAYOUT,
@@ -52,23 +53,23 @@ function AppComponent() {
 
   useEffect(() => {
     // Load initial value from storage
-    chrome.storage.sync.get({ layout: "cc1" }, (items) => {
-      setLayout(items.layout);
+    browser.storage.local.get({ layout: "cc1" }).then((items) => {
+      setLayout(items.layout as Layout);
     });
 
     // Listen for changes in storage from other parts of the extension
     const listener = (
-      changes: Record<string, chrome.storage.StorageChange>,
-      area: chrome.storage.AreaName
+      changes: Record<string, Storage.StorageChange>,
+      area: string
     ) => {
-      if (area === "sync" && changes.layout) {
-        setLayout(changes.layout.newValue);
+      if (area === "local" && changes.layout) {
+        setLayout(changes.layout.newValue as Layout);
       }
     };
-    chrome.storage.onChanged.addListener(listener);
+    browser.storage.onChanged.addListener(listener);
 
     return () => {
-      chrome.storage.onChanged.removeListener(listener);
+      browser.storage.onChanged.removeListener(listener);
     };
   }, []);
 
