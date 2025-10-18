@@ -3,3 +3,5 @@ node_modules/
 dist/
 tmp/
 public/material-symbols-rounded-latin-full-normal.min.woff2
+
+.DS_Store

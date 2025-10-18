@@ -9,6 +9,10 @@
     "default_popup": "popup.html"
   },
 
+  "icons": {
+    "128": "image/icon-128.png"
+  },
+
   "content_scripts": [
     {
       "matches": ["https://www.keybr.com/*"],
