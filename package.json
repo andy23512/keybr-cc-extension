@@ -11,7 +11,8 @@
     "test": "npx jest",
     "style": "prettier --write \"src/**/*.{ts,tsx}\"",
     "pack-firefox": "cd dist && zip -r -FS ../keybr-cc-extension-firefox.zip *",
-    "pack-chrome": "zip -r -FS keybr-cc-extension-chrome.zip dist"
+    "pack-chrome": "zip -r -FS keybr-cc-extension-chrome.zip dist",
+    "pack-source-code": "zip -r -FS keybr-cc-extension-source.zip package.json postcss.config.cjs public README.md src tailwind.config.cjs tsconfig.json webpack yarn.lock"
   },
   "author": "",
   "license": "MIT",
