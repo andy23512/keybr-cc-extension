@@ -2,7 +2,7 @@
 
 - [Chrome Web Store](https://chromewebstore.google.com/detail/keybr-cc-extension/fdofhfbipdhkkhhdjlfjnjfnkibpbdpg)
 
-An unofficial Chrome extension for showing layout of CharaChorder 3D input devices (CharaChorder One, CharaChorder Two and Master Forge) at keybr.com.
+An unofficial browser extension for showing layout of CharaChorder 3D input devices (CharaChorder One, CharaChorder Two and Master Forge) at keybr.com.
 
 ## Disclaimer
 
@@ -36,6 +36,17 @@ yarn build
 yarn watch
 ```
 
-## Load extension to chrome
+## Load the built extension
 
-Load `dist` directory
+### Chrome
+
+1. Go to "chrome://extensions/".
+2. Open "Developer mode" at top-right.
+3. Click "Load unpacked" at top-left.
+4. Select "dist" directory.
+
+### Firefox
+
+1. Go to "about:debugging#/runtime/this-firefox".
+2. Click "Load Temporary Add-on".
+3. Select any file under the "dist" directory.
