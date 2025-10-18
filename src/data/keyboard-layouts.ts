@@ -58,5 +58,7 @@ export const US_QWERTY_LAYOUT: KeyBoardLayout = {
     Period: { unmodified: ".", withShift: ">" },
     Slash: { unmodified: "/", withShift: "?" },
     IntlRo: undefined,
+
+    Space: { unmodified: " " },
   },
 };

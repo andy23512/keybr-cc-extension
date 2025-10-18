@@ -77,7 +77,13 @@ export function getCharacterActionCodesFromCharacterKeyCode({
 }: CharacterKeyCode): CharacterActionCode[] {
   const characterActionCodes: CharacterActionCode[] = [];
   const action = ACTIONS.find(
-    (a) => a.type === ActionType.WSK && a.keyCode === keyCode && !a.withShift
+    (a) =>
+      (a.type === ActionType.WSK ||
+        (a.type === ActionType.NonWSK &&
+          a.keyCode === "Space" &&
+          a.codeId === 544)) &&
+      a.keyCode === keyCode &&
+      !a.withShift
   );
   if (action) {
     characterActionCodes.push({

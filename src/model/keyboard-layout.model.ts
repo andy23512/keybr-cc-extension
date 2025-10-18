@@ -18,7 +18,7 @@ export interface KeyBoardLayout {
   id: string;
   name: string;
   reference: string;
-  layout: Partial<Record<WSKCode, Partial<KeyboardLayoutKey>>>;
+  layout: Partial<Record<WSKCode | "Space", Partial<KeyboardLayoutKey>>>;
 }
 
 /**

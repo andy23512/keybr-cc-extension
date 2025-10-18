@@ -40,6 +40,9 @@ function AppComponent() {
     function getCurrentText() {
       const text = document.querySelector('div[dir="ltr"] span[class]');
       let nextCurrentCharacter = text ? text.textContent : null;
+      if (nextCurrentCharacter === "") {
+        nextCurrentCharacter = " ";
+      }
       setCurrentCharacter(nextCurrentCharacter);
     }
     setInterval(getCurrentText, 100);
