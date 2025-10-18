@@ -1,5 +1,7 @@
 # Keybr CC Extension
 
+- [Chrome Web Store](https://chromewebstore.google.com/detail/keybr-cc-extension/fdofhfbipdhkkhhdjlfjnjfnkibpbdpg)
+
 An unofficial Chrome extension for showing layout of CharaChorder 3D input devices (CharaChorder One, CharaChorder Two and Master Forge) at keybr.com.
 
 ## Disclaimer
