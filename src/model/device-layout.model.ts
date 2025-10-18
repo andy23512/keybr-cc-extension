@@ -61,8 +61,8 @@ export type RawKeyLabel =
       c: string;
       title: string;
     }
-  | { type: KeyLabelType.Icon; c: Icon; title: string } // TODO - support icon
-  | { type: KeyLabelType.Logo; c: FontLogo; title: string } // TODO - support logo
+  | { type: KeyLabelType.Icon; c: Icon; title: string }
+  | { type: KeyLabelType.Logo; c: FontLogo; title: string }
   | { type: KeyLabelType.ActionCode; c: number; title: string };
 
 /*

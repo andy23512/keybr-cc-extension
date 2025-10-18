@@ -108,14 +108,24 @@ function AppComponent() {
     charactersDevicePositionCodes.forEach((v) => {
       v?.characterDeviceKeys?.forEach(
         ({ characterKeyPositionCode, layer, shiftKey, altGraphKey }) => {
-          const d = {
-            type: KeyLabelType.String as const,
-            c: v.c,
-            title: `Character: ${v.c}`,
-            layer,
-            shiftKey,
-            altGraphKey,
-          };
+          const d =
+            v.c === " "
+              ? {
+                  type: KeyLabelType.Icon as const,
+                  c: "space_bar" as const,
+                  title: "Space",
+                  layer,
+                  shiftKey,
+                  altGraphKey,
+                }
+              : {
+                  type: KeyLabelType.String as const,
+                  c: v.c,
+                  title: `Character: ${v.c}`,
+                  layer,
+                  shiftKey,
+                  altGraphKey,
+                };
           if (!keyLabelMap[characterKeyPositionCode]) {
             keyLabelMap[characterKeyPositionCode] = [d];
           } else {

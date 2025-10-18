@@ -8,7 +8,6 @@ import { readFileSync, writeFileSync } from "fs";
   const iconTypesAst = ast(
     readFileSync("./src/model/icon.model.ts", { encoding: "utf-8" })
   );
-  console.log(iconTypesAst);
 
   const icons = query(iconTypesAst, "UnionType StringLiteral").map(
     (node) => (node as any).text
