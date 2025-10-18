@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Draggable from "react-draggable";
 import {
   CC1_DEFAULT_DEVICE_LAYOUT,
   M4G_DEFAULT_DEVICE_LAYOUT,
@@ -193,13 +194,15 @@ function AppComponent() {
     : null;
 
   return (
-    <div className="p-2 bg-(--Keyboard-frame__color) rounded-lg font-(family-name:--default-font-family) absolute bottom-[100px] left-1/2 -translate-x-1/2">
-      <LayoutComponent
-        layout={layout}
-        keyLabelMap={keyLabelMap}
-        highlightKeyCombination={highlightKeyCombination}
-      />
-    </div>
+    <Draggable>
+      <div className="p-2 bg-(--Keyboard-frame__color) rounded-lg font-(family-name:--default-font-family) absolute bottom-[100px] left-1/2 -translate-x-1/2 cursor-move">
+        <LayoutComponent
+          layout={layout}
+          keyLabelMap={keyLabelMap}
+          highlightKeyCombination={highlightKeyCombination}
+        />
+      </div>
+    </Draggable>
   );
 }
 
