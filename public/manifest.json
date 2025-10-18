@@ -17,5 +17,12 @@
     }
   ],
 
+  "web_accessible_resources": [
+    {
+      "matches": ["https://www.keybr.com/*"],
+      "resources": ["*.woff2"]
+    }
+  ],
+
   "permissions": ["storage"]
 }

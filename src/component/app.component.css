@@ -1,3 +1,8 @@
+@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .app {
   padding: 8px;
   background-color: var(--Keyboard-frame__color);
