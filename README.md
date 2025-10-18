@@ -9,33 +9,31 @@ This extension is not affiliated, associated, authorized, endorsed by, or in any
 ## Setup
 
 ```
-npm install
+yarn
 ```
 
 ## Build
 
 ```
-npm run build
+yarn build
 ```
+
+### Author's build environment
+
+- macOS Tahoe 26.0.1
+- Apple M4 Pro Chip
+- 24 GB of system memory, 12 cores of CPU
+- Node 24.8.0, npm 11.6.0 and yarn 1.22.22
+- 270 GB of free disk space
 
 ## Build in watch mode
 
 ### terminal
 
 ```
-npm run watch
+yarn watch
 ```
-
-### Visual Studio Code
-
-Run watch mode.
-
-type `Ctrl + Shift + B`
 
 ## Load extension to chrome
 
 Load `dist` directory
-
-## Test
-
-`npx jest` or `npm run test`
