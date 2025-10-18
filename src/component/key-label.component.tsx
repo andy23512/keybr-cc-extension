@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import React from "react";
 import {
   HighlightKeyCombination,
@@ -54,7 +55,9 @@ const KeyLabelComponent: React.FC<KeyLabelComponentProps> = ({
     <g className="key-label">
       {labels?.map((label, index) => (
         <text
-          className="fill-current transition-opacity"
+          className={classNames("fill-current transition-opacity", {
+            "material-icons": label.type === KeyLabelType.Icon,
+          })}
           key={index}
           x={x}
           y={y}

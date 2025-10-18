@@ -38,6 +38,12 @@ module.exports = {
         test: /\.css$/,
         use: ["style-loader", "css-loader"],
       },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        generator: {
+          filename: "fonts/[name][ext]", // Output path and filename format
+        },
+      },
     ],
   },
   resolve: {

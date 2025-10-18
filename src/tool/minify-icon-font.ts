@@ -8,11 +8,12 @@ import { readFileSync, writeFileSync } from "fs";
   const iconTypesAst = ast(
     readFileSync("./src/model/icon.model.ts", { encoding: "utf-8" })
   );
+  console.log(iconTypesAst);
 
-  const icons = query(
-    iconTypesAst,
-    'Identifier[name="Icon"] ~ UnionType StringLiteral'
-  ).map((node) => (node as any).text);
+  const icons = query(iconTypesAst, "UnionType StringLiteral").map(
+    (node) => (node as any).text
+  );
+  console.log(icons);
   const font = fontkitOpenSync(
     "./src/asset/material-symbols-rounded-latin-full-normal.woff2"
   ) as Font;
@@ -44,7 +45,7 @@ import { readFileSync, writeFileSync } from "fs";
     flavor: "woff2",
   });
   writeFileSync(
-    "./src/asset/material-symbols-rounded-latin-full-normal.min.woff2",
+    "./public/material-symbols-rounded-latin-full-normal.min.woff2",
     outputFileBuffer
   );
 })();

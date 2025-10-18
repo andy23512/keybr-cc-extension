@@ -6,17 +6,12 @@
 .fill-current {
   fill: var(--KeyboardKey-symbol__color);
   cursor: default;
-  font-family: var(--default-font-family);
   user-select: none;
 }
 
 .switch-sector-button {
   fill: var(--KeyboardKey-button__color);
   stroke: var(--KeyboardKey-symbol__color);
-}
-
-.material-icons {
-  visibility: hidden;
 }
 
 .highlight {

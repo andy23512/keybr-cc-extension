@@ -12,7 +12,8 @@
   "content_scripts": [
     {
       "matches": ["https://www.keybr.com/*"],
-      "js": ["js/vendor.js", "js/content_script.js"]
+      "js": ["js/vendor.js", "js/content_script.js"],
+      "css": ["font.css"]
     }
   ],
 
