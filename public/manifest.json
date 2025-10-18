@@ -13,7 +13,7 @@
     {
       "matches": ["https://www.keybr.com/*"],
       "js": ["js/vendor.js", "js/content_script.js"],
-      "css": ["font.css"]
+      "css": ["font.css", "inject.css"]
     }
   ],
 
