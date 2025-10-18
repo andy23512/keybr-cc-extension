@@ -1,29 +1,37 @@
 import React from "react";
+import {
+  HighlightKeyCombination,
+  KeyLabel,
+} from "../model/device-layout.model";
 import { cos, sin } from "../util/math.util";
-import KeyLabel from "./KeyLabel";
+import KeyLabelComponent from "./key-label.component";
 
 const OFFSET = 8;
 const R1 = 65;
 const R2 = 175;
 
-interface SwitchSectorProps {
+interface SwitchSectorComponentProps {
   center: { x: number; y: number };
   degree: number;
   direction: "cw" | "ccw";
-  positionCode: null; // TODO
-  keyLabel: any[]; // TODO
-  highlightKeyCombination: null; // TODO
+  positionCode: number;
+  keyLabel: KeyLabel[];
+  highlightKeyCombination: HighlightKeyCombination | null;
   strokeWidth: number;
   highlightOpacity: number;
   fontSize: number;
 }
 
-const SwitchSector: React.FC<SwitchSectorProps> = ({
+const SwitchSectorComponent: React.FC<SwitchSectorComponentProps> = ({
   center,
   strokeWidth,
   direction,
   degree,
   fontSize,
+  highlightKeyCombination,
+  keyLabel,
+  positionCode,
+  highlightOpacity,
 }) => {
   const r1 = R1;
   const r2 = R2 - strokeWidth;
@@ -67,7 +75,6 @@ const SwitchSector: React.FC<SwitchSectorProps> = ({
   const textX = center.x + textRadius * cos(degree);
   const textY = center.y + textRadius * sin(degree);
 
-  // TODO - highlight opacity, highlightKeyCombination, labels
   return (
     <g className="switch-sector">
       <path
@@ -75,16 +82,24 @@ const SwitchSector: React.FC<SwitchSectorProps> = ({
         d={sectorPath}
         strokeWidth={strokeWidth}
       ></path>
-      <path className="highlight" d={sectorPath + " Z"} opacity={0}></path>
-      <KeyLabel
+      <path
+        className="highlight"
+        d={sectorPath + " Z"}
+        opacity={
+          highlightKeyCombination?.positionCodes?.includes(positionCode)
+            ? highlightOpacity
+            : 0
+        }
+      ></path>
+      <KeyLabelComponent
         x={textX}
         y={textY}
         fontSize={fontSize}
-        highlightKeyCombination={null}
-        labels={[]}
+        highlightKeyCombination={highlightKeyCombination}
+        labels={keyLabel}
       />
     </g>
   );
 };
 
-export default SwitchSector;
+export default SwitchSectorComponent;

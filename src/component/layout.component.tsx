@@ -1,12 +1,17 @@
 import React from "react";
-import { KeyLabel } from "../model/device-layout.model";
-import { FingerMap, HandMap, LayoutType } from "../model/layout.model";
-import "./Layout.css";
-import Switch from "./Switch";
+import { POSITION_CODE_LAYOUT } from "../data/layouts";
+import {
+  HighlightKeyCombination,
+  KeyLabelMap,
+} from "../model/device-layout.model";
+import { FingerMap, HandMap, Layout } from "../model/layout.model";
+import "./layout.component.css";
+import SwitchComponent from "./switch.component";
 
-interface LayoutProps {
-  layout: LayoutType;
-  keyLabelMap: Record<number, KeyLabel[]>;
+interface LayoutComponentProps {
+  layout: Layout;
+  keyLabelMap: KeyLabelMap;
+  highlightKeyCombination: HighlightKeyCombination | null;
 }
 
 const CELL_SIZE = 350;
@@ -14,13 +19,15 @@ const GAP = 35;
 const GRID_COLUMNS = 10;
 const THUMB_ROTATION_ANGLE = 10;
 
-const Layout: React.FC<LayoutProps> = ({ layout, keyLabelMap }) => {
+const LayoutComponent: React.FC<LayoutComponentProps> = ({
+  layout,
+  keyLabelMap,
+  highlightKeyCombination,
+}) => {
   const showThumb3Switch = layout === "cc1";
   const gridRows = showThumb3Switch ? 5 : 4;
   const viewBoxWidth = CELL_SIZE * GRID_COLUMNS + GAP * (GRID_COLUMNS - 1);
   const viewBoxHeight = CELL_SIZE * gridRows + GAP * (gridRows - 1);
-  const highlightKeyCombination = null; // TODO
-  const positionCodeLayout = null; // TODO
   const switches = [
     ...(showThumb3Switch ? (["thumbEnd"] as const) : []),
     "thumbMid",
@@ -91,21 +98,23 @@ const Layout: React.FC<LayoutProps> = ({ layout, keyLabelMap }) => {
       viewBox={[0, 0, viewBoxWidth, viewBoxHeight].join(" ")}
       style={{ aspectRatio: viewBoxWidth + " / " + viewBoxHeight }}
     >
-      {sides.map((side) =>
-        switches.map((sw) => (
-          <Switch
-            key={side + "-" + sw}
-            center={switchCenter(sw, side)}
-            rotationDirection={side === "left" ? "cw" : "ccw"}
-            rotation={sw.startsWith("thumb") ? THUMB_ROTATION_ANGLE : 0}
-            keyLabelMap={null} // TODO
-            positionCodeMap={null} // TODO
-            highlightKeyCombination={null} // TODO
-          />
-        ))
-      )}
+      {sides.map((side) => (
+        <React.Fragment key={side}>
+          {switches.map((sw) => (
+            <SwitchComponent
+              key={sw}
+              center={switchCenter(sw, side)}
+              rotationDirection={side === "left" ? "cw" : "ccw"}
+              rotation={sw.startsWith("thumb") ? THUMB_ROTATION_ANGLE : 0}
+              keyLabelMap={keyLabelMap}
+              positionCodeMap={POSITION_CODE_LAYOUT[side][sw]}
+              highlightKeyCombination={highlightKeyCombination}
+            />
+          ))}
+        </React.Fragment>
+      ))}
     </svg>
   );
 };
 
-export default Layout;
+export default LayoutComponent;

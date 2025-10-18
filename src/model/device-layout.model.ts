@@ -1,10 +1,12 @@
+import { Icon } from "./icon.model";
+import { Layout } from "./layout.model";
 import { Tuple } from "./tuple.type";
 
 /**
  * Shape of CharaChorder 3D device layout data. 90 keys x 3 layers = 180 action codes
  */
 export interface DeviceLayout {
-  id: string;
+  id: Layout;
   name: string;
   layout: Tuple<Tuple<number, 90>, 3>;
 }
@@ -33,11 +35,35 @@ export interface HighlightKeyCombination extends KeyCombination {
   score: number;
 }
 
-export type RawKeyLabel = {
-  type: KeyLabelType.String;
-  c: string;
-  title: string;
-};
+export enum FontLogo {
+  Ubuntu = "\uf31b",
+  ArchLinux = "\uf303",
+  CentOS = "\uf304",
+  Debian = "\uf306",
+  Elementary = "\uf309",
+  Fedora = "\uf30a",
+  FreeBSD = "\uf30c",
+  Gentoo = "\uf30d",
+  Mageia = "\uf310",
+  Mandriva = "\uf311",
+  Manjaro = "\uf312",
+  LinuxMint = "\uf30e",
+  OpenBSD = "\uf328",
+  RaspberryPi = "\uf315",
+  RedHat = "\uf316",
+  Sabayon = "\uf317",
+  Tux = "\uf31a",
+}
+
+export type RawKeyLabel =
+  | {
+      type: KeyLabelType.String;
+      c: string;
+      title: string;
+    }
+  | { type: KeyLabelType.Icon; c: Icon; title: string } // TODO - support icon
+  | { type: KeyLabelType.Logo; c: FontLogo; title: string } // TODO - support logo
+  | { type: KeyLabelType.ActionCode; c: number; title: string };
 
 /*
  * Label of a physical key, which records the corresponding character when the key is triggered under certain layer and modifiers
@@ -54,3 +80,5 @@ export enum KeyLabelType {
   Logo = "logo",
   ActionCode = "action-code",
 }
+
+export type KeyLabelMap = Record<number, KeyLabel[]>;

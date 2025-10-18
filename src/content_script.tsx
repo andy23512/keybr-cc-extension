@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./component/App";
+import AppComponent from "./component/app.component";
 let currentText: string | null = null;
 const CHARACTER_TO_POS = {
   w: 6,
@@ -47,7 +47,7 @@ document.body.appendChild(appContainer);
 const root = ReactDOM.createRoot(appContainer);
 root.render(
   <React.StrictMode>
-    <App />
+    <AppComponent />
   </React.StrictMode>
 );
 
