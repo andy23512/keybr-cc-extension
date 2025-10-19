@@ -1,12 +1,11 @@
 import { Icon } from "./icon.model";
-import { Layout } from "./layout.model";
 import { Tuple } from "./tuple.type";
 
 /**
  * Shape of CharaChorder 3D device layout data. 90 keys x 3 layers = 180 action codes
  */
 export interface DeviceLayout {
-  id: Layout;
+  id: string;
   name: string;
   layout: Tuple<Tuple<number, 90>, 3>;
 }

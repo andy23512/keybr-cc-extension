@@ -4,14 +4,14 @@ import {
   HighlightKeyCombination,
   KeyLabelMap,
 } from "../model/device-layout.model";
-import { FingerMap, HandMap, Layout } from "../model/layout.model";
+import { FingerMap, HandMap } from "../model/layout.model";
 import "./layout.component.css";
 import SwitchComponent from "./switch.component";
 
 interface LayoutComponentProps {
-  layout: Layout;
   keyLabelMap: KeyLabelMap;
   highlightKeyCombination: HighlightKeyCombination | null;
+  showThumb3Switch: boolean;
 }
 
 const CELL_SIZE = 350;
@@ -20,11 +20,10 @@ const GRID_COLUMNS = 10;
 const THUMB_ROTATION_ANGLE = 10;
 
 const LayoutComponent: React.FC<LayoutComponentProps> = ({
-  layout,
   keyLabelMap,
   highlightKeyCombination,
+  showThumb3Switch,
 }) => {
-  const showThumb3Switch = layout === "cc1";
   const gridRows = showThumb3Switch ? 5 : 4;
   const viewBoxWidth = CELL_SIZE * GRID_COLUMNS + GAP * (GRID_COLUMNS - 1);
   const viewBoxHeight = CELL_SIZE * gridRows + GAP * (gridRows - 1);

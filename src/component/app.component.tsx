@@ -14,6 +14,7 @@ import {
 } from "../data/key-labels";
 import { US_QWERTY_LAYOUT } from "../data/keyboard-layouts";
 import {
+  DeviceLayout,
   HighlightKeyCombination,
   KeyLabel,
   KeyLabelType,
@@ -36,7 +37,11 @@ const CHARACTER_KEY_CODE_MAP =
   convertKeyboardLayoutToCharacterKeyCodeMap(US_QWERTY_LAYOUT);
 
 function AppComponent() {
-  const [layout, setLayout] = useState<Layout>("cc1");
+  const [layout, setLayout] = useState<string>("cc1");
+  const [customDeviceLayouts, setCustomDeviceLayouts] = useState<
+    DeviceLayout[]
+  >([]);
+  const [showThumb3Switch, setShowThumb3Switch] = useState<boolean>(true);
   const [currentCharacter, setCurrentCharacter] = useState<string | null>(null);
 
   useEffect(() => {
@@ -53,17 +58,31 @@ function AppComponent() {
 
   useEffect(() => {
     // Load initial value from storage
-    browser.storage.local.get({ layout: "cc1" }).then((items) => {
-      setLayout(items.layout as Layout);
-    });
+    browser.storage.local
+      .get({ layout: "cc1", customDeviceLayouts: [], showThumb3Switch: true })
+      .then((items) => {
+        setLayout(items.layout as string);
+        setCustomDeviceLayouts(items.customDeviceLayouts as DeviceLayout[]);
+        setShowThumb3Switch(items.showThumb3Switch as boolean);
+      });
 
     // Listen for changes in storage from other parts of the extension
     const listener = (
       changes: Record<string, Storage.StorageChange>,
       area: string
     ) => {
-      if (area === "local" && changes.layout) {
-        setLayout(changes.layout.newValue as Layout);
+      if (area === "local") {
+        if (changes.layout) {
+          setLayout(changes.layout.newValue as Layout);
+        }
+        if (changes.customDeviceLayouts) {
+          setCustomDeviceLayouts(
+            changes.customDeviceLayouts.newValue as DeviceLayout[]
+          );
+        }
+        if (changes.showThumb3Switch) {
+          setShowThumb3Switch(changes.showThumb3Switch.newValue as boolean);
+        }
       }
     };
     browser.storage.onChanged.addListener(listener);
@@ -74,7 +93,12 @@ function AppComponent() {
   }, []);
 
   const deviceLayout =
-    layout === "m4g" ? M4G_DEFAULT_DEVICE_LAYOUT : CC1_DEFAULT_DEVICE_LAYOUT;
+    [
+      M4G_DEFAULT_DEVICE_LAYOUT,
+      CC1_DEFAULT_DEVICE_LAYOUT,
+      ...customDeviceLayouts,
+    ].find((deviceLayout) => deviceLayout.id === layout) ||
+    CC1_DEFAULT_DEVICE_LAYOUT;
   const charactersDevicePositionCodes = [...CHARACTER_KEY_CODE_MAP.keys()]
     .map((c) => {
       const characterKeyCode = getCharacterKeyCodeFromCharacter(
@@ -216,7 +240,7 @@ function AppComponent() {
         )}
       >
         <LayoutComponent
-          layout={layout}
+          showThumb3Switch={showThumb3Switch}
           keyLabelMap={keyLabelMap}
           highlightKeyCombination={highlightKeyCombination}
         />
