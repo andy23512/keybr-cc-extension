@@ -2,7 +2,7 @@
   "manifest_version": 3,
 
   "name": "Keybr CC Extension",
-  "description": "An unofficial Chrome extension for showing layout of CharaChorder 3D input devices at keybr.com.",
+  "description": "An unofficial browser extension for showing layout of CharaChorder 3D input devices at keybr.com.",
   "version": "1.0",
   "browser_specific_settings": {
     "gecko": {
@@ -15,6 +15,7 @@
   },
 
   "icons": {
+    "16": "image/icon-16.png",
     "128": "image/icon-128.png"
   },
 
