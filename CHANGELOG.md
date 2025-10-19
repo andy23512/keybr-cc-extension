@@ -1,11 +1,16 @@
 # Changelog
 
-## 2.0
+## Unreleased
+
+- Setting for custom device layout
+  - This feature is not supported in Firefox due to this bug: https://bugzilla.mozilla.org/show_bug.cgi?id=1292701
+
+## [2.0](https://github.com/andy23512/keybr-cc-extension/releases/tag/2.0)
 
 - Updating extension icons and descriptions
 - Storing settings into local browser storage
 
-## 1.0
+## [1.0](https://github.com/andy23512/keybr-cc-extension/releases/tag/1.0)
 
 - Showing CharaChorder 3D input device layout on keybr.com
 - Current key highlighting in the visual guide

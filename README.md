@@ -1,6 +1,11 @@
 # Keybr CC Extension
 
-- [Chrome Web Store](https://chromewebstore.google.com/detail/keybr-cc-extension/fdofhfbipdhkkhhdjlfjnjfnkibpbdpg)
+## Publication Status
+
+|                                                                                                                  | Published Version | Pending Review Version |
+| ---------------------------------------------------------------------------------------------------------------- | ----------------- | ---------------------- |
+| [Chrome Web Store](https://chromewebstore.google.com/detail/keybr-cc-extension/fdofhfbipdhkkhhdjlfjnjfnkibpbdpg) | 1.0               | 2.0                    |
+| Firefox Add-ons                                                                                                  | N/A               | 1.0                    |
 
 ## Summary
 
