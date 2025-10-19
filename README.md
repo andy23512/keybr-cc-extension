@@ -12,7 +12,7 @@ An unofficial browser extension that displays the layout of CharaChorder 3D inpu
 
 With this extension, users can familiarize themselves with the layouts of CharaChorder 3D input devices directly on keybr.com.
 
-After installation, click the extension icon to open a small settings popup, where you can choose which layout (CharaChorder One/Two or Master Forge) to display.
+After installation, click the extension icon to open a small settings pop-up, where you can choose which layout (CharaChorder One/Two or Master Forge) to display.
 
 ### Disclaimer
 
