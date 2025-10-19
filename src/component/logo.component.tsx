@@ -4,22 +4,16 @@ import "./layout.component.css";
 import SwitchComponent from "./switch.component";
 
 interface LogoComponentProps {
-  size: number;
   showText: boolean;
   className: string;
 }
 
 const LogoComponent: React.FC<LogoComponentProps> = ({
-  size,
   showText,
   className,
 }) => {
   return (
-    <svg
-      className={className}
-      style={{ width: size + "px", height: size + "px" }}
-      viewBox={[0, 0, 350, 350].join(" ")}
-    >
+    <svg className={className} viewBox={[0, 0, 350, 350].join(" ")}>
       <SwitchComponent
         center={{ x: 175, y: 175 }}
         rotationDirection={"cw"}

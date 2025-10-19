@@ -3,7 +3,6 @@
 ## Unreleased
 
 - Setting for custom device layout
-  - This feature is not supported in Firefox due to this bug: https://bugzilla.mozilla.org/show_bug.cgi?id=1292701
 
 ## [2.0](https://github.com/andy23512/keybr-cc-extension/releases/tag/2.0)
 

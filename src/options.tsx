@@ -1,11 +1,10 @@
-import classNames from "classnames";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import browser from "webextension-polyfill";
 import { DeviceLayout } from "./model/device-layout.model";
-import "./popup.css";
+import "./options.css";
 
-const Popup = () => {
+const Options = () => {
   const [layout, setLayout] = useState<string>("cc1");
   const [customDeviceLayouts, setCustomDeviceLayouts] = useState<
     DeviceLayout[]
@@ -121,55 +120,53 @@ const Popup = () => {
     return () => clearTimeout(id);
   }
 
-  const isFirefox = /Firefox/i.test(navigator.userAgent);
-
   return (
-    <div className="p-2">
-      <ol className="list-outside list-decimal text-base pl-[revert] space-y-2">
-        <li
-          className={
-            /* Hide upload feature in firefox due to this bug: https://bugzilla.mozilla.org/show_bug.cgi?id=1292701 */
-            classNames({ hidden: isFirefox })
-          }
-        >
-          (Optional) Import a device layout file (the backup file from
-          CharaChorder Device Manager website).
-          <br />
-          <input
-            className="p-1 bg-gray-300 border border-solid border-gray-700"
-            type="file"
-            accept=".json"
-            onChange={handleFileChange}
-          ></input>
-        </li>
-        <li>
-          Select a loaded device layout.
-          <br />
-          <select
-            className="p-1 bg-gray-300 border border-solid border-gray-700"
-            title="layout"
-            value={layout}
-            onChange={handleLayoutChange}
-          >
-            <option value="cc1">CharaChorder One/Two</option>
-            <option value="m4g">Master Forge</option>
-            {customDeviceLayouts.map((layout) => (
-              <option value={layout.id}>{layout.name}</option>
-            ))}
-          </select>
-        </li>
-        <li>
-          <label>
+    <div className="p-3 flex flex-col items-center">
+      <header className="flex items-center text-3xl font-bold">
+        Keybr CC Extension - Options
+      </header>
+      <div className="mt-4">
+        <ol className="list-inside list-decimal text-base space-y-2">
+          <li>
+            (Optional) Import a device layout file (the backup file from
+            CharaChorder Device Manager website).
+            <br />
             <input
-              type="checkbox"
-              checked={showThumb3Switch}
-              onChange={handleShowThumb3SwitchChange}
-            />
-            Show Thumb 3 Switch
-          </label>
-        </li>
-      </ol>
-      <div>{status}</div>
+              className="p-1 bg-gray-300 border border-solid border-gray-700"
+              type="file"
+              accept=".json"
+              onChange={handleFileChange}
+            ></input>
+          </li>
+          <li>
+            Select a loaded device layout.
+            <br />
+            <select
+              className="p-1 bg-gray-300 border border-solid border-gray-700"
+              title="layout"
+              value={layout}
+              onChange={handleLayoutChange}
+            >
+              <option value="cc1">CharaChorder One/Two</option>
+              <option value="m4g">Master Forge</option>
+              {customDeviceLayouts.map((layout) => (
+                <option value={layout.id}>{layout.name}</option>
+              ))}
+            </select>
+          </li>
+          <li>
+            <label>
+              <input
+                type="checkbox"
+                checked={showThumb3Switch}
+                onChange={handleShowThumb3SwitchChange}
+              />
+              Show Thumb 3 Switch
+            </label>
+          </li>
+        </ol>
+        <div>{status}</div>
+      </div>
     </div>
   );
 };
@@ -178,6 +175,6 @@ const root = createRoot(document.getElementById("root")!);
 
 root.render(
   <React.StrictMode>
-    <Popup />
+    <Options />
   </React.StrictMode>
 );
