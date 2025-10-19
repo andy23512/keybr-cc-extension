@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import browser from "webextension-polyfill";
@@ -120,10 +121,17 @@ const Popup = () => {
     return () => clearTimeout(id);
   }
 
+  const isFirefox = /Firefox/i.test(navigator.userAgent);
+
   return (
     <div className="p-2">
       <ol className="list-outside list-decimal text-base pl-[revert] space-y-2">
-        <li>
+        <li
+          className={
+            /* Hide upload feature in firefox due to this bug: https://bugzilla.mozilla.org/show_bug.cgi?id=1292701 */
+            classNames({ hidden: isFirefox })
+          }
+        >
           (Optional) Import a device layout file (the backup file from
           CharaChorder Device Manager website).
           <br />
