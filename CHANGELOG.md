@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+(Nothing is unreleased.)
+
+## [3.0](https://github.com/andy23512/keybr-cc-extension/releases/tag/3.0)
+
 - Setting for custom device layout
 
 ## [2.0](https://github.com/andy23512/keybr-cc-extension/releases/tag/2.0)
