@@ -7,6 +7,11 @@
 | [Chrome Web Store](https://chromewebstore.google.com/detail/keybr-cc-extension/fdofhfbipdhkkhhdjlfjnjfnkibpbdpg) | 2.0               | N/A                    |
 | Firefox Add-ons                                                                                                  | N/A               | 1.0                    |
 
+## Link
+
+- [Demonstration video](https://youtu.be/IQWf4IuekFQ?si=q_DkxyKOvMsdcqV3)
+- [Dev note](https://andy23512.github.io/blog/2025/10/19/keybr-cc-extension-an-unofficial-browser-extension-that-displays-the-layout-of-charachorder-3d-input-devices-on-keybr/)
+
 ## Summary
 
 An unofficial browser extension that displays the layout of CharaChorder 3D input devices on keybr.com
