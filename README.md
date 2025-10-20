@@ -2,10 +2,10 @@
 
 ## Publication Status
 
-|                                                                                                                  | Published Version | Pending Review Version |
-| ---------------------------------------------------------------------------------------------------------------- | ----------------- | ---------------------- |
-| [Chrome Web Store](https://chromewebstore.google.com/detail/keybr-cc-extension/fdofhfbipdhkkhhdjlfjnjfnkibpbdpg) | 2.0               | 3.0                    |
-| Firefox Add-ons                                                                                                  | N/A               | 1.0                    |
+|                                                                                                                  | Published Version      | Pending Review Version |
+| ---------------------------------------------------------------------------------------------------------------- | ---------------------- | ---------------------- |
+| [Chrome Web Store](https://chromewebstore.google.com/detail/keybr-cc-extension/fdofhfbipdhkkhhdjlfjnjfnkibpbdpg) | 3.1 | N/A                    |
+| Firefox Add-ons                                                                                                  | N/A                    | 1.0                    |
 
 ## Link
 

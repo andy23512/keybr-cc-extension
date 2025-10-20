@@ -4,6 +4,10 @@
 
 (Nothing is unreleased.)
 
+## [3.1](https://github.com/andy23512/keybr-cc-extension/releases/tag/3.1)
+
+- Revert to 2.0 due to bug in custom layout
+
 ## [3.0](https://github.com/andy23512/keybr-cc-extension/releases/tag/3.0)
 
 - Setting for custom device layout
