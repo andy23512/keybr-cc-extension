@@ -1,8 +1,32 @@
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
+import {
+  AppBar,
+  Box,
+  Button,
+  Checkbox,
+  CssBaseline,
+  FormControlLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Snackbar,
+  Typography,
+} from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import browser from "webextension-polyfill";
 import { DeviceLayout } from "./model/device-layout.model";
 import "./options.css";
+
+const darkTheme = createTheme({
+  palette: {
+    mode: "dark",
+  },
+});
 
 const Options = () => {
   const [layout, setLayout] = useState<string>("cc1");
@@ -82,7 +106,7 @@ const Options = () => {
     reader.readAsText(file);
   };
 
-  const handleLayoutChange = (event: ChangeEvent<HTMLSelectElement>) => {
+  const handleLayoutChange = (event: SelectChangeEvent) => {
     const nextLayout = event.target.value;
     const nextShowThumb3Switch =
       nextLayout === "m4g"
@@ -121,53 +145,70 @@ const Options = () => {
   }
 
   return (
-    <div className="p-3 flex flex-col items-center">
-      <header className="flex items-center text-3xl font-bold">
-        Keybr CC Extension - Options
-      </header>
-      <div className="mt-4">
-        <ol className="list-inside list-decimal text-base space-y-2">
-          <li>
-            (Optional) Import a device layout file (the backup file from
-            CharaChorder Device Manager website).
-            <br />
-            <input
-              className="p-1 bg-gray-300 border border-solid border-gray-700"
-              type="file"
-              accept=".json"
-              onChange={handleFileChange}
-            ></input>
-          </li>
-          <li>
-            Select a loaded device layout.
-            <br />
-            <select
-              className="p-1 bg-gray-300 border border-solid border-gray-700"
-              title="layout"
-              value={layout}
-              onChange={handleLayoutChange}
-            >
-              <option value="cc1">CharaChorder One/Two</option>
-              <option value="m4g">Master Forge</option>
-              {customDeviceLayouts.map((layout) => (
-                <option value={layout.id}>{layout.name}</option>
-              ))}
-            </select>
-          </li>
-          <li>
-            <label>
-              <input
-                type="checkbox"
-                checked={showThumb3Switch}
-                onChange={handleShowThumb3SwitchChange}
+    <Box sx={{ maxWidth: "800px", mx: "auto" }}>
+      <AppBar enableColorOnDark={true} position="static">
+        <Typography variant="h6" sx={{ mx: 2 }}>
+          Keybr CC Extension - Options
+        </Typography>
+      </AppBar>
+      <div className="p-3 flex flex-col items-center">
+        <div className="mt-4">
+          <ol className="list-inside list-decimal text-base space-y-2">
+            <li>
+              (Optional) Import a device layout file (the backup file from
+              CharaChorder Device Manager website).
+              <br />
+              <Button
+                sx={{ mt: 1 }}
+                component="label"
+                role={undefined}
+                variant="contained"
+                tabIndex={-1}
+              >
+                Choose File
+                <input
+                  className="opacity-0 size-[1px]"
+                  type="file"
+                  accept=".json"
+                  onChange={handleFileChange}
+                ></input>
+              </Button>
+            </li>
+            <li>
+              Select a loaded device layout.
+              <br />
+              <Select
+                sx={{ mt: 1 }}
+                value={layout}
+                onChange={handleLayoutChange}
+              >
+                <MenuItem value="cc1">CharaChorder One/Two</MenuItem>
+                <MenuItem value="m4g">Master Forge</MenuItem>
+                {customDeviceLayouts.map((layout) => (
+                  <MenuItem value={layout.id}>{layout.name}</MenuItem>
+                ))}
+              </Select>
+            </li>
+            <li>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={showThumb3Switch}
+                    onChange={handleShowThumb3SwitchChange}
+                  />
+                }
+                label="Show Thumb 3 Switch"
               />
-              Show Thumb 3 Switch
-            </label>
-          </li>
-        </ol>
-        <div>{status}</div>
+            </li>
+          </ol>
+          <Snackbar
+            open={!!status}
+            message={status}
+            anchorOrigin={{ horizontal: "center", vertical: "top" }}
+          ></Snackbar>
+        </div>
       </div>
-    </div>
+    </Box>
   );
 };
 
@@ -175,6 +216,9 @@ const root = createRoot(document.getElementById("root")!);
 
 root.render(
   <React.StrictMode>
-    <Options />
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
+      <Options />
+    </ThemeProvider>
   </React.StrictMode>
 );
