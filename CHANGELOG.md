@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-(Nothing is unreleased.)
+- use material UI to style options page
 
 ## [3.2](https://github.com/andy23512/keybr-cc-extension/releases/tag/3.2)
 
