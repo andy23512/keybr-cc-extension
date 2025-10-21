@@ -227,6 +227,14 @@ export function getHighlightKeyCombinationFromKeyCombinations(
       preferShiftSide: "right" as const,
       preferCharacterKeySide: "right" as const,
     },
+    fnShiftLayer: {
+      preferSides: "both" as const,
+      preferFnShiftSide: "left" as const,
+    },
+    shiftAndFnShiftLayer: {
+      preferShiftSide: "right" as const,
+      preferCharacterKeySide: "right" as const,
+    },
   };
   return keyCombinations
     .map((k) => {
@@ -258,6 +266,37 @@ export function getHighlightKeyCombinationFromKeyCombinations(
                   k.characterKeyPositionCode,
                   shiftPositionCode,
                   numShiftPositionCode,
+                ],
+                score,
+              });
+            }
+          }
+        } else if (k.layer === Layer.Tertiary) {
+          const { preferCharacterKeySide, preferShiftSide } =
+            highlightSetting.shiftAndFnShiftLayer;
+          for (const shiftPositionCode of modifierKeyPositionCodeMap.shift) {
+            for (const fnShiftPositionCode of modifierKeyPositionCodeMap.fnShift) {
+              let score = 0;
+              if (
+                isPositionAtSide(
+                  k.characterKeyPositionCode,
+                  preferCharacterKeySide
+                )
+              ) {
+                score += 1;
+              }
+              if (isPositionAtSide(shiftPositionCode, preferShiftSide)) {
+                score += 1;
+              }
+              if (!isPositionAtSide(fnShiftPositionCode, preferShiftSide)) {
+                score += 1;
+              }
+              result.push({
+                ...k,
+                positionCodes: [
+                  k.characterKeyPositionCode,
+                  shiftPositionCode,
+                  fnShiftPositionCode,
                 ],
                 score,
               });
@@ -310,6 +349,29 @@ export function getHighlightKeyCombinationFromKeyCombinations(
               score,
             });
           }
+        } else if (k.layer === Layer.Tertiary) {
+          const { preferFnShiftSide, preferSides } =
+            highlightSetting.fnShiftLayer;
+          for (const fnShiftPositionCode of modifierKeyPositionCodeMap.fnShift) {
+            let score = 0;
+            if (
+              meetPreferSides(
+                k.characterKeyPositionCode,
+                fnShiftPositionCode,
+                preferSides
+              )
+            ) {
+              score += 2;
+            }
+            if (isPositionAtSide(fnShiftPositionCode, preferFnShiftSide)) {
+              score += 1;
+            }
+            result.push({
+              ...k,
+              positionCodes: [k.characterKeyPositionCode, fnShiftPositionCode],
+              score,
+            });
+          }
         } else {
           result.push({
             ...k,
@@ -330,9 +392,12 @@ export function getHighlightKeyCombinationFromKeyCombinations(
     })
     .flat()
     .sort((a, b) => {
-      if (a.positionCodes.length === b.positionCodes.length) {
-        return b.score - a.score;
+      if (a.positionCodes.length !== b.positionCodes.length) {
+        return a.positionCodes.length - b.positionCodes.length;
       }
-      return a.positionCodes.length - b.positionCodes.length;
+      if (a.layer !== b.layer) {
+        return a.layer.localeCompare(b.layer);
+      }
+      return b.score - a.score;
     })[0];
 }
