@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+(Nothing is unreleased.)
+
+## [3.2](https://github.com/andy23512/keybr-cc-extension/releases/tag/3.2)
+
 - Fix bug in custom layout when its A3 layer has character key
 
 ## [3.1](https://github.com/andy23512/keybr-cc-extension/releases/tag/3.1)

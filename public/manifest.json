@@ -3,7 +3,7 @@
 
   "name": "Keybr CC Extension",
   "description": "An unofficial browser extension for showing layout of CharaChorder 3D input devices at keybr.com",
-  "version": "3.0",
+  "version": "3.2",
   "browser_specific_settings": {
     "gecko": {
       "id": "@keybr-cc-extension-new.andy23512"
