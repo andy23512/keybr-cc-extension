@@ -4,7 +4,7 @@
 
 |                                                                                                                  | Published Version | Pending Review Version |
 | ---------------------------------------------------------------------------------------------------------------- | ----------------- | ---------------------- |
-| [Chrome Web Store](https://chromewebstore.google.com/detail/keybr-cc-extension/fdofhfbipdhkkhhdjlfjnjfnkibpbdpg) | 3.1               | 3.2                    |
+| [Chrome Web Store](https://chromewebstore.google.com/detail/keybr-cc-extension/fdofhfbipdhkkhhdjlfjnjfnkibpbdpg) | 3.2               | N/A                    |
 | Firefox Add-ons                                                                                                  | N/A               | 1.0                    |
 
 ## Link
