@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-(Nothing is unreleased.)
+- Hide all original keyboard previews on Keybr
 
 ## [4.0](https://github.com/andy23512/keybr-cc-extension/releases/tag/4.0)
 
