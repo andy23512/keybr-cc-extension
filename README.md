@@ -5,7 +5,7 @@
 |                                                                                                                  | Published Version | Pending Review Version |
 | ---------------------------------------------------------------------------------------------------------------- | ----------------- | ---------------------- |
 | [Chrome Web Store](https://chromewebstore.google.com/detail/keybr-cc-extension/fdofhfbipdhkkhhdjlfjnjfnkibpbdpg) | 3.2               | 4.0                    |
-| [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/keybr-cc-extension/)                            | 4.0               | N/A                    |
+| [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/keybr-cc-extension/)                            | 4.0               | 4.1                    |
 
 ## Link
 
