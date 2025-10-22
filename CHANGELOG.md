@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+(Empty)
+
+## [4.1](https://github.com/andy23512/keybr-cc-extension/releases/tag/4.1)
+
 - Hide all original keyboard previews on Keybr
 
 ## [4.0](https://github.com/andy23512/keybr-cc-extension/releases/tag/4.0)
