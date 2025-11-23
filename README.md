@@ -22,7 +22,7 @@ An unofficial browser extension that displays the layout of CharaChorder 3D inpu
 
 With this extension, users can familiarize themselves with the layouts of CharaChorder 3D input devices directly on keybr.com.
 
-After installation, click the extension icon to open an option page, where you can import a device layout file, choose which device layout to display, and toggle the thumb-3 switch.
+After installation, click the extension icon to open an option page, where you can import a device layout file, choose which device layout to display, and toggle the thumb-3 switch, and choose an OS keyboard layout.
 
 ### Disclaimer
 
