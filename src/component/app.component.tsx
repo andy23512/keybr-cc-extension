@@ -124,6 +124,7 @@ function AppComponent() {
   const selectedKeyboardLayout = KEYBOARD_LAYOUTS.find(
     (k) => k.id === selectedKeyboardLayoutId
   ) as KeyBoardLayout;
+  selectedKeyboardLayout.layout.Space = { unmodified: " " };
   const characterKeyCodeMap = convertKeyboardLayoutToCharacterKeyCodeMap(
     selectedKeyboardLayout
   );
