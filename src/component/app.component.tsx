@@ -27,6 +27,7 @@ import {
   getCharacterActionCodesFromCharacterKeyCode,
   getCharacterKeyCodeFromCharacter,
   getHighlightKeyCombinationFromKeyCombinations,
+  getHighlightKeyCombinationFromText,
   getKeyCombinationsFromActionCodes,
   getModifierKeyPositionCodeMap,
 } from "../util/layout.util";
@@ -42,16 +43,26 @@ function AppComponent() {
   const [selectedKeyboardLayoutId, setSelectedKeyboardLayoutId] =
     useState<string>("us");
   const [showThumb3Switch, setShowThumb3Switch] = useState<boolean>(true);
-  const [currentCharacter, setCurrentCharacter] = useState<string | null>(null);
+  const [nextText, setNextText] = useState<string | null>(null);
 
   useEffect(() => {
     function getCurrentText() {
-      const text = document.querySelector('div[dir="ltr"] span[class]');
-      let nextCurrentCharacter = text ? text.textContent : null;
-      if (nextCurrentCharacter === "") {
-        nextCurrentCharacter = " ";
+      const currentCharacterElement = document.querySelector(
+        'div[dir="ltr"] span[class]'
+      );
+      const nextTextElement = document.querySelector(
+        'div[dir="ltr"] span[class] ~ span'
+      );
+      let nextText = currentCharacterElement
+        ? currentCharacterElement.textContent
+        : null;
+      if (nextText && nextTextElement) {
+        nextText += nextTextElement.textContent;
       }
-      setCurrentCharacter(nextCurrentCharacter);
+      if (nextText === "") {
+        nextText = " ";
+      }
+      setNextText(nextText);
     }
     setInterval(getCurrentText, 100);
   });
@@ -242,9 +253,10 @@ function AppComponent() {
     });
     return highlightCharacterKeyMap;
   })();
-  const highlightKeyCombination = currentCharacter
-    ? highlightCharacterKeyCombinationMap[currentCharacter]
-    : null;
+  const highlightKeyCombination = getHighlightKeyCombinationFromText(
+    nextText,
+    highlightCharacterKeyCombinationMap
+  );
 
   return (
     <Draggable>
@@ -252,7 +264,7 @@ function AppComponent() {
         className={classNames(
           "p-2 bg-(--Keyboard-frame__color) rounded-lg font-(family-name:--default-font-family) absolute bottom-[100px] left-1/2 -translate-x-1/2 cursor-move",
           {
-            invisible: !currentCharacter,
+            invisible: !nextText,
           }
         )}
       >
