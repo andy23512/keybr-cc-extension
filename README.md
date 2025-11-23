@@ -2,10 +2,10 @@
 
 ## Publication Status
 
-|                                                                                                                  | Published Version | Pending Review Version |
-| ---------------------------------------------------------------------------------------------------------------- | ----------------- | ---------------------- |
-| [Chrome Web Store](https://chromewebstore.google.com/detail/keybr-cc-extension/fdofhfbipdhkkhhdjlfjnjfnkibpbdpg) | 4.1               | N/A                    |
-| [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/keybr-cc-extension/)                            | 4.1               | N/A                    |
+| Published Version                                                                                                                                                                      | Pending Review Version |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
+| [<img src="https://img.shields.io/chrome-web-store/v/fdofhfbipdhkkhhdjlfjnjfnkibpbdpg">](https://chromewebstore.google.com/detail/keybr-cc-extension/fdofhfbipdhkkhhdjlfjnjfnkibpbdpg) | 5.0                    |
+| [<img src="https://img.shields.io/amo/v/keybr-cc-extension">](https://addons.mozilla.org/en-US/firefox/addon/keybr-cc-extension/)                                                      | N/A                    |
 
 ## Link
 
