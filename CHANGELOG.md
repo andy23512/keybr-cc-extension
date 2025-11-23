@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-(Empty)
+- Setting for OS keyboard layout
 
 ## [4.1](https://github.com/andy23512/keybr-cc-extension/releases/tag/4.1)
 
