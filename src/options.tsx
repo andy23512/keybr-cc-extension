@@ -232,19 +232,16 @@ const Options = () => {
               />
             </li>
             <li>
+              Select an OS keyboard layout.
+              <br />
               <Autocomplete
+                sx={{ mt: 1 }}
                 options={KEYBOARD_LAYOUTS}
                 getOptionLabel={getKeyboardLayoutOptionLabel}
                 defaultValue={defaultKeyboardLayout}
                 value={selectedKeyboardLayout}
                 onChange={handleSelectedKeyboardLayoutChange}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="OS Keyboard Layout"
-                    variant="standard"
-                  ></TextField>
-                )}
+                renderInput={(params) => <TextField {...params}></TextField>}
               ></Autocomplete>
             </li>
           </ol>
