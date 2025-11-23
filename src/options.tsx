@@ -4,6 +4,7 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import {
   AppBar,
+  Autocomplete,
   Box,
   Button,
   Checkbox,
@@ -13,13 +14,16 @@ import {
   Select,
   SelectChangeEvent,
   Snackbar,
+  TextField,
   Typography,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import browser from "webextension-polyfill";
+import { KEYBOARD_LAYOUTS } from "./data/keyboard-layouts";
 import { DeviceLayout } from "./model/device-layout.model";
+import { KeyBoardLayout } from "./model/keyboard-layout.model";
 import "./options.css";
 
 const darkTheme = createTheme({
@@ -33,6 +37,8 @@ const Options = () => {
   const [customDeviceLayouts, setCustomDeviceLayouts] = useState<
     DeviceLayout[]
   >([]);
+  const [selectedKeyboardLayoutId, setSelectedKeyboardLayoutId] =
+    useState<string>("us");
   const [showThumb3Switch, setShowThumb3Switch] = useState<boolean>(true);
   const [status, setStatus] = useState<string>("");
 
@@ -42,13 +48,22 @@ const Options = () => {
         layout: "cc1",
         customDeviceLayouts: [],
         showThumb3Switch: true,
+        selectedKeyboardLayoutId: "us",
       })
       .then((items) => {
         setLayout(items.layout as string);
         setCustomDeviceLayouts(items.customDeviceLayouts as DeviceLayout[]);
         setShowThumb3Switch(items.showThumb3Switch as boolean);
+        setSelectedKeyboardLayoutId(items.selectedKeyboardLayoutId as string);
       });
   }, []);
+
+  const defaultKeyboardLayout = KEYBOARD_LAYOUTS.find(
+    (k) => k.id === "us"
+  ) as KeyBoardLayout;
+  const selectedKeyboardLayout =
+    KEYBOARD_LAYOUTS.find((k) => k.id === selectedKeyboardLayoutId) ??
+    defaultKeyboardLayout;
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
@@ -136,6 +151,22 @@ const Options = () => {
       .then(showSavedMessage);
   };
 
+  const handleSelectedKeyboardLayoutChange = (
+    _: any,
+    newValue: KeyBoardLayout | null
+  ) => {
+    const value = newValue?.id ?? "us";
+    setSelectedKeyboardLayoutId(value);
+    browser.storage.local
+      .set({
+        selectedKeyboardLayoutId: value,
+      })
+      .then(showSavedMessage);
+  };
+
+  const getKeyboardLayoutOptionLabel = (keyboardLayout: KeyBoardLayout) =>
+    keyboardLayout.name;
+
   function showSavedMessage() {
     setStatus("Setting saved.");
     const id = setTimeout(() => {
@@ -199,6 +230,22 @@ const Options = () => {
                 }
                 label="Show Thumb 3 Switch"
               />
+            </li>
+            <li>
+              <Autocomplete
+                options={KEYBOARD_LAYOUTS}
+                getOptionLabel={getKeyboardLayoutOptionLabel}
+                defaultValue={defaultKeyboardLayout}
+                value={selectedKeyboardLayout}
+                onChange={handleSelectedKeyboardLayoutChange}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="OS Keyboard Layout"
+                    variant="standard"
+                  ></TextField>
+                )}
+              ></Autocomplete>
             </li>
           </ol>
           <Snackbar

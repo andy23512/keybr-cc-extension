@@ -12,7 +12,7 @@ import {
   NUM_SHIFT_KEY_LABEL,
   SHIFT_KEY_LABEL,
 } from "../data/key-labels";
-import { US_QWERTY_LAYOUT } from "../data/keyboard-layouts";
+import { KEYBOARD_LAYOUTS } from "../data/keyboard-layouts";
 import {
   DeviceLayout,
   HighlightKeyCombination,
@@ -20,6 +20,7 @@ import {
   KeyLabelType,
   Layer,
 } from "../model/device-layout.model";
+import { KeyBoardLayout } from "../model/keyboard-layout.model";
 import { Layout } from "../model/layout.model";
 import {
   convertKeyboardLayoutToCharacterKeyCodeMap,
@@ -33,14 +34,13 @@ import { nonNullable } from "../util/non-nullable.util";
 import "./app.component.css";
 import LayoutComponent from "./layout.component";
 
-const CHARACTER_KEY_CODE_MAP =
-  convertKeyboardLayoutToCharacterKeyCodeMap(US_QWERTY_LAYOUT);
-
 function AppComponent() {
   const [layout, setLayout] = useState<string>("cc1");
   const [customDeviceLayouts, setCustomDeviceLayouts] = useState<
     DeviceLayout[]
   >([]);
+  const [selectedKeyboardLayoutId, setSelectedKeyboardLayoutId] =
+    useState<string>("us");
   const [showThumb3Switch, setShowThumb3Switch] = useState<boolean>(true);
   const [currentCharacter, setCurrentCharacter] = useState<string | null>(null);
 
@@ -59,11 +59,17 @@ function AppComponent() {
   useEffect(() => {
     // Load initial value from storage
     browser.storage.local
-      .get({ layout: "cc1", customDeviceLayouts: [], showThumb3Switch: true })
+      .get({
+        layout: "cc1",
+        customDeviceLayouts: [],
+        showThumb3Switch: true,
+        selectedKeyboardLayoutId: "us",
+      })
       .then((items) => {
         setLayout(items.layout as string);
         setCustomDeviceLayouts(items.customDeviceLayouts as DeviceLayout[]);
         setShowThumb3Switch(items.showThumb3Switch as boolean);
+        setSelectedKeyboardLayoutId(items.selectedKeyboardLayoutId as string);
       });
 
     // Listen for changes in storage from other parts of the extension
@@ -83,6 +89,11 @@ function AppComponent() {
         if (changes.showThumb3Switch) {
           setShowThumb3Switch(changes.showThumb3Switch.newValue as boolean);
         }
+        if (changes.selectedKeyboardLayoutId) {
+          setSelectedKeyboardLayoutId(
+            changes.selectedKeyboardLayoutId.newValue as string
+          );
+        }
       }
     };
     browser.storage.onChanged.addListener(listener);
@@ -99,11 +110,17 @@ function AppComponent() {
       ...customDeviceLayouts,
     ].find((deviceLayout) => deviceLayout.id === layout) ||
     CC1_DEFAULT_DEVICE_LAYOUT;
-  const charactersDevicePositionCodes = [...CHARACTER_KEY_CODE_MAP.keys()]
+  const selectedKeyboardLayout = KEYBOARD_LAYOUTS.find(
+    (k) => k.id === selectedKeyboardLayoutId
+  ) as KeyBoardLayout;
+  const characterKeyCodeMap = convertKeyboardLayoutToCharacterKeyCodeMap(
+    selectedKeyboardLayout
+  );
+  const charactersDevicePositionCodes = [...characterKeyCodeMap.keys()]
     .map((c) => {
       const characterKeyCode = getCharacterKeyCodeFromCharacter(
         c,
-        CHARACTER_KEY_CODE_MAP
+        characterKeyCodeMap
       );
       if (!characterKeyCode) {
         return null;
