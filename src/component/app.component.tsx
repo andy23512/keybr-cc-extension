@@ -9,7 +9,7 @@ function AppComponent() {
     <>
       <div
         ref={mainDivRef}
-        className="absolute bottom-0 left-1/2 w-100 h-68"
+        className="absolute bottom-0 left-1/2 h-68"
         style={{ transform: "translateX(-50%)" }}
       >
         <LayoutContainerComponent></LayoutContainerComponent>
@@ -17,12 +17,12 @@ function AppComponent() {
       <Moveable
         target={mainDivRef}
         draggable={true}
-        throttleDrag={0}
         onDrag={(e) => {
           e.target.style.transform = e.transform;
         }}
+        useResizeObserver={true}
         resizable={true}
-        keepRatio={false}
+        keepRatio={true}
         onResize={(e) => {
           e.target.style.width = `${e.width}px`;
           e.target.style.height = `${e.height}px`;
