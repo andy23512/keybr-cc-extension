@@ -14,15 +14,17 @@
 
 ## Summary
 
-An unofficial browser extension that displays the layout of CharaChorder 3D input devices on keybr.com
+An unofficial browser extension that displays the layout of CharaChorder 3D input devices on Keybr
 
 ## Description
 
-An unofficial browser extension that displays the layout of CharaChorder 3D input devices (CharaChorder One, CharaChorder Two, and Master Forge) on keybr.com.
+An unofficial browser extension that displays the layout of CharaChorder 3D input devices (CharaChorder One, CharaChorder Two, and Master Forge) on Keybr.
 
-With this extension, users can familiarize themselves with the layouts of CharaChorder 3D input devices directly on keybr.com.
+With this extension, users can familiarize themselves with the layouts of CharaChorder 3D input devices directly on Keybr.
 
 After installation, click the extension icon to open an option page, where you can import a device layout file, choose which device layout to display, toggle the thumb-3 switch, and choose an OS keyboard layout.
+
+Clicking the settings button on the layout enters edit mode, allowing you to adjust its position, size, and transparency by dragging, resizing, and scrolling.
 
 ### Disclaimer
 
