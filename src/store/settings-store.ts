@@ -79,6 +79,12 @@ export const useSettingsStore = createSelectors(
       {
         name: "settings",
         storage: browserLocalSettingsStorage,
+        partialize: (state) =>
+          Object.fromEntries(
+            Object.entries(state).filter(
+              ([_, value]) => typeof value !== "function"
+            )
+          ) as SettingsState,
       }
     )
   )
