@@ -1,10 +1,17 @@
 import React from "react";
+import {
+  CELL_SIZE,
+  GAP,
+  THUMB_ROTATION_ANGLE,
+  VIEW_BOX_WIDTH,
+} from "../const/layout-dimension.const";
 import { POSITION_CODE_LAYOUT } from "../data/layouts";
 import {
   HighlightKeyCombination,
   KeyLabelMap,
 } from "../model/device-layout.model";
 import { FingerMap, HandMap } from "../model/layout.model";
+import { getViewBoxHeight } from "../util/layout-dimension.util";
 import "./layout.component.css";
 import SwitchComponent from "./switch.component";
 
@@ -14,19 +21,13 @@ interface LayoutComponentProps {
   showThumb3Switch: boolean;
 }
 
-const CELL_SIZE = 350;
-const GAP = 35;
-const GRID_COLUMNS = 10;
-const THUMB_ROTATION_ANGLE = 10;
-
 const LayoutComponent: React.FC<LayoutComponentProps> = ({
   keyLabelMap,
   highlightKeyCombination,
   showThumb3Switch,
 }) => {
-  const gridRows = showThumb3Switch ? 5 : 4;
-  const viewBoxWidth = CELL_SIZE * GRID_COLUMNS + GAP * (GRID_COLUMNS - 1);
-  const viewBoxHeight = CELL_SIZE * gridRows + GAP * (gridRows - 1);
+  const viewBoxWidth = VIEW_BOX_WIDTH;
+  const viewBoxHeight = getViewBoxHeight(showThumb3Switch);
   const switches = [
     ...(showThumb3Switch ? (["thumbEnd"] as const) : []),
     "thumbMid",

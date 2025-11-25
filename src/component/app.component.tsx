@@ -2,10 +2,15 @@ import { Popover } from "@mui/material";
 import classNames from "classnames";
 import { MouseEvent, useEffect, useRef, useState, WheelEvent } from "react";
 import Moveable from "react-moveable";
+import { useSettingsStore } from "../store/settings-store";
+import { getViewBoxAspectRatio } from "../util/layout-dimension.util";
 import "./app.component.css";
 import LayoutContainerComponent from "./layout-container.component";
 
 function AppComponent() {
+  const containerElement = document.querySelector(
+    "#keybr-cc-extension-root"
+  ) as HTMLDivElement;
   const mainDivRef = useRef(null);
   const moveableRef = useRef<Moveable>(null);
 
@@ -13,15 +18,36 @@ function AppComponent() {
   const [infoPopoverAnchor, setInfoPopoverAnchor] =
     useState<HTMLButtonElement | null>(null);
   const [opacity, setOpacity] = useState<number>(1);
+  const [containerWidth, setContainerWidth] = useState<number>(
+    containerElement.clientWidth
+  );
+  const [containerHeight, setContainerHeight] = useState<number>(
+    containerElement.clientHeight
+  );
+  const height = useSettingsStore.use.height();
+  const xPosition = useSettingsStore.use.xPosition();
+  const yPosition = useSettingsStore.use.yPosition();
+  const showThumb3Switch = useSettingsStore.use.showThumb3Switch();
+  const width = height * getViewBoxAspectRatio(showThumb3Switch);
+  const leftMin = 8;
+  const leftMax = containerWidth - 8 - width;
+  const left = leftMin + (leftMax - leftMin) * xPosition;
+  const topMin = 8;
+  const topMax = containerHeight - 8 - height;
+  const top = topMin + (topMax - topMin) * yPosition;
 
   useEffect(() => {
-    const handleWindowResize = () => {
-      moveableRef.current?.updateRect();
-    };
-    window.addEventListener("resize", handleWindowResize);
+    function handleResize(entries: ResizeObserverEntry[]) {
+      const entry = entries[0];
+      setContainerWidth(entry.contentRect.width);
+      setContainerHeight(entry.contentRect.height);
+    }
 
+    const observer = new ResizeObserver(handleResize);
+    observer.observe(containerElement);
     return () => {
-      window.removeEventListener("resize", handleWindowResize);
+      observer.unobserve(containerElement);
+      observer.disconnect();
     };
   }, []);
 
@@ -84,8 +110,8 @@ function AppComponent() {
     <>
       <div
         ref={mainDivRef}
-        className="absolute bottom-2 left-1/2 h-64 pointer-events-auto min-h-32"
-        style={{ transform: "translateX(-50%)", opacity }}
+        className="absolute pointer-events-auto min-h-32"
+        style={{ opacity, left: left + "px", top: top + "px", width, height }}
         onWheel={handleWheel}
       >
         <LayoutContainerComponent></LayoutContainerComponent>
