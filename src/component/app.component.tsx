@@ -1,10 +1,23 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import Moveable from "react-moveable";
 import "./app.component.css";
 import LayoutContainerComponent from "./layout-container.component";
 
 function AppComponent() {
   const mainDivRef = useRef(null);
+  const moveableRef = useRef<Moveable>(null);
+
+  useEffect(() => {
+    const handleWindowResize = () => {
+      moveableRef.current?.updateRect();
+    };
+    window.addEventListener("resize", handleWindowResize);
+
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
+
   return (
     <>
       <div
@@ -15,6 +28,7 @@ function AppComponent() {
         <LayoutContainerComponent></LayoutContainerComponent>
       </div>
       <Moveable
+        ref={moveableRef}
         target={mainDivRef}
         draggable={true}
         onDrag={(e) => {
