@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-(Empty)
+- Adjustable size and transparency
 
 ## [5.0](https://github.com/andy23512/keybr-cc-extension/releases/tag/5.0)
 
