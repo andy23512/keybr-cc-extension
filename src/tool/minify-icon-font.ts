@@ -12,6 +12,7 @@ import { readFileSync, writeFileSync } from "fs";
   const icons = query(iconTypesAst, "UnionType StringLiteral").map(
     (node) => (node as any).text
   );
+  console.log(icons);
   const font = fontkitOpenSync(
     "./src/asset/material-symbols-rounded-latin-full-normal.woff2"
   ) as Font;

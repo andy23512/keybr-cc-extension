@@ -26,6 +26,7 @@ export type Icon =
   | "move_down"
   | "move_up"
   | "radio_button_checked"
+  | "replay"
   | "restart_alt"
   | "right_click"
   | "settings"

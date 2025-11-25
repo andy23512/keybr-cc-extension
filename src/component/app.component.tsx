@@ -12,12 +12,10 @@ function AppComponent() {
     "#keybr-cc-extension-root"
   ) as HTMLDivElement;
   const mainDivRef = useRef(null);
-  const moveableRef = useRef<Moveable>(null);
+  const infoButtonRef = useRef(null);
 
   const [editMode, setEditMode] = useState(false);
-  const [infoPopoverAnchor, setInfoPopoverAnchor] =
-    useState<HTMLButtonElement | null>(null);
-  const [opacity, setOpacity] = useState<number>(1);
+  const [infoPopoverOpen, setInfoPopoverOpen] = useState<boolean>(false);
   const [containerWidth, setContainerWidth] = useState<number>(
     containerElement.clientWidth
   );
@@ -28,6 +26,7 @@ function AppComponent() {
   const xPosition = useSettingsStore.use.xPosition();
   const yPosition = useSettingsStore.use.yPosition();
   const showThumb3Switch = useSettingsStore.use.showThumb3Switch();
+  const opacity = useSettingsStore.use.opacity();
   const width = height * getViewBoxAspectRatio(showThumb3Switch);
   const leftMin = 8;
   const leftMax = containerWidth - 8 - width;
@@ -35,10 +34,13 @@ function AppComponent() {
   const topMin = 8;
   const topMax = containerHeight - 8 - height;
   const top = topMin + (topMax - topMin) * yPosition;
+  const setSettings = useSettingsStore.use.set();
+  const resetLayoutDisplay = useSettingsStore.use.resetLayoutDisplay();
 
   useEffect(() => {
     function handleResize(entries: ResizeObserverEntry[]) {
       const entry = entries[0];
+      setEditMode(false);
       setContainerWidth(entry.contentRect.width);
       setContainerHeight(entry.contentRect.height);
     }
@@ -79,11 +81,11 @@ function AppComponent() {
   };
 
   const handleInfoButtonClick = (event: MouseEvent<HTMLButtonElement>) => {
-    setInfoPopoverAnchor((prev) => (!!prev ? null : event.currentTarget));
+    setInfoPopoverOpen((prev) => !prev);
   };
 
   const handleInfoPopoverClose = () => {
-    setInfoPopoverAnchor(null);
+    setInfoPopoverOpen(false);
   };
 
   const handleWheel = (event: WheelEvent<HTMLDivElement>) => {
@@ -101,10 +103,13 @@ function AppComponent() {
     if (nextOpacity < 0.2) {
       nextOpacity = 0.2;
     }
-    setOpacity(nextOpacity);
+    setSettings("opacity", nextOpacity);
   };
 
-  const infoPopoverOpen = Boolean(infoPopoverAnchor);
+  const handleResetButtonClick = () => {
+    resetLayoutDisplay();
+    setEditMode(false);
+  };
 
   return (
     <>
@@ -115,6 +120,14 @@ function AppComponent() {
         onWheel={handleWheel}
       >
         <LayoutContainerComponent></LayoutContainerComponent>
+        {editMode && (
+          <button
+            className="absolute left-0 top-1/2 -translate-y-5 material-icons !text-3xl"
+            onClick={handleResetButtonClick}
+          >
+            replay
+          </button>
+        )}
         <div className="absolute right-0 top-1/2 -translate-y-5 flex flex-col gap-1">
           <button
             className={classNames("!text-3xl material-icons", {
@@ -128,6 +141,7 @@ function AppComponent() {
           {editMode && (
             <>
               <button
+                ref={infoButtonRef}
                 className="!text-3xl material-icons"
                 onClick={handleInfoButtonClick}
               >
@@ -137,23 +151,22 @@ function AppComponent() {
           )}
           <Popover
             open={infoPopoverOpen}
-            anchorEl={infoPopoverAnchor}
+            anchorEl={infoButtonRef.current}
             onClose={handleInfoPopoverClose}
             anchorOrigin={{ vertical: "center", horizontal: "right" }}
             transformOrigin={{ vertical: "center", horizontal: "left" }}
             disableScrollLock
           >
             <div className="overflow-hidden p-1">
-              Drag to move. <br />
-              Drag the control points to resize. <br />
-              Scroll up or down to adjust the transparency.
+              Drag to move. Drag the control points to resize. <br />
+              Scroll up or down to adjust the transparency. <br />
+              Click the reset button on the left to reset to default. <br />
             </div>
           </Popover>
         </div>
       </div>
       <Moveable
         className="pointer-events-auto"
-        ref={moveableRef}
         padding={{
           left: 8,
           right: 8,
@@ -163,7 +176,25 @@ function AppComponent() {
         target={editMode ? mainDivRef : null}
         draggable={true}
         onDrag={(e) => {
-          e.target.style.transform = e.transform;
+          e.target.style.left = e.left + "px";
+          e.target.style.top = e.top + "px";
+        }}
+        onDragEnd={(e) => {
+          const box = e.target.getBoundingClientRect();
+          const nextLeftMax = containerWidth - 8 - box.width;
+          const nextXPosition = Math.max(
+            Math.min((box.left - leftMin) / (nextLeftMax - leftMin), 1),
+            0
+          );
+          const nextTopMax = containerHeight - 8 - box.height;
+          const nextYPosition = Math.max(
+            Math.min((box.top - topMin) / (nextTopMax - topMin), 1),
+            0
+          );
+          const nextHeight = box.height;
+          setSettings("xPosition", nextXPosition);
+          setSettings("yPosition", nextYPosition);
+          setSettings("height", nextHeight);
         }}
         useResizeObserver={true}
         resizable={true}
@@ -171,7 +202,25 @@ function AppComponent() {
         onResize={(e) => {
           e.target.style.width = `${e.width}px`;
           e.target.style.height = `${e.height}px`;
-          e.target.style.transform = e.transform;
+          e.target.style.left = e.drag.beforeTranslate[0] + "px";
+          e.target.style.top = e.drag.beforeTranslate[1] + "px";
+        }}
+        onResizeEnd={(e) => {
+          const box = e.target.getBoundingClientRect();
+          const nextLeftMax = containerWidth - 8 - box.width;
+          const nextXPosition = Math.max(
+            Math.min((box.left - leftMin) / (nextLeftMax - leftMin), 1),
+            0
+          );
+          const nextTopMax = containerHeight - 8 - box.height;
+          const nextYPosition = Math.max(
+            Math.min((box.top - topMin) / (nextTopMax - topMin), 1),
+            0
+          );
+          const nextHeight = box.height;
+          setSettings("xPosition", nextXPosition);
+          setSettings("yPosition", nextYPosition);
+          setSettings("height", nextHeight);
         }}
         snappable={true}
         bounds={{ left: 8, top: 8, right: 8, bottom: 8, position: "css" }}

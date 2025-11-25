@@ -12,10 +12,12 @@ interface Settings {
   height: number;
   xPosition: number;
   yPosition: number;
+  opacity: number;
 }
 
 interface SettingsState extends Settings {
   set: <K extends keyof Settings>(key: K, value: Settings[K]) => void;
+  resetLayoutDisplay: () => void;
 }
 
 const defaultSettings: Settings = {
@@ -26,6 +28,7 @@ const defaultSettings: Settings = {
   height: 250,
   xPosition: 0.5,
   yPosition: 1,
+  opacity: 1,
 };
 
 const browserLocalSettingsStorage: PersistStorage<SettingsState> = {
@@ -65,6 +68,13 @@ export const useSettingsStore = createSelectors(
         ...defaultSettings,
         set: <K extends keyof Settings>(key: K, value: Settings[K]) =>
           set({ [key]: value }),
+        resetLayoutDisplay: () =>
+          set({
+            height: defaultSettings.height,
+            xPosition: defaultSettings.xPosition,
+            yPosition: defaultSettings.yPosition,
+            opacity: defaultSettings.opacity,
+          }),
       }),
       {
         name: "settings",
