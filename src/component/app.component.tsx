@@ -227,11 +227,7 @@ function AppComponent() {
         verticalGuidelines={[document.body.clientWidth / 2]}
         horizontalGuidelines={[document.body.clientHeight / 2]}
         snapDirections={{
-          top: true,
-          left: true,
           center: true,
-          right: true,
-          bottom: true,
           middle: true,
         }}
       ></Moveable>
