@@ -84,7 +84,7 @@ function AppComponent() {
     <>
       <div
         ref={mainDivRef}
-        className="absolute bottom-2 left-1/2 h-68 pointer-events-auto"
+        className="absolute bottom-2 left-1/2 h-64 pointer-events-auto min-h-32"
         style={{ transform: "translateX(-50%)", opacity }}
         onWheel={handleWheel}
       >
