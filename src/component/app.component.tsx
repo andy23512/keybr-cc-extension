@@ -1,7 +1,6 @@
 import classNames from "classnames";
 import { useEffect, useState } from "react";
 import Draggable from "react-draggable";
-import browser, { Storage } from "webextension-polyfill";
 import {
   CC1_DEFAULT_DEVICE_LAYOUT,
   M4G_DEFAULT_DEVICE_LAYOUT,
@@ -14,14 +13,13 @@ import {
 } from "../data/key-labels";
 import { KEYBOARD_LAYOUTS } from "../data/keyboard-layouts";
 import {
-  DeviceLayout,
   HighlightKeyCombination,
   KeyLabel,
   KeyLabelType,
   Layer,
 } from "../model/device-layout.model";
 import { KeyBoardLayout } from "../model/keyboard-layout.model";
-import { Layout } from "../model/layout.model";
+import { useSettingsStore } from "../store/settings-store";
 import {
   convertKeyboardLayoutToCharacterKeyCodeMap,
   getCharacterActionCodesFromCharacterKeyCode,
@@ -36,13 +34,12 @@ import "./app.component.css";
 import LayoutComponent from "./layout.component";
 
 function AppComponent() {
-  const [layout, setLayout] = useState<string>("cc1");
-  const [customDeviceLayouts, setCustomDeviceLayouts] = useState<
-    DeviceLayout[]
-  >([]);
-  const [selectedKeyboardLayoutId, setSelectedKeyboardLayoutId] =
-    useState<string>("us");
-  const [showThumb3Switch, setShowThumb3Switch] = useState<boolean>(true);
+  const layout = useSettingsStore.use.layout();
+  const customDeviceLayouts = useSettingsStore.use.customDeviceLayouts();
+  const selectedKeyboardLayoutId =
+    useSettingsStore.use.selectedKeyboardLayoutId();
+  const showThumb3Switch = useSettingsStore.use.showThumb3Switch();
+
   const [nextText, setNextText] = useState<string | null>(null);
 
   useEffect(() => {
@@ -66,53 +63,6 @@ function AppComponent() {
     }
     setInterval(getCurrentText, 100);
   });
-
-  useEffect(() => {
-    // Load initial value from storage
-    browser.storage.local
-      .get({
-        layout: "cc1",
-        customDeviceLayouts: [],
-        showThumb3Switch: true,
-        selectedKeyboardLayoutId: "us",
-      })
-      .then((items) => {
-        setLayout(items.layout as string);
-        setCustomDeviceLayouts(items.customDeviceLayouts as DeviceLayout[]);
-        setShowThumb3Switch(items.showThumb3Switch as boolean);
-        setSelectedKeyboardLayoutId(items.selectedKeyboardLayoutId as string);
-      });
-
-    // Listen for changes in storage from other parts of the extension
-    const listener = (
-      changes: Record<string, Storage.StorageChange>,
-      area: string
-    ) => {
-      if (area === "local") {
-        if (changes.layout) {
-          setLayout(changes.layout.newValue as Layout);
-        }
-        if (changes.customDeviceLayouts) {
-          setCustomDeviceLayouts(
-            changes.customDeviceLayouts.newValue as DeviceLayout[]
-          );
-        }
-        if (changes.showThumb3Switch) {
-          setShowThumb3Switch(changes.showThumb3Switch.newValue as boolean);
-        }
-        if (changes.selectedKeyboardLayoutId) {
-          setSelectedKeyboardLayoutId(
-            changes.selectedKeyboardLayoutId.newValue as string
-          );
-        }
-      }
-    };
-    browser.storage.onChanged.addListener(listener);
-
-    return () => {
-      browser.storage.onChanged.removeListener(listener);
-    };
-  }, []);
 
   const deviceLayout =
     [

@@ -18,13 +18,13 @@ import {
   Typography,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { createRoot } from "react-dom/client";
 import browser from "webextension-polyfill";
 import { KEYBOARD_LAYOUTS } from "./data/keyboard-layouts";
-import { DeviceLayout } from "./model/device-layout.model";
 import { KeyBoardLayout } from "./model/keyboard-layout.model";
 import "./options.css";
+import { useSettingsStore } from "./store/settings-store";
 
 const darkTheme = createTheme({
   palette: {
@@ -33,30 +33,18 @@ const darkTheme = createTheme({
 });
 
 const Options = () => {
-  const [layout, setLayout] = useState<string>("cc1");
-  const [customDeviceLayouts, setCustomDeviceLayouts] = useState<
-    DeviceLayout[]
-  >([]);
-  const [selectedKeyboardLayoutId, setSelectedKeyboardLayoutId] =
-    useState<string>("us");
-  const [showThumb3Switch, setShowThumb3Switch] = useState<boolean>(true);
-  const [status, setStatus] = useState<string>("");
+  const layout = useSettingsStore.use.layout();
+  const setLayout = useSettingsStore.use.setLayout();
+  const customDeviceLayouts = useSettingsStore.use.customDeviceLayouts();
+  const setCustomDeviceLayouts = useSettingsStore.use.setCustomDeviceLayouts();
+  const selectedKeyboardLayoutId =
+    useSettingsStore.use.selectedKeyboardLayoutId();
+  const setSelectedKeyboardLayoutId =
+    useSettingsStore.use.setSelectedKeyboardLayoutId();
+  const showThumb3Switch = useSettingsStore.use.showThumb3Switch();
+  const setShowThumb3Switch = useSettingsStore.use.setShowThumb3Switch();
 
-  useEffect(() => {
-    browser.storage.local
-      .get({
-        layout: "cc1",
-        customDeviceLayouts: [],
-        showThumb3Switch: true,
-        selectedKeyboardLayoutId: "us",
-      })
-      .then((items) => {
-        setLayout(items.layout as string);
-        setCustomDeviceLayouts(items.customDeviceLayouts as DeviceLayout[]);
-        setShowThumb3Switch(items.showThumb3Switch as boolean);
-        setSelectedKeyboardLayoutId(items.selectedKeyboardLayoutId as string);
-      });
-  }, []);
+  const [status, setStatus] = useState<string>("");
 
   const defaultKeyboardLayout = KEYBOARD_LAYOUTS.find(
     (k) => k.id === "us"
