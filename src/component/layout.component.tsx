@@ -93,7 +93,7 @@ const LayoutComponent: React.FC<LayoutComponentProps> = ({
 
   return (
     <svg
-      className="layout h-64"
+      className="layout h-full"
       viewBox={[0, 0, viewBoxWidth, viewBoxHeight].join(" ")}
       style={{ aspectRatio: viewBoxWidth + " / " + viewBoxHeight }}
     >
