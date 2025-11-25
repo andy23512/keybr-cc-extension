@@ -171,7 +171,9 @@ function AppComponent() {
         </div>
       </div>
       <Moveable
-        className="pointer-events-auto"
+        className={classNames("pointer-events-auto", {
+          "!invisible": !nextText,
+        })}
         padding={{
           left: 8,
           right: 8,
