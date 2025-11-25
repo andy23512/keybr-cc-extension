@@ -2,6 +2,7 @@ import { Popover } from "@mui/material";
 import classNames from "classnames";
 import { MouseEvent, useEffect, useRef, useState, WheelEvent } from "react";
 import Moveable from "react-moveable";
+import { useNextText } from "../hook/use-next-text";
 import { useSettingsStore } from "../store/settings-store";
 import { getViewBoxAspectRatio } from "../util/layout-dimension.util";
 import "./app.component.css";
@@ -111,15 +112,19 @@ function AppComponent() {
     setEditMode(false);
   };
 
+  const nextText = useNextText();
+
   return (
     <>
       <div
         ref={mainDivRef}
-        className="absolute pointer-events-auto min-h-32"
+        className={classNames("absolute pointer-events-auto min-h-32", {
+          invisible: !nextText,
+        })}
         style={{ opacity, left: left + "px", top: top + "px", width, height }}
         onWheel={handleWheel}
       >
-        <LayoutContainerComponent></LayoutContainerComponent>
+        <LayoutContainerComponent nextText={nextText} />
         {editMode && (
           <button
             className="absolute left-0 top-1/2 -translate-y-5 material-icons !text-3xl"

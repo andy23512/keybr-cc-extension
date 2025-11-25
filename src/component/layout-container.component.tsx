@@ -1,5 +1,4 @@
-import classNames from "classnames";
-import { useEffect, useState } from "react";
+import { FC } from "react";
 import {
   CC1_DEFAULT_DEVICE_LAYOUT,
   M4G_DEFAULT_DEVICE_LAYOUT,
@@ -31,36 +30,16 @@ import {
 import { nonNullable } from "../util/non-nullable.util";
 import LayoutComponent from "./layout.component";
 
-function LayoutContainerComponent() {
+interface LayoutContainerProps {
+  nextText: string | null;
+}
+
+const LayoutContainerComponent: FC<LayoutContainerProps> = ({ nextText }) => {
   const layout = useSettingsStore.use.layout();
   const customDeviceLayouts = useSettingsStore.use.customDeviceLayouts();
   const selectedKeyboardLayoutId =
     useSettingsStore.use.selectedKeyboardLayoutId();
   const showThumb3Switch = useSettingsStore.use.showThumb3Switch();
-
-  const [nextText, setNextText] = useState<string | null>(null);
-
-  useEffect(() => {
-    function getCurrentText() {
-      const currentCharacterElement = document.querySelector(
-        'div[dir="ltr"] span[class]'
-      );
-      const nextTextElement = document.querySelector(
-        'div[dir="ltr"] span[class] ~ span'
-      );
-      let nextText = currentCharacterElement
-        ? currentCharacterElement.textContent
-        : null;
-      if (nextText && nextTextElement) {
-        nextText += nextTextElement.textContent;
-      }
-      if (nextText === "") {
-        nextText = " ";
-      }
-      setNextText(nextText);
-    }
-    setInterval(getCurrentText, 100);
-  });
 
   const deviceLayout =
     [
@@ -208,14 +187,7 @@ function LayoutContainerComponent() {
   );
 
   return (
-    <div
-      className={classNames(
-        "p-2 bg-(--Keyboard-frame__color) rounded-lg font-(family-name:--default-font-family) h-full outline-8 outline-offset-0 outline-(--Keyboard-frame__color)",
-        {
-          invisible: !nextText,
-        }
-      )}
-    >
+    <div className="bg-(--Keyboard-frame__color) rounded-lg font-(family-name:--default-font-family) h-full outline-8 outline-offset-0 outline-(--Keyboard-frame__color)">
       <LayoutComponent
         showThumb3Switch={showThumb3Switch}
         keyLabelMap={keyLabelMap}
@@ -223,6 +195,6 @@ function LayoutContainerComponent() {
       />
     </div>
   );
-}
+};
 
 export default LayoutContainerComponent;
