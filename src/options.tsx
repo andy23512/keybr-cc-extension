@@ -34,15 +34,11 @@ const darkTheme = createTheme({
 
 const Options = () => {
   const layout = useSettingsStore.use.layout();
-  const setLayout = useSettingsStore.use.setLayout();
   const customDeviceLayouts = useSettingsStore.use.customDeviceLayouts();
-  const setCustomDeviceLayouts = useSettingsStore.use.setCustomDeviceLayouts();
   const selectedKeyboardLayoutId =
     useSettingsStore.use.selectedKeyboardLayoutId();
-  const setSelectedKeyboardLayoutId =
-    useSettingsStore.use.setSelectedKeyboardLayoutId();
   const showThumb3Switch = useSettingsStore.use.showThumb3Switch();
-  const setShowThumb3Switch = useSettingsStore.use.setShowThumb3Switch();
+  const setSettings = useSettingsStore.use.set();
 
   const [status, setStatus] = useState<string>("");
 
@@ -97,8 +93,8 @@ const Options = () => {
       } else {
         nextCustomDeviceLayouts.push(deviceLayout);
       }
-      setLayout(nextLayout);
-      setCustomDeviceLayouts(nextCustomDeviceLayouts);
+      setSettings("layout", nextLayout);
+      setSettings("customDeviceLayouts", nextCustomDeviceLayouts);
       browser.storage.local
         .set({
           layout: nextLayout,
@@ -117,8 +113,8 @@ const Options = () => {
         : nextLayout === "cc1"
         ? true
         : showThumb3Switch;
-    setLayout(nextLayout);
-    setShowThumb3Switch(nextShowThumb3Switch);
+    setSettings("layout", nextLayout);
+    setSettings("showThumb3Switch", nextShowThumb3Switch);
     browser.storage.local
       .set({
         layout: nextLayout,
@@ -131,7 +127,7 @@ const Options = () => {
     event: ChangeEvent<HTMLInputElement>
   ) => {
     const value = event.target.checked;
-    setShowThumb3Switch(value);
+    setSettings("showThumb3Switch", value);
     browser.storage.local
       .set({
         showThumb3Switch: value,
@@ -144,7 +140,7 @@ const Options = () => {
     newValue: KeyBoardLayout | null
   ) => {
     const value = newValue?.id ?? "us";
-    setSelectedKeyboardLayoutId(value);
+    setSettings("selectedKeyboardLayoutId", value);
     browser.storage.local
       .set({
         selectedKeyboardLayoutId: value,

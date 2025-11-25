@@ -9,17 +9,11 @@ interface Settings {
   customDeviceLayouts: DeviceLayout[];
   showThumb3Switch: boolean;
   selectedKeyboardLayoutId: string;
+  height: number;
 }
 
 interface SettingsState extends Settings {
-  setLayout: (layout: Settings["layout"]) => void;
-  setCustomDeviceLayouts: (
-    customDeviceLayouts: Settings["customDeviceLayouts"]
-  ) => void;
-  setShowThumb3Switch: (showThumb3Switch: Settings["showThumb3Switch"]) => void;
-  setSelectedKeyboardLayoutId: (
-    selectedKeyboardLayoutId: Settings["selectedKeyboardLayoutId"]
-  ) => void;
+  set: <K extends keyof Settings>(key: K, value: Settings[K]) => void;
 }
 
 const defaultSettings: Settings = {
@@ -27,6 +21,7 @@ const defaultSettings: Settings = {
   customDeviceLayouts: [],
   showThumb3Switch: true,
   selectedKeyboardLayoutId: "us",
+  height: 250,
 };
 
 const browserLocalSettingsStorage: PersistStorage<SettingsState> = {
@@ -64,15 +59,8 @@ export const useSettingsStore = createSelectors(
     persist<SettingsState>(
       (set) => ({
         ...defaultSettings,
-        setLayout: (layout: Settings["layout"]) => set({ layout }),
-        setCustomDeviceLayouts: (
-          customDeviceLayouts: Settings["customDeviceLayouts"]
-        ) => set({ customDeviceLayouts }),
-        setShowThumb3Switch: (showThumb3Switch: Settings["showThumb3Switch"]) =>
-          set({ showThumb3Switch }),
-        setSelectedKeyboardLayoutId: (
-          selectedKeyboardLayoutId: Settings["selectedKeyboardLayoutId"]
-        ) => set({ selectedKeyboardLayoutId }),
+        set: <K extends keyof Settings>(key: K, value: Settings[K]) =>
+          set({ [key]: value }),
       }),
       {
         name: "settings",
