@@ -202,8 +202,8 @@ function AppComponent() {
         onResize={(e) => {
           e.target.style.width = `${e.width}px`;
           e.target.style.height = `${e.height}px`;
-          e.target.style.left = e.drag.beforeTranslate[0] + "px";
-          e.target.style.top = e.drag.beforeTranslate[1] + "px";
+          e.target.style.left = e.drag.left + "px";
+          e.target.style.top = e.drag.top + "px";
         }}
         onResizeEnd={(e) => {
           const box = e.target.getBoundingClientRect();
