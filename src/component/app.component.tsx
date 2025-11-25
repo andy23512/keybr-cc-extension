@@ -84,12 +84,21 @@ function AppComponent() {
     <>
       <div
         ref={mainDivRef}
-        className="absolute bottom-0 left-1/2 h-68"
+        className="absolute bottom-2 left-1/2 h-68 pointer-events-auto"
         style={{ transform: "translateX(-50%)", opacity }}
         onWheel={handleWheel}
       >
         <LayoutContainerComponent></LayoutContainerComponent>
-        <div className="absolute right-2 bottom-2 flex flex-col gap-1">
+        <div className="absolute right-0 top-1/2 -translate-y-5 flex flex-col gap-1">
+          <button
+            className={classNames("!text-3xl material-icons", {
+              "bg-(--KeyboardKey-pointer__color)": editMode,
+              "text-white": editMode,
+            })}
+            onClick={handleSettingButtonClick}
+          >
+            settings
+          </button>
           {editMode && (
             <>
               <button
@@ -100,15 +109,6 @@ function AppComponent() {
               </button>
             </>
           )}
-          <button
-            className={classNames("!text-3xl material-icons", {
-              "bg-(--KeyboardKey-pointer__color)": editMode,
-              "text-white": editMode,
-            })}
-            onClick={handleSettingButtonClick}
-          >
-            settings
-          </button>
           <Popover
             open={infoPopoverOpen}
             anchorEl={infoPopoverAnchor}
@@ -126,7 +126,14 @@ function AppComponent() {
         </div>
       </div>
       <Moveable
+        className="pointer-events-auto"
         ref={moveableRef}
+        padding={{
+          left: 8,
+          right: 8,
+          top: 8,
+          bottom: 8,
+        }}
         target={editMode ? mainDivRef : null}
         draggable={true}
         onDrag={(e) => {
@@ -141,7 +148,7 @@ function AppComponent() {
           e.target.style.transform = e.transform;
         }}
         snappable={true}
-        bounds={{ left: 0, top: 0, right: 0, bottom: 0, position: "css" }}
+        bounds={{ left: 8, top: 8, right: 8, bottom: 8, position: "css" }}
         verticalGuidelines={[document.body.clientWidth / 2]}
         horizontalGuidelines={[document.body.clientHeight / 2]}
         snapDirections={{

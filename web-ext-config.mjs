@@ -1,6 +1,6 @@
 export default {
-  build: {
-    sourceDir: "dist",
-    startUrl: "https://keybr.com",
+  sourceDir: "dist",
+  run: {
+    startUrl: ["https://keybr.com"],
   },
 };

@@ -210,7 +210,7 @@ function LayoutContainerComponent() {
   return (
     <div
       className={classNames(
-        "p-2 bg-(--Keyboard-frame__color) rounded-lg font-(family-name:--default-font-family) h-full",
+        "p-2 bg-(--Keyboard-frame__color) rounded-lg font-(family-name:--default-font-family) h-full outline-8 outline-offset-0 outline-(--Keyboard-frame__color)",
         {
           invisible: !nextText,
         }
