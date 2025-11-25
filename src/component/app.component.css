@@ -18,3 +18,7 @@
   -webkit-font-feature-settings: "liga";
   -webkit-font-smoothing: antialiased;
 }
+
+.moveable-control-box {
+  --moveable-color: var(--KeyboardKey-pointer__color) !important;
+}
