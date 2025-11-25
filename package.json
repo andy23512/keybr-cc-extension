@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "watch": "webpack --config webpack/webpack.dev.js --watch",
-    "start-chrome": "web-ext run --target chromium --source-dir dist",
-    "start-firefox": "web-ext run --source-dir dist",
+    "start-chrome": "web-ext run --target chromium",
+    "start-firefox": "web-ext run",
     "minify-icon-font": "ts-node src/tool/minify-icon-font.ts",
     "build": "webpack --config webpack/webpack.prod.js",
     "clean": "rimraf dist",
