@@ -4,6 +4,10 @@
 
 (Empty)
 
+## [6.1](https://github.com/andy23512/keybr-cc-extension/releases/tag/6.1)
+
+- Reduce opacity of setting button
+
 ## [6.0](https://github.com/andy23512/keybr-cc-extension/releases/tag/6.0)
 
 - Adjustable size and transparency
