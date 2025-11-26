@@ -7,7 +7,7 @@ appContainer.id = "keybr-cc-extension-root";
 appContainer.style.position = "fixed";
 appContainer.style.width = "100%";
 appContainer.style.height = "100vh";
-appContainer.style.zIndex = "2147483647";
+appContainer.style.zIndex = "1000";
 appContainer.style.top = "0px";
 appContainer.style.pointerEvents = "none";
 document.body.appendChild(appContainer);
