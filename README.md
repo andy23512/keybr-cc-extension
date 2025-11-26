@@ -4,7 +4,7 @@
 
 | Published Version                                                                                                                                                                      | Pending Review Version |
 | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
-| [<img src="https://img.shields.io/chrome-web-store/v/fdofhfbipdhkkhhdjlfjnjfnkibpbdpg">](https://chromewebstore.google.com/detail/keybr-cc-extension/fdofhfbipdhkkhhdjlfjnjfnkibpbdpg) | 6.2                    |
+| [<img src="https://img.shields.io/chrome-web-store/v/fdofhfbipdhkkhhdjlfjnjfnkibpbdpg">](https://chromewebstore.google.com/detail/keybr-cc-extension/fdofhfbipdhkkhhdjlfjnjfnkibpbdpg) | N/A                    |
 | [<img src="https://img.shields.io/amo/v/keybr-cc-extension">](https://addons.mozilla.org/en-US/firefox/addon/keybr-cc-extension/)                                                      | N/A                    |
 
 ## Link
