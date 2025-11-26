@@ -138,6 +138,8 @@ function AppComponent() {
             className={classNames("!text-3xl material-icons", {
               "bg-(--KeyboardKey-pointer__color)": editMode,
               "text-white": editMode,
+              "opacity-100": editMode,
+              "opacity-50": !editMode,
             })}
             onClick={handleSettingButtonClick}
           >
