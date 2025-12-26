@@ -10,7 +10,7 @@
 ## Link
 
 - [Demonstration video](https://youtu.be/IQWf4IuekFQ?si=q_DkxyKOvMsdcqV3)
-- [Dev note](https://andy23512.github.io/blog/2025/10/19/cc-extensions-unofficial-extensions-that-display-the-layout-of-charachorder-3d-input-devices-on-typing-websites/)
+- [Dev note](https://andy23512.github.io/blog/cc-extensions-unofficial-extensions-that-display-the-layout-of-charachorder-3d-input-devices-on-typing-websites/)
 
 ## Summary
 
