@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Fix bug in detection rules of num-shift and fn-shift
+- Add more information in manifest
 - Fix layout view blocking mouse event error
 - Add cursor pointer style to buttons in layout view
 
