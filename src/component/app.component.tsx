@@ -118,8 +118,10 @@ function AppComponent() {
     <>
       <div
         ref={mainDivRef}
-        className={classNames("absolute pointer-events-auto min-h-32", {
+        className={classNames("absolute min-h-32", {
           invisible: !nextText,
+          "pointer-events-auto": editMode,
+          "pointer-events-none": !editMode,
         })}
         style={{ opacity, left: left + "px", top: top + "px", width, height }}
         onWheel={handleWheel}
@@ -127,7 +129,7 @@ function AppComponent() {
         <LayoutContainerComponent nextText={nextText} />
         {editMode && (
           <button
-            className="absolute left-0 top-1/2 -translate-y-5 material-icons !text-3xl"
+            className="absolute pointer-events-auto cursor-pointer left-0 top-1/2 -translate-y-5 material-icons !text-3xl"
             onClick={handleResetButtonClick}
           >
             replay
@@ -135,12 +137,15 @@ function AppComponent() {
         )}
         <div className="absolute right-0 top-1/2 -translate-y-5 flex flex-col gap-1">
           <button
-            className={classNames("!text-3xl material-icons", {
-              "bg-(--KeyboardKey-pointer__color)": editMode,
-              "text-white": editMode,
-              "opacity-100": editMode,
-              "opacity-50": !editMode,
-            })}
+            className={classNames(
+              "pointer-events-auto cursor-pointer !text-3xl material-icons",
+              {
+                "bg-(--KeyboardKey-pointer__color)": editMode,
+                "text-white": editMode,
+                "opacity-100": editMode,
+                "opacity-50": !editMode,
+              }
+            )}
             onClick={handleSettingButtonClick}
           >
             settings
@@ -149,7 +154,7 @@ function AppComponent() {
             <>
               <button
                 ref={infoButtonRef}
-                className="!text-3xl material-icons"
+                className="pointer-events-auto cursor-pointer !text-3xl material-icons"
                 onClick={handleInfoButtonClick}
               >
                 info

@@ -2,7 +2,8 @@
 
 ## Unreleased
 
-(Empty)
+- Fix layout view blocking mouse event error
+- Add cursor pointer style to buttons in layout view
 
 ## [6.2](https://github.com/andy23512/keybr-cc-extension/releases/tag/6.2)
 
