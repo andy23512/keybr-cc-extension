@@ -2,6 +2,7 @@
   "manifest_version": 3,
 
   "name": "Keybr CC Extension",
+  "short_name": "Keybr CC Ext",
   "description": "An unofficial browser extension for showing layout of CharaChorder 3D input devices at Keybr",
   "version": "6.2",
   "browser_specific_settings": {
@@ -47,5 +48,12 @@
     }
   ],
 
-  "permissions": ["storage"]
+  "permissions": ["storage"],
+
+  "author": "Tangent Chang (andy23512)",
+  "developer": {
+    "name": "Tangent Chang (andy23512)",
+    "url": "https://github.com/andy23512/keybr-cc-extension"
+  },
+  "homepage_url": "https://github.com/andy23512/keybr-cc-extension"
 }
