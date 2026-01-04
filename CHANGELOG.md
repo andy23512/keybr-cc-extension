@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+(Empty)
+
+## [6.3](https://github.com/andy23512/keybr-cc-extension/releases/tag/6.3)
+
 - Fix bug in detection rules of num-shift and fn-shift
 - Add more information in manifest
 - Fix layout view blocking mouse event error
