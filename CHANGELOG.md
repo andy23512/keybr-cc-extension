@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-(Empty)
+- Add CCU
 
 ## [6.3](https://github.com/andy23512/keybr-cc-extension/releases/tag/6.3)
 
@@ -56,5 +56,5 @@
 
 - Showing CharaChorder 3D input device layout on keybr.com
 - Current key highlighting in the visual guide
-- Setting for switching between default CharaChorder One/Two and Master Forge
+- Setting for switching between default CharaChorder One/CharaChorder Two/CCU and Master Forge
 - Draggable visual guide

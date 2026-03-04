@@ -43,7 +43,7 @@ const Options = () => {
   const [status, setStatus] = useState<string>("");
 
   const defaultKeyboardLayout = KEYBOARD_LAYOUTS.find(
-    (k) => k.id === "us"
+    (k) => k.id === "us",
   ) as KeyBoardLayout;
   const selectedKeyboardLayout =
     KEYBOARD_LAYOUTS.find((k) => k.id === selectedKeyboardLayoutId) ??
@@ -70,7 +70,7 @@ const Options = () => {
         layoutItem = data.history[0].find(
           (item: any) =>
             item.type === "layout" &&
-            ["ONE", "TWO", "M4G"].includes(item.device)
+            ["ONE", "TWO", "M4G"].includes(item.device),
         );
       } else {
         layoutItem = data;
@@ -86,7 +86,7 @@ const Options = () => {
       const nextLayout = deviceLayout.id;
       const nextCustomDeviceLayouts = [...customDeviceLayouts];
       const index = nextCustomDeviceLayouts.findIndex(
-        ({ id }) => id === deviceLayout.id
+        ({ id }) => id === deviceLayout.id,
       );
       if (index >= 0) {
         nextCustomDeviceLayouts[index] = deviceLayout;
@@ -124,7 +124,7 @@ const Options = () => {
   };
 
   const handleShowThumb3SwitchChange = (
-    event: ChangeEvent<HTMLInputElement>
+    event: ChangeEvent<HTMLInputElement>,
   ) => {
     const value = event.target.checked;
     setSettings("showThumb3Switch", value);
@@ -137,7 +137,7 @@ const Options = () => {
 
   const handleSelectedKeyboardLayoutChange = (
     _: any,
-    newValue: KeyBoardLayout | null
+    newValue: KeyBoardLayout | null,
   ) => {
     const value = newValue?.id ?? "us";
     setSettings("selectedKeyboardLayoutId", value);
@@ -197,7 +197,9 @@ const Options = () => {
                 value={layout}
                 onChange={handleLayoutChange}
               >
-                <MenuItem value="cc1">CharaChorder One/Two</MenuItem>
+                <MenuItem value="cc1">
+                  CharaChorder One / CharaChorder Two / CCU
+                </MenuItem>
                 <MenuItem value="m4g">Master Forge</MenuItem>
                 {customDeviceLayouts.map((layout) => (
                   <MenuItem value={layout.id}>{layout.name}</MenuItem>
@@ -248,5 +250,5 @@ root.render(
       <CssBaseline />
       <Options />
     </ThemeProvider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

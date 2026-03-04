@@ -18,7 +18,7 @@ An unofficial browser extension that displays the layout of CharaChorder 3D inpu
 
 ## Description
 
-An unofficial browser extension that displays the layout of CharaChorder 3D input devices (CharaChorder One, CharaChorder Two, and Master Forge) on [Keybr](https://www.keybr.com/).
+An unofficial browser extension that displays the layout of CharaChorder 3D input devices (CharaChorder One, CharaChorder Two, CCU and Master Forge) on [Keybr](https://www.keybr.com/).
 
 With this extension, users can familiarize themselves with the layouts of CharaChorder 3D input devices directly on Keybr.
 

@@ -2,7 +2,7 @@ import { DeviceLayout } from "../model/device-layout.model";
 
 export const CC1_DEFAULT_DEVICE_LAYOUT: DeviceLayout = {
   id: "cc1",
-  name: "CC1/CC2 Default",
+  name: "CC1/CC2/CCU Default",
   layout: [
     [
       600, 47, 45, 515, 297, 601, 119, 562, 103, 122, 602, 107, 118, 109, 99,
