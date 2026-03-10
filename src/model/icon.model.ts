@@ -9,6 +9,7 @@ export type Icon =
   | "copy_all"
   | "counter_2"
   | "counter_3"
+  | "counter_4"
   | "heap_snapshot_multiple"
   | "home"
   | "info"

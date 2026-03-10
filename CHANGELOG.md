@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Support fourth layer
 - Add CCU
 
 ## [6.3](https://github.com/andy23512/keybr-cc-extension/releases/tag/6.3)

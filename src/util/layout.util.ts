@@ -1,6 +1,7 @@
 import {
   ACTIONS,
   ALT_GRAPH_ACTION_CODE,
+  FLAG_SHIFT_ACTION_CODES,
   FN_SHIFT_ACTION_CODES,
   NUM_SHIFT_ACTION_CODES,
   SHIFT_ACTION_CODES,
@@ -23,7 +24,7 @@ import {
 import { nonNullable } from "./non-nullable.util";
 
 export function convertKeyboardLayoutToCharacterKeyCodeMap(
-  keyboardLayout: KeyBoardLayout | null
+  keyboardLayout: KeyBoardLayout | null,
 ): CharacterKeyCodeMap {
   if (!keyboardLayout) {
     return new Map();
@@ -32,7 +33,7 @@ export function convertKeyboardLayoutToCharacterKeyCodeMap(
     (
       Object.entries(keyboardLayout.layout) as [
         WSKCode,
-        Partial<KeyboardLayoutKey>
+        Partial<KeyboardLayoutKey>,
       ][]
     )
       .map(([keyCode, keyboardLayoutKey]) =>
@@ -40,7 +41,7 @@ export function convertKeyboardLayoutToCharacterKeyCodeMap(
           ? (
               Object.entries(keyboardLayoutKey) as [
                 keyof KeyboardLayoutKey,
-                string
+                string,
               ][]
             ).map(
               ([modifier, character]) =>
@@ -55,17 +56,17 @@ export function convertKeyboardLayoutToCharacterKeyCodeMap(
                       modifier === "withAltGraph" ||
                       modifier === "withShiftAltGraph",
                   },
-                ] as const
+                ] as const,
             )
-          : []
+          : [],
       )
-      .flat()
+      .flat(),
   );
 }
 
 export function getCharacterKeyCodeFromCharacter(
   character: string,
-  characterKeyCodeMap: CharacterKeyCodeMap
+  characterKeyCodeMap: CharacterKeyCodeMap,
 ) {
   return characterKeyCodeMap.get(character);
 }
@@ -83,7 +84,7 @@ export function getCharacterActionCodesFromCharacterKeyCode({
           a.keyCode === "Space" &&
           a.codeId === 544)) &&
       a.keyCode === keyCode &&
-      !a.withShift
+      !a.withShift,
   );
   if (action) {
     characterActionCodes.push({
@@ -94,7 +95,7 @@ export function getCharacterActionCodesFromCharacterKeyCode({
   }
   if (shiftKey) {
     const holdShiftKeyAction = ACTIONS.find(
-      (a) => a.type === ActionType.WSK && a.keyCode === keyCode && a.withShift
+      (a) => a.type === ActionType.WSK && a.keyCode === keyCode && a.withShift,
     );
     if (holdShiftKeyAction) {
       characterActionCodes.push({
@@ -109,7 +110,7 @@ export function getCharacterActionCodesFromCharacterKeyCode({
 
 export function getKeyCombinationsFromActionCodes(
   characterActionCodes: CharacterActionCode[],
-  deviceLayout: DeviceLayout | null
+  deviceLayout: DeviceLayout | null,
 ): KeyCombination[] | null {
   if (!deviceLayout) {
     return null;
@@ -126,6 +127,8 @@ export function getKeyCombinationsFromActionCodes(
               layer = Layer.Secondary;
             } else if (layerIndex === 2) {
               layer = Layer.Tertiary;
+            } else if (layerIndex === 3) {
+              layer = Layer.Quaternary;
             }
             return {
               characterKeyPositionCode: pos,
@@ -138,7 +141,7 @@ export function getKeyCombinationsFromActionCodes(
           return null;
         }
         return positionCodesList;
-      })
+      }),
     )
     .flat()
     .flat()
@@ -146,25 +149,40 @@ export function getKeyCombinationsFromActionCodes(
 }
 
 export function getNumShiftKeyPositionCodes(
-  deviceLayout: DeviceLayout
+  deviceLayout: DeviceLayout,
 ): number[] {
   const [primaryLayer, secondaryLayer] = deviceLayout.layout;
   return primaryLayer
     .map((ac, index) => (NUM_SHIFT_ACTION_CODES.includes(ac) ? index : -1))
     .filter(
       (pos) =>
-        pos !== -1 && NUM_SHIFT_ACTION_CODES.includes(secondaryLayer[pos])
+        pos !== -1 && NUM_SHIFT_ACTION_CODES.includes(secondaryLayer[pos]),
     );
 }
 
 export function getFnShiftKeyPositionCodes(
-  deviceLayout: DeviceLayout
+  deviceLayout: DeviceLayout,
 ): number[] {
   const [primaryLayer, _, tertiaryLayer] = deviceLayout.layout;
   return primaryLayer
     .map((ac, index) => (FN_SHIFT_ACTION_CODES.includes(ac) ? index : -1))
     .filter(
-      (pos) => pos !== -1 && FN_SHIFT_ACTION_CODES.includes(tertiaryLayer[pos])
+      (pos) => pos !== -1 && FN_SHIFT_ACTION_CODES.includes(tertiaryLayer[pos]),
+    );
+}
+
+export function getFlagShiftKeyPositionCodes(
+  deviceLayout: DeviceLayout,
+): number[] {
+  const [primaryLayer, _, __, quaternaryLayer] = deviceLayout.layout;
+  if (!quaternaryLayer) {
+    return [];
+  }
+  return primaryLayer
+    .map((ac, index) => (FLAG_SHIFT_ACTION_CODES.includes(ac) ? index : -1))
+    .filter(
+      (pos) =>
+        pos !== -1 && FLAG_SHIFT_ACTION_CODES.includes(quaternaryLayer[pos]),
     );
 }
 
@@ -173,19 +191,20 @@ export function getModifierKeyPositionCodeMap(deviceLayout: DeviceLayout) {
     shift: SHIFT_ACTION_CODES.map((actionCode) =>
       getKeyCombinationsFromActionCodes(
         [{ actionCode, shiftKey: false, altGraphKey: false }],
-        deviceLayout
-      )?.map((k) => k.characterKeyPositionCode)
+        deviceLayout,
+      )?.map((k) => k.characterKeyPositionCode),
     )
       .filter(nonNullable)
       .flat(),
     numShift: getNumShiftKeyPositionCodes(deviceLayout),
     fnShift: getFnShiftKeyPositionCodes(deviceLayout),
+    flagShift: getFlagShiftKeyPositionCodes(deviceLayout),
     altGraph: [ALT_GRAPH_ACTION_CODE]
       .map((actionCode) =>
         getKeyCombinationsFromActionCodes(
           [{ actionCode, shiftKey: false, altGraphKey: false }],
-          deviceLayout
-        )?.map((k) => k.characterKeyPositionCode)
+          deviceLayout,
+        )?.map((k) => k.characterKeyPositionCode),
       )
       .filter(nonNullable)
       .flat(),
@@ -203,7 +222,7 @@ export function isPositionAtSide(positionCode: number, side: "left" | "right") {
 export function meetPreferSides(
   positionCode1: number,
   positionCode2: number,
-  preferSides: "both" | "same"
+  preferSides: "both" | "same",
 ) {
   if (preferSides === "both") {
     return getPositionSide(positionCode1) !== getPositionSide(positionCode2);
@@ -218,8 +237,9 @@ export function getHighlightKeyCombinationFromKeyCombinations(
     shift: number[];
     numShift: number[];
     fnShift: number[];
+    flagShift: number[];
     altGraph: number[];
-  }
+  },
 ) {
   const highlightSetting = {
     shiftLayer: {
@@ -242,6 +262,14 @@ export function getHighlightKeyCombinationFromKeyCombinations(
       preferShiftSide: "right" as const,
       preferCharacterKeySide: "right" as const,
     },
+    flagShiftLayer: {
+      preferSides: "both" as const,
+      preferFlagShiftSide: "left" as const,
+    },
+    shiftAndFlagShiftLayer: {
+      preferShiftSide: "right" as const,
+      preferCharacterKeySide: "right" as const,
+    },
   };
   return keyCombinations
     .map((k) => {
@@ -256,7 +284,7 @@ export function getHighlightKeyCombinationFromKeyCombinations(
               if (
                 isPositionAtSide(
                   k.characterKeyPositionCode,
-                  preferCharacterKeySide
+                  preferCharacterKeySide,
                 )
               ) {
                 score += 1;
@@ -287,7 +315,7 @@ export function getHighlightKeyCombinationFromKeyCombinations(
               if (
                 isPositionAtSide(
                   k.characterKeyPositionCode,
-                  preferCharacterKeySide
+                  preferCharacterKeySide,
                 )
               ) {
                 score += 1;
@@ -309,6 +337,37 @@ export function getHighlightKeyCombinationFromKeyCombinations(
               });
             }
           }
+        } else if (k.layer === Layer.Quaternary) {
+          const { preferCharacterKeySide, preferShiftSide } =
+            highlightSetting.shiftAndFlagShiftLayer;
+          for (const shiftPositionCode of modifierKeyPositionCodeMap.shift) {
+            for (const flagShiftPositionCode of modifierKeyPositionCodeMap.flagShift) {
+              let score = 0;
+              if (
+                isPositionAtSide(
+                  k.characterKeyPositionCode,
+                  preferCharacterKeySide,
+                )
+              ) {
+                score += 1;
+              }
+              if (isPositionAtSide(shiftPositionCode, preferShiftSide)) {
+                score += 1;
+              }
+              if (!isPositionAtSide(flagShiftPositionCode, preferShiftSide)) {
+                score += 1;
+              }
+              result.push({
+                ...k,
+                positionCodes: [
+                  k.characterKeyPositionCode,
+                  shiftPositionCode,
+                  flagShiftPositionCode,
+                ],
+                score,
+              });
+            }
+          }
         } else {
           const { preferShiftSide, preferSides } = highlightSetting.shiftLayer;
           for (const shiftPositionCode of modifierKeyPositionCodeMap.shift) {
@@ -317,7 +376,7 @@ export function getHighlightKeyCombinationFromKeyCombinations(
               meetPreferSides(
                 k.characterKeyPositionCode,
                 shiftPositionCode,
-                preferSides
+                preferSides,
               )
             ) {
               score += 2;
@@ -342,7 +401,7 @@ export function getHighlightKeyCombinationFromKeyCombinations(
               meetPreferSides(
                 k.characterKeyPositionCode,
                 numShiftPositionCode,
-                preferSides
+                preferSides,
               )
             ) {
               score += 2;
@@ -365,7 +424,7 @@ export function getHighlightKeyCombinationFromKeyCombinations(
               meetPreferSides(
                 k.characterKeyPositionCode,
                 fnShiftPositionCode,
-                preferSides
+                preferSides,
               )
             ) {
               score += 2;
@@ -376,6 +435,32 @@ export function getHighlightKeyCombinationFromKeyCombinations(
             result.push({
               ...k,
               positionCodes: [k.characterKeyPositionCode, fnShiftPositionCode],
+              score,
+            });
+          }
+        } else if (k.layer === Layer.Quaternary) {
+          const { preferFlagShiftSide, preferSides } =
+            highlightSetting.flagShiftLayer;
+          for (const flagShiftPositionCode of modifierKeyPositionCodeMap.flagShift) {
+            let score = 0;
+            if (
+              meetPreferSides(
+                k.characterKeyPositionCode,
+                flagShiftPositionCode,
+                preferSides,
+              )
+            ) {
+              score += 2;
+            }
+            if (isPositionAtSide(flagShiftPositionCode, preferFlagShiftSide)) {
+              score += 1;
+            }
+            result.push({
+              ...k,
+              positionCodes: [
+                k.characterKeyPositionCode,
+                flagShiftPositionCode,
+              ],
               score,
             });
           }
@@ -411,14 +496,14 @@ export function getHighlightKeyCombinationFromKeyCombinations(
 
 export function getHighlightKeyCombinationFromText(
   text: string | null,
-  highlightCharacterKeyCombinationMap: Record<string, HighlightKeyCombination>
+  highlightCharacterKeyCombinationMap: Record<string, HighlightKeyCombination>,
 ): HighlightKeyCombination | null {
   if (text === null) {
     return null;
   }
   const normalizedText = normalizeText(text);
   const candidates = Object.entries(highlightCharacterKeyCombinationMap).filter(
-    ([c]) => normalizedText.startsWith(normalizeText(c))
+    ([c]) => normalizedText.startsWith(normalizeText(c)),
   );
   if (candidates.length === 0) {
     return null;

@@ -5,6 +5,7 @@ import {
 } from "../data/device-layouts";
 import {
   ALT_GRAPH_KEY_LABEL,
+  FLAG_SHIFT_KEY_LABEL,
   FN_SHIFT_KEY_LABEL,
   NUM_SHIFT_KEY_LABEL,
   SHIFT_KEY_LABEL,
@@ -49,17 +50,17 @@ const LayoutContainerComponent: FC<LayoutContainerProps> = ({ nextText }) => {
     ].find((deviceLayout) => deviceLayout.id === layout) ||
     CC1_DEFAULT_DEVICE_LAYOUT;
   const selectedKeyboardLayout = KEYBOARD_LAYOUTS.find(
-    (k) => k.id === selectedKeyboardLayoutId
+    (k) => k.id === selectedKeyboardLayoutId,
   ) as KeyBoardLayout;
   selectedKeyboardLayout.layout.Space = { unmodified: " " };
   const characterKeyCodeMap = convertKeyboardLayoutToCharacterKeyCodeMap(
-    selectedKeyboardLayout
+    selectedKeyboardLayout,
   );
   const charactersDevicePositionCodes = [...characterKeyCodeMap.keys()]
     .map((c) => {
       const characterKeyCode = getCharacterKeyCodeFromCharacter(
         c,
-        characterKeyCodeMap
+        characterKeyCodeMap,
       );
       if (!characterKeyCode) {
         return null;
@@ -73,7 +74,7 @@ const LayoutContainerComponent: FC<LayoutContainerProps> = ({ nextText }) => {
         c,
         characterDeviceKeys: getKeyCombinationsFromActionCodes(
           actionCodes,
-          deviceLayout
+          deviceLayout,
         ),
       };
     })
@@ -85,6 +86,7 @@ const LayoutContainerComponent: FC<LayoutContainerProps> = ({ nextText }) => {
     let addShiftLabel = false;
     let addNumShiftLabel = false;
     let addFnShiftLabel = false;
+    let addFlagShiftLabel = false;
     let addAltGraphLabel = false;
     charactersDevicePositionCodes.forEach((v) => {
       v?.characterDeviceKeys?.forEach(
@@ -121,10 +123,13 @@ const LayoutContainerComponent: FC<LayoutContainerProps> = ({ nextText }) => {
           if (layer === Layer.Tertiary && !addFnShiftLabel) {
             addFnShiftLabel = true;
           }
+          if (layer === Layer.Quaternary && !addFlagShiftLabel) {
+            addFlagShiftLabel = true;
+          }
           if (altGraphKey && !addAltGraphLabel) {
             addAltGraphLabel = true;
           }
-        }
+        },
       );
     });
     if (addShiftLabel) {
@@ -154,6 +159,15 @@ const LayoutContainerComponent: FC<LayoutContainerProps> = ({ nextText }) => {
         }
       });
     }
+    if (addFlagShiftLabel) {
+      modifierKeyPositionCodeMap.flagShift.forEach((pos) => {
+        if (!keyLabelMap[pos]) {
+          keyLabelMap[pos] = [FLAG_SHIFT_KEY_LABEL];
+        } else {
+          keyLabelMap[pos].push(FLAG_SHIFT_KEY_LABEL);
+        }
+      });
+    }
     if (addAltGraphLabel) {
       modifierKeyPositionCodeMap.altGraph.forEach((pos) => {
         if (!keyLabelMap[pos]) {
@@ -176,14 +190,14 @@ const LayoutContainerComponent: FC<LayoutContainerProps> = ({ nextText }) => {
       highlightCharacterKeyMap[k.c] =
         getHighlightKeyCombinationFromKeyCombinations(
           k.characterDeviceKeys,
-          modifierKeyPositionCodeMap
+          modifierKeyPositionCodeMap,
         );
     });
     return highlightCharacterKeyMap;
   })();
   const highlightKeyCombination = getHighlightKeyCombinationFromText(
     nextText,
-    highlightCharacterKeyCombinationMap
+    highlightCharacterKeyCombinationMap,
   );
 
   return (
