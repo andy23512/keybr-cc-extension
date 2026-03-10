@@ -56,5 +56,5 @@
 
 - Showing CharaChorder 3D input device layout on keybr.com
 - Current key highlighting in the visual guide
-- Setting for switching between default CharaChorder One/CharaChorder Two/CCU and Master Forge
+- Setting for switching between default CharaChorder One/Two and Master Forge
 - Draggable visual guide
