@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## [7.0](https://github.com/andy23512/keybr-cc-extension/releases/tag/7.0)
 
 - Support fourth layer
 - Add CCU
