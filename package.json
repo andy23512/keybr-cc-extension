@@ -33,6 +33,7 @@
     "react-dom": "^18.2.0",
     "react-is": "18.3.1",
     "react-moveable": "^0.56.0",
+    "tangent-cc-lib": "0.0.16",
     "webextension-polyfill": "^0.12.0",
     "zustand": "^5.0.8"
   },

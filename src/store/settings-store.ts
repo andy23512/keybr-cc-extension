@@ -1,7 +1,7 @@
+import { DeviceLayout } from "tangent-cc-lib";
 import browser, { Storage } from "webextension-polyfill";
 import { create, Mutate, StoreApi } from "zustand";
 import { persist, PersistStorage, StorageValue } from "zustand/middleware";
-import { DeviceLayout } from "../model/device-layout.model";
 import { createSelectors } from "./create-selectors";
 
 interface Settings {
@@ -82,11 +82,11 @@ export const useSettingsStore = createSelectors(
         partialize: (state) =>
           Object.fromEntries(
             Object.entries(state).filter(
-              ([_, value]) => typeof value !== "function"
-            )
+              ([_, value]) => typeof value !== "function",
+            ),
           ) as SettingsState,
-      }
-    )
-  )
+      },
+    ),
+  ),
 );
 withLocalSettingStorageEvents(useSettingsStore);

@@ -4,7 +4,7 @@ import {
   HighlightKeyCombination,
   KeyLabel,
   KeyLabelType,
-} from "../model/device-layout.model";
+} from "tangent-cc-lib";
 
 interface KeyLabelComponentProps {
   x: number;
@@ -58,7 +58,7 @@ const KeyLabelComponent: React.FC<KeyLabelComponentProps> = ({
             "fill-(--KeyboardKey-symbol__color) cursor-default select-none transition-opacity",
             {
               "material-icons": label.type === KeyLabelType.Icon,
-            }
+            },
           )}
           key={index}
           x={x}

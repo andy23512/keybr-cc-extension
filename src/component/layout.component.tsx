@@ -1,16 +1,17 @@
 import React from "react";
 import {
+  FingerMap,
+  HandMap,
+  HighlightKeyCombination,
+  KeyLabelMap,
+  POSITION_CODE_LAYOUT,
+} from "tangent-cc-lib";
+import {
   CELL_SIZE,
   GAP,
   THUMB_ROTATION_ANGLE,
   VIEW_BOX_WIDTH,
 } from "../const/layout-dimension.const";
-import { POSITION_CODE_LAYOUT } from "../data/layouts";
-import {
-  HighlightKeyCombination,
-  KeyLabelMap,
-} from "../model/device-layout.model";
-import { FingerMap, HandMap } from "../model/layout.model";
 import { getViewBoxHeight } from "../util/layout-dimension.util";
 import "./layout.component.css";
 import SwitchComponent from "./switch.component";
@@ -51,7 +52,7 @@ const LayoutComponent: React.FC<LayoutComponentProps> = ({
 
   function switchCenter(
     sw: keyof FingerMap<any>,
-    side: keyof HandMap<any>
+    side: keyof HandMap<any>,
   ): { x: number; y: number } {
     let position: { x: number; y: number };
     switch (sw) {

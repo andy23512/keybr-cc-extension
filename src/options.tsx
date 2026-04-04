@@ -20,9 +20,9 @@ import {
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import React, { ChangeEvent, useState } from "react";
 import { createRoot } from "react-dom/client";
+import { KeyboardLayout } from "tangent-cc-lib";
 import browser from "webextension-polyfill";
 import { KEYBOARD_LAYOUTS } from "./data/keyboard-layouts";
-import { KeyBoardLayout } from "./model/keyboard-layout.model";
 import "./options.css";
 import { useSettingsStore } from "./store/settings-store";
 
@@ -44,7 +44,7 @@ const Options = () => {
 
   const defaultKeyboardLayout = KEYBOARD_LAYOUTS.find(
     (k) => k.id === "us",
-  ) as KeyBoardLayout;
+  ) as KeyboardLayout;
   const selectedKeyboardLayout =
     KEYBOARD_LAYOUTS.find((k) => k.id === selectedKeyboardLayoutId) ??
     defaultKeyboardLayout;
@@ -137,7 +137,7 @@ const Options = () => {
 
   const handleSelectedKeyboardLayoutChange = (
     _: any,
-    newValue: KeyBoardLayout | null,
+    newValue: KeyboardLayout | null,
   ) => {
     const value = newValue?.id ?? "us";
     setSettings("selectedKeyboardLayoutId", value);
@@ -148,7 +148,7 @@ const Options = () => {
       .then(showSavedMessage);
   };
 
-  const getKeyboardLayoutOptionLabel = (keyboardLayout: KeyBoardLayout) =>
+  const getKeyboardLayoutOptionLabel = (keyboardLayout: KeyboardLayout) =>
     keyboardLayout.name;
 
   function showSavedMessage() {

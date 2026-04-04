@@ -1,34 +1,30 @@
 import { FC } from "react";
 import {
-  CC1_DEFAULT_DEVICE_LAYOUT,
-  M4G_DEFAULT_DEVICE_LAYOUT,
-} from "../data/device-layouts";
-import {
   ALT_GRAPH_KEY_LABEL,
   FLAG_SHIFT_KEY_LABEL,
   FN_SHIFT_KEY_LABEL,
-  NUM_SHIFT_KEY_LABEL,
-  SHIFT_KEY_LABEL,
-} from "../data/key-labels";
-import { KEYBOARD_LAYOUTS } from "../data/keyboard-layouts";
-import {
   HighlightKeyCombination,
   KeyLabel,
   KeyLabelType,
+  KeyboardLayout,
   Layer,
-} from "../model/device-layout.model";
-import { KeyBoardLayout } from "../model/keyboard-layout.model";
-import { useSettingsStore } from "../store/settings-store";
-import {
+  NUM_SHIFT_KEY_LABEL,
+  SHIFT_KEY_LABEL,
   convertKeyboardLayoutToCharacterKeyCodeMap,
   getCharacterActionCodesFromCharacterKeyCode,
-  getCharacterKeyCodeFromCharacter,
   getHighlightKeyCombinationFromKeyCombinations,
-  getHighlightKeyCombinationFromText,
   getKeyCombinationsFromActionCodes,
   getModifierKeyPositionCodeMap,
-} from "../util/layout.util";
-import { nonNullable } from "../util/non-nullable.util";
+  nonNullable,
+} from "tangent-cc-lib";
+import { HIGHLIGHT_SETTING } from "../const/highlight-setting.const";
+import {
+  CC1_DEFAULT_DEVICE_LAYOUT,
+  M4G_DEFAULT_DEVICE_LAYOUT,
+} from "../data/device-layouts";
+import { KEYBOARD_LAYOUTS } from "../data/keyboard-layouts";
+import { useSettingsStore } from "../store/settings-store";
+import { getHighlightKeyCombinationFromText } from "../util/layout.util";
 import LayoutComponent from "./layout.component";
 
 interface LayoutContainerProps {
@@ -51,17 +47,14 @@ const LayoutContainerComponent: FC<LayoutContainerProps> = ({ nextText }) => {
     CC1_DEFAULT_DEVICE_LAYOUT;
   const selectedKeyboardLayout = KEYBOARD_LAYOUTS.find(
     (k) => k.id === selectedKeyboardLayoutId,
-  ) as KeyBoardLayout;
-  selectedKeyboardLayout.layout.Space = { unmodified: " " };
+  ) as KeyboardLayout;
+
   const characterKeyCodeMap = convertKeyboardLayoutToCharacterKeyCodeMap(
     selectedKeyboardLayout,
   );
   const charactersDevicePositionCodes = [...characterKeyCodeMap.keys()]
     .map((c) => {
-      const characterKeyCode = getCharacterKeyCodeFromCharacter(
-        c,
-        characterKeyCodeMap,
-      );
+      const characterKeyCode = characterKeyCodeMap.get(c);
       if (!characterKeyCode) {
         return null;
       }
@@ -191,6 +184,7 @@ const LayoutContainerComponent: FC<LayoutContainerProps> = ({ nextText }) => {
         getHighlightKeyCombinationFromKeyCombinations(
           k.characterDeviceKeys,
           modifierKeyPositionCodeMap,
+          HIGHLIGHT_SETTING,
         );
     });
     return highlightCharacterKeyMap;

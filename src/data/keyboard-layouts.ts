@@ -1,8 +1,10 @@
-import { KeyBoardLayout } from "../model/keyboard-layout.model";
-import { KEYBOARD_LAYOUTS_FROM_KBDLAYOUT } from "./keyboard-layouts-from-kbdlayout";
-import { KEYBOARD_LAYOUTS_FROM_XKEYBOARD } from "./keyboard-layouts-from-xkeyboard";
+import {
+  KEYBOARD_LAYOUTS_FROM_KBDLAYOUT,
+  KEYBOARD_LAYOUTS_FROM_XKEYBOARD,
+  KeyboardLayout,
+} from "tangent-cc-lib";
 
-export const KEYBOARD_LAYOUTS: KeyBoardLayout[] = [
+export const KEYBOARD_LAYOUTS: KeyboardLayout[] = [
   ...KEYBOARD_LAYOUTS_FROM_KBDLAYOUT,
   ...KEYBOARD_LAYOUTS_FROM_XKEYBOARD,
 ];

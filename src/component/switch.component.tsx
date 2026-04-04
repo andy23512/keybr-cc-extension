@@ -1,9 +1,9 @@
 import React from "react";
 import {
+  DirectionMap,
   HighlightKeyCombination,
   KeyLabelMap,
-} from "../model/device-layout.model";
-import { DirectionMap } from "../model/layout.model";
+} from "tangent-cc-lib";
 import KeyLabelComponent from "./key-label.component";
 import SwitchSectorComponent from "./switch-sector.component";
 
