@@ -14,6 +14,7 @@ import {
   getCharacterActionCodesFromCharacterKeyCode,
   getHighlightKeyCombinationFromKeyCombinations,
   getKeyCombinationsFromActionCodes,
+  getLayerShiftPositionCodeMap,
   getModifierKeyPositionCodeMap,
   nonNullable,
 } from "tangent-cc-lib";
@@ -74,6 +75,8 @@ const LayoutContainerComponent: FC<LayoutContainerProps> = ({ nextText }) => {
     .filter(nonNullable);
   const modifierKeyPositionCodeMap =
     getModifierKeyPositionCodeMap(deviceLayout);
+  const layerShiftKeyPositionCodeMap =
+    getLayerShiftPositionCodeMap(deviceLayout);
   const keyLabelMap = (() => {
     const keyLabelMap: Record<number, KeyLabel[]> = {};
     let addShiftLabel = false;
@@ -126,16 +129,26 @@ const LayoutContainerComponent: FC<LayoutContainerProps> = ({ nextText }) => {
       );
     });
     if (addShiftLabel) {
-      modifierKeyPositionCodeMap.shift.forEach((pos) => {
-        if (!keyLabelMap[pos]) {
-          keyLabelMap[pos] = [SHIFT_KEY_LABEL];
-        } else {
-          keyLabelMap[pos].push(SHIFT_KEY_LABEL);
-        }
-      });
+      Object.entries(modifierKeyPositionCodeMap.shift).forEach(
+        ([layer, positions]) => {
+          const keyLabel = {
+            ...SHIFT_KEY_LABEL,
+            layer: layer as Layer,
+            shiftKey: null,
+            altGraphKey: null,
+          };
+          positions.forEach((pos) => {
+            if (!keyLabelMap[pos]) {
+              keyLabelMap[pos] = [keyLabel];
+            } else {
+              keyLabelMap[pos].push(keyLabel);
+            }
+          });
+        },
+      );
     }
     if (addNumShiftLabel) {
-      modifierKeyPositionCodeMap.numShift.forEach((pos) => {
+      layerShiftKeyPositionCodeMap.numShift.forEach((pos) => {
         if (!keyLabelMap[pos]) {
           keyLabelMap[pos] = [NUM_SHIFT_KEY_LABEL];
         } else {
@@ -144,7 +157,7 @@ const LayoutContainerComponent: FC<LayoutContainerProps> = ({ nextText }) => {
       });
     }
     if (addFnShiftLabel) {
-      modifierKeyPositionCodeMap.fnShift.forEach((pos) => {
+      layerShiftKeyPositionCodeMap.fnShift.forEach((pos) => {
         if (!keyLabelMap[pos]) {
           keyLabelMap[pos] = [FN_SHIFT_KEY_LABEL];
         } else {
@@ -153,7 +166,7 @@ const LayoutContainerComponent: FC<LayoutContainerProps> = ({ nextText }) => {
       });
     }
     if (addFlagShiftLabel) {
-      modifierKeyPositionCodeMap.flagShift.forEach((pos) => {
+      layerShiftKeyPositionCodeMap.flagShift.forEach((pos) => {
         if (!keyLabelMap[pos]) {
           keyLabelMap[pos] = [FLAG_SHIFT_KEY_LABEL];
         } else {
@@ -162,13 +175,23 @@ const LayoutContainerComponent: FC<LayoutContainerProps> = ({ nextText }) => {
       });
     }
     if (addAltGraphLabel) {
-      modifierKeyPositionCodeMap.altGraph.forEach((pos) => {
-        if (!keyLabelMap[pos]) {
-          keyLabelMap[pos] = [ALT_GRAPH_KEY_LABEL];
-        } else {
-          keyLabelMap[pos].push(ALT_GRAPH_KEY_LABEL);
-        }
-      });
+      Object.entries(modifierKeyPositionCodeMap.altGraph).forEach(
+        ([layer, positions]) => {
+          const keyLabel = {
+            ...ALT_GRAPH_KEY_LABEL,
+            layer: layer as Layer,
+            shiftKey: null,
+            altGraphKey: null,
+          };
+          positions.forEach((pos) => {
+            if (!keyLabelMap[pos]) {
+              keyLabelMap[pos] = [keyLabel];
+            } else {
+              keyLabelMap[pos].push(keyLabel);
+            }
+          });
+        },
+      );
     }
     return keyLabelMap;
   })();
@@ -177,12 +200,17 @@ const LayoutContainerComponent: FC<LayoutContainerProps> = ({ nextText }) => {
     const highlightCharacterKeyMap: Record<string, HighlightKeyCombination> =
       {};
     charactersDevicePositionCodes.forEach((k) => {
-      if (!k?.characterDeviceKeys || !modifierKeyPositionCodeMap) {
+      if (
+        !k?.characterDeviceKeys ||
+        !modifierKeyPositionCodeMap ||
+        !layerShiftKeyPositionCodeMap
+      ) {
         return;
       }
       highlightCharacterKeyMap[k.c] =
         getHighlightKeyCombinationFromKeyCombinations(
           k.characterDeviceKeys,
+          layerShiftKeyPositionCodeMap,
           modifierKeyPositionCodeMap,
           HIGHLIGHT_SETTING,
         );
