@@ -198,9 +198,15 @@ const Options = () => {
                 onChange={handleLayoutChange}
               >
                 <MenuItem value="cc1">
-                  CharaChorder One / CharaChorder Two / CCU
+                  CharaChorder One / CharaChorder Two / CCU - Default
                 </MenuItem>
-                <MenuItem value="m4g">Master Forge</MenuItem>
+                <MenuItem value="m4g">Master Forge - Default</MenuItem>
+                <MenuItem value="cc1-left-hand-only">
+                  CharaChorder One / CharaChorder Two / CCU - Left Hand Only
+                </MenuItem>
+                <MenuItem value="cc1-right-hand-only">
+                  CharaChorder One / CharaChorder Two / CCU - Right Hand Only
+                </MenuItem>
                 {customDeviceLayouts.map((layout) => (
                   <MenuItem value={layout.id}>{layout.name}</MenuItem>
                 ))}

@@ -16,11 +16,13 @@ import {
   getKeyCombinationsFromActionCodes,
   getLayerShiftPositionCodeMap,
   getModifierKeyPositionCodeMap,
-  nonNullable,
+  nonNullable
 } from "tangent-cc-lib";
 import { HIGHLIGHT_SETTING } from "../const/highlight-setting.const";
 import {
   CC1_DEFAULT_DEVICE_LAYOUT,
+  CC1_LEFT_HAND_ONLY_DEVICE_LAYOUT,
+  CC1_RIGHT_HAND_ONLY_DEVICE_LAYOUT,
   M4G_DEFAULT_DEVICE_LAYOUT,
 } from "../data/device-layouts";
 import { KEYBOARD_LAYOUTS } from "../data/keyboard-layouts";
@@ -43,6 +45,8 @@ const LayoutContainerComponent: FC<LayoutContainerProps> = ({ nextText }) => {
     [
       M4G_DEFAULT_DEVICE_LAYOUT,
       CC1_DEFAULT_DEVICE_LAYOUT,
+      CC1_LEFT_HAND_ONLY_DEVICE_LAYOUT,
+      CC1_RIGHT_HAND_ONLY_DEVICE_LAYOUT,
       ...customDeviceLayouts,
     ].find((deviceLayout) => deviceLayout.id === layout) ||
     CC1_DEFAULT_DEVICE_LAYOUT;
