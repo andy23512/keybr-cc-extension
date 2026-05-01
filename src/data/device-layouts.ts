@@ -29,3 +29,10 @@ export const CC1_RIGHT_HAND_ONLY_DEVICE_LAYOUT: DeviceLayout = {
   id: "cc1-right-hand-only",
   name: "CC1/CC2/CCU Right Hand Only",
 };
+
+export const PRESET_DEVICE_LAYOUTS: DeviceLayout[] = [
+  CC1_DEFAULT_DEVICE_LAYOUT,
+  M4G_DEFAULT_DEVICE_LAYOUT,
+  CC1_LEFT_HAND_ONLY_DEVICE_LAYOUT,
+  CC1_RIGHT_HAND_ONLY_DEVICE_LAYOUT,
+];

@@ -20,8 +20,9 @@ import {
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import React, { ChangeEvent, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { KeyboardLayout } from "tangent-cc-lib";
+import { downloadDeviceLayout, KeyboardLayout } from "tangent-cc-lib";
 import browser from "webextension-polyfill";
+import { PRESET_DEVICE_LAYOUTS } from "./data/device-layouts";
 import { KEYBOARD_LAYOUTS } from "./data/keyboard-layouts";
 import "./options.css";
 import { useSettingsStore } from "./store/settings-store";
@@ -159,6 +160,17 @@ const Options = () => {
     return () => clearTimeout(id);
   }
 
+  function handleDeviceLayoutExport() {
+    const deviceLayout = [
+      ...PRESET_DEVICE_LAYOUTS,
+      ...customDeviceLayouts,
+    ].find((deviceLayout) => deviceLayout.id === layout);
+    if (!deviceLayout) {
+      return;
+    }
+    downloadDeviceLayout(deviceLayout);
+  }
+
   return (
     <Box sx={{ maxWidth: "800px", mx: "auto" }}>
       <AppBar enableColorOnDark={true} position="static">
@@ -191,26 +203,32 @@ const Options = () => {
             </li>
             <li>
               Select a loaded device layout.
-              <br />
-              <Select
-                sx={{ mt: 1 }}
-                value={layout}
-                onChange={handleLayoutChange}
-              >
-                <MenuItem value="cc1">
-                  CharaChorder One / CharaChorder Two / CCU - Default
-                </MenuItem>
-                <MenuItem value="m4g">Master Forge - Default</MenuItem>
-                <MenuItem value="cc1-left-hand-only">
-                  CharaChorder One / CharaChorder Two / CCU - Left Hand Only
-                </MenuItem>
-                <MenuItem value="cc1-right-hand-only">
-                  CharaChorder One / CharaChorder Two / CCU - Right Hand Only
-                </MenuItem>
-                {customDeviceLayouts.map((layout) => (
-                  <MenuItem value={layout.id}>{layout.name}</MenuItem>
-                ))}
-              </Select>
+              <div className="mt-2 flex gap-2">
+                <Select value={layout} onChange={handleLayoutChange}>
+                  <MenuItem value="cc1">
+                    CharaChorder One / CharaChorder Two / CCU - Default
+                  </MenuItem>
+                  <MenuItem value="m4g">Master Forge - Default</MenuItem>
+                  <MenuItem value="cc1-left-hand-only">
+                    CharaChorder One / CharaChorder Two / CCU - Left Hand Only
+                  </MenuItem>
+                  <MenuItem value="cc1-right-hand-only">
+                    CharaChorder One / CharaChorder Two / CCU - Right Hand Only
+                  </MenuItem>
+                  {customDeviceLayouts.map((layout) => (
+                    <MenuItem value={layout.id}>{layout.name}</MenuItem>
+                  ))}
+                </Select>
+                <Button
+                  component="label"
+                  role={undefined}
+                  variant="outlined"
+                  tabIndex={-1}
+                  onClick={handleDeviceLayoutExport}
+                >
+                  Export
+                </Button>
+              </div>
             </li>
             <li>
               <FormControlLabel

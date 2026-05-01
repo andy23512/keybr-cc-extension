@@ -4,6 +4,7 @@
 
 - Add single hand device layouts
 - Code refactor with tangent-cc-lib
+- Export device layout
 
 ## [7.0](https://github.com/andy23512/keybr-cc-extension/releases/tag/7.0)
 
