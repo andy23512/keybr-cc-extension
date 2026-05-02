@@ -3,9 +3,6 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   AppBar,
   Autocomplete,
   Box,
@@ -18,24 +15,15 @@ import {
   SelectChangeEvent,
   Snackbar,
   TextField,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { createRoot } from "react-dom/client";
-import {
-  CHARACHORDER_3D_INPUT_DEVICE_PORTS,
-  DeviceLayout,
-  downloadDeviceLayout,
-  KeyboardLayout,
-  SerialHandler,
-  SerialPortHandler,
-} from "tangent-cc-lib";
+import { downloadDeviceLayout, KeyboardLayout } from "tangent-cc-lib";
 import browser from "webextension-polyfill";
 import { PRESET_DEVICE_LAYOUTS } from "./data/device-layouts";
 import { KEYBOARD_LAYOUTS } from "./data/keyboard-layouts";
-import DeviceLayoutImportDialog from "./device-layout-import-dialog";
 import "./options.css";
 import { useSettingsStore } from "./store/settings-store";
 
@@ -44,18 +32,6 @@ const darkTheme = createTheme({
     mode: "dark",
   },
 });
-
-const isWebSerialApiSupported = "serial" in navigator;
-const serialPortHandler = new SerialPortHandler(
-  false,
-  CHARACHORDER_3D_INPUT_DEVICE_PORTS,
-);
-const serialHandler = new SerialHandler(serialPortHandler);
-
-enum SerialLogType {
-  Send = "send",
-  Receive = "receive",
-}
 
 const Options = () => {
   const layout = useSettingsStore.use.layout();
@@ -66,14 +42,6 @@ const Options = () => {
   const setSettings = useSettingsStore.use.set();
 
   const [status, setStatus] = useState<string>("");
-  const [importDialogOpen, setImportDialogOpen] = useState(false);
-  const [importDialogInitialName, setImportDialogInitialName] = useState("");
-  const [importDialogLayout, setImportDialogLayout] = useState<
-    DeviceLayout["layout"] | null
-  >(null);
-  const [serialLog, setSerialLog] = useState<
-    { type: SerialLogType; data: string }[]
-  >([]);
 
   const defaultKeyboardLayout = KEYBOARD_LAYOUTS.find(
     (k) => k.id === "us",
@@ -81,25 +49,6 @@ const Options = () => {
   const selectedKeyboardLayout =
     KEYBOARD_LAYOUTS.find((k) => k.id === selectedKeyboardLayoutId) ??
     defaultKeyboardLayout;
-
-  useEffect(() => {
-    function sendListener(data: string) {
-      setSerialLog((prev) => [...prev, { type: SerialLogType.Send, data }]);
-    }
-    function receiveListener(data: string) {
-      setSerialLog((prev) => [...prev, { type: SerialLogType.Receive, data }]);
-    }
-    if (isWebSerialApiSupported) {
-      serialHandler.on("sendSerialData", sendListener);
-      serialHandler.on("receiveSerialData", receiveListener);
-    }
-    return () => {
-      if (isWebSerialApiSupported) {
-        serialHandler.off("sendSerialData", sendListener);
-        serialHandler.off("receiveSerialData", receiveListener);
-      }
-    };
-  }, []);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
@@ -222,61 +171,6 @@ const Options = () => {
     downloadDeviceLayout(deviceLayout);
   }
 
-  function pad(number: number) {
-    return String(number).padStart(2, "0");
-  }
-
-  async function handleLoadLayoutFromDevice() {
-    const { id } = await serialHandler.connect();
-    const layout = await serialHandler.loadLayout();
-    await serialHandler.disconnect();
-    const date = new Date();
-    const name = `${id}_${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(
-      date.getDate(),
-    )}_${pad(date.getHours())}-${pad(date.getMinutes())}-${pad(
-      date.getSeconds(),
-    )}`;
-    setImportDialogInitialName(name);
-    setImportDialogLayout(layout);
-    setImportDialogOpen(true);
-  }
-
-  function importDeviceLayout(name: string) {
-    if (!importDialogLayout) {
-      return;
-    }
-    const nextId = name + "-" + Date.now();
-    const nextCustomDeviceLayouts = [...customDeviceLayouts];
-    const index = nextCustomDeviceLayouts.findIndex(({ id }) => id === nextId);
-    if (index >= 0) {
-      nextCustomDeviceLayouts[index] = {
-        id: nextId,
-        name,
-        layout: importDialogLayout,
-      };
-    } else {
-      nextCustomDeviceLayouts.push({
-        id: nextId,
-        name,
-        layout: importDialogLayout,
-      });
-    }
-    setSettings("layout", nextId);
-    setSettings("customDeviceLayouts", nextCustomDeviceLayouts);
-    browser.storage.local
-      .set({
-        layout: nextId,
-        customDeviceLayouts: nextCustomDeviceLayouts,
-      })
-      .then(showSavedMessage);
-  }
-
-  function closeImportDialog() {
-    setImportDialogOpen(false);
-    setImportDialogInitialName("");
-    setImportDialogLayout(null);
-  }
-
   return (
     <Box sx={{ maxWidth: "800px", mx: "auto" }}>
       <AppBar enableColorOnDark={true} position="static">
@@ -288,61 +182,24 @@ const Options = () => {
         <div className="mt-4">
           <ol className="list-inside list-decimal text-base space-y-2">
             <li>
-              (Optional) Load a device layout from a file (the backup file from
-              CharaChorder Device Manager website) or from a device.
+              (Optional) Import a device layout file (the backup file from
+              CharaChorder Device Manager website).
               <br />
-              <div className="flex mt-2 gap-2 items-center">
-                <Button
-                  component="label"
-                  role={undefined}
-                  variant="contained"
-                  tabIndex={-1}
-                >
-                  Choose File
-                  <input
-                    className="opacity-0 size-[1px]"
-                    type="file"
-                    accept=".json"
-                    onChange={handleFileChange}
-                  ></input>
-                </Button>
-                or
-                {isWebSerialApiSupported && (
-                  <Button
-                    color="secondary"
-                    component="label"
-                    role={undefined}
-                    variant="contained"
-                    tabIndex={-1}
-                    onClick={handleLoadLayoutFromDevice}
-                  >
-                    Load from Device
-                  </Button>
-                )}
-                {!isWebSerialApiSupported && (
-                  <Tooltip title="Web Serial API is not supported in your browser. Please use a compatible browser to load device layouts from your device.">
-                    <span>
-                      <Button
-                        component="label"
-                        role={undefined}
-                        variant="contained"
-                        disabled
-                      >
-                        Load from Device
-                      </Button>
-                    </span>
-                  </Tooltip>
-                )}
-                <DeviceLayoutImportDialog
-                  open={importDialogOpen}
-                  initialName={importDialogInitialName}
-                  onCancel={() => closeImportDialog()}
-                  onSubmit={(name) => {
-                    importDeviceLayout(name);
-                    closeImportDialog();
-                  }}
-                ></DeviceLayoutImportDialog>
-              </div>
+              <Button
+                sx={{ mt: 1 }}
+                component="label"
+                role={undefined}
+                variant="contained"
+                tabIndex={-1}
+              >
+                Choose File
+                <input
+                  className="opacity-0 size-[1px]"
+                  type="file"
+                  accept=".json"
+                  onChange={handleFileChange}
+                ></input>
+              </Button>
             </li>
             <li>
               Select a loaded device layout.
@@ -398,35 +255,6 @@ const Options = () => {
               ></Autocomplete>
             </li>
           </ol>
-          {isWebSerialApiSupported && (
-            <Accordion sx={{ mt: 4 }}>
-              <AccordionSummary
-                expandIcon={<span className="text-gray-400">▼</span>}
-              >
-                Serial Log
-              </AccordionSummary>
-              <AccordionDetails className="max-h-64 overflow-auto">
-                {serialLog.length === 0 ? (
-                  <span>No serial log to display.</span>
-                ) : (
-                  <ul>
-                    {serialLog.map((log, index) => (
-                      <li className="flex items-center" key={index}>
-                        {log.type === SerialLogType.Send ? (
-                          <span className="text-green-500 flex-none">▲</span>
-                        ) : (
-                          <span className="text-red-500 flex-none">▼</span>
-                        )}
-                        <span className="font-mono whitespace-wrap">
-                          {log.data}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </AccordionDetails>
-            </Accordion>
-          )}
           <Snackbar
             open={!!status}
             message={status}
