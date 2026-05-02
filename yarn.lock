@@ -5424,10 +5424,10 @@ tailwindcss@4.1.14, tailwindcss@^4.1.14:
   resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-4.1.14.tgz#a5907cc2202a2a1f5f15bac6f2031e53117e43a8"
   integrity sha512-b7pCxjGO98LnxVkKjaZSDeNuljC4ueKUddjENJOADtubtdo8llTaJy7HwBMeLNSSo2N5QIAgklslK1+Ir8r6CA==
 
-tangent-cc-lib@0.0.36:
-  version "0.0.36"
-  resolved "https://registry.yarnpkg.com/tangent-cc-lib/-/tangent-cc-lib-0.0.36.tgz#0677a5adca1a66c052af14c7b1fa4853994c4ade"
-  integrity sha512-9YCkf6/utwcuiV+IzWIZosTrdBYq12LLQEqlSO24KDv2xvoDJuBMlR/tD5aokSsN5kTX3RD3kYVGN6rl5WbSfg==
+tangent-cc-lib@0.0.37:
+  version "0.0.37"
+  resolved "https://registry.yarnpkg.com/tangent-cc-lib/-/tangent-cc-lib-0.0.37.tgz#21dc399a73fe20cdc5142eabb838d22a80fe726e"
+  integrity sha512-B9o2X5UvJ633KAOVF+Xsw4s7NEqLJxRsiFaJTVcUqVKM4kzT4wfU3IR85RGzu0/95weNPD008U+otUEqEyTxnA==
   dependencies:
     tslib "^2.3.0"
 
