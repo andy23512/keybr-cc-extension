@@ -35,7 +35,7 @@
     "react-is": "18.3.1",
     "react-moveable": "^0.56.0",
     "rxjs": "^7.8.2",
-    "tangent-cc-lib": "0.0.35",
+    "tangent-cc-lib": "0.0.36",
     "webextension-polyfill": "^0.12.0",
     "zustand": "^5.0.8"
   },

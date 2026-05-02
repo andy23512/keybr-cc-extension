@@ -21,7 +21,7 @@ import {
 import { HIGHLIGHT_SETTING } from "../const/highlight-setting.const";
 import {
   CC1_DEFAULT_DEVICE_LAYOUT,
-  PRESET_DEVICE_LAYOUTS
+  PRESET_DEVICE_LAYOUTS,
 } from "../data/device-layouts";
 import { KEYBOARD_LAYOUTS } from "../data/keyboard-layouts";
 import { useSettingsStore } from "../store/settings-store";
