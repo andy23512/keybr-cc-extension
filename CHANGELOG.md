@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## [8.0](https://gitlab.com/andy23512/keybr-cc-extension/-/tags/8.0)
 
 - Fix right space doesn't have key label and highlight bug
 - Add single hand device layouts
