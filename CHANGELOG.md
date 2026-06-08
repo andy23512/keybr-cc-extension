@@ -5,6 +5,8 @@
 - Fix right space doesn't have key label and highlight bug
 - Add single hand device layouts
 - Export device layout
+- Change repo to gitlab
+- Option for toggling highlight
 
 ## [7.0](https://gitlab.com/andy23512/keybr-cc-extension/-/tags/7.0)
 

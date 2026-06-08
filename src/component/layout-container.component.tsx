@@ -38,6 +38,7 @@ const LayoutContainerComponent: FC<LayoutContainerProps> = ({ nextText }) => {
   const selectedKeyboardLayoutId =
     useSettingsStore.use.selectedKeyboardLayoutId();
   const showThumb3Switch = useSettingsStore.use.showThumb3Switch();
+  const highlightKeysEnabled = useSettingsStore.use.highlightKeysEnabled();
 
   const deviceLayout =
     [...PRESET_DEVICE_LAYOUTS, ...customDeviceLayouts].find(
@@ -225,6 +226,7 @@ const LayoutContainerComponent: FC<LayoutContainerProps> = ({ nextText }) => {
         showThumb3Switch={showThumb3Switch}
         keyLabelMap={keyLabelMap}
         highlightKeyCombination={highlightKeyCombination}
+        highlightOpacity={highlightKeysEnabled ? 0.5 : 0}
       />
     </div>
   );

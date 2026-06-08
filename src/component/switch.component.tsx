@@ -14,10 +14,10 @@ interface SwitchComponentProps {
   keyLabelMap: KeyLabelMap;
   positionCodeMap: DirectionMap<number>;
   highlightKeyCombination: HighlightKeyCombination | null;
+  highlightOpacity: number;
 }
 
 const FONT_SIZE = 90;
-const HIGHLIGHT_OPACITY = 0.5;
 const STROKE_WIDTH = 1;
 const SECTORS: { direction: "n" | "e" | "s" | "w"; degree: number }[] = [
   { direction: "n", degree: 270 },
@@ -33,6 +33,7 @@ const SwitchComponent: React.FC<SwitchComponentProps> = ({
   positionCodeMap,
   keyLabelMap,
   highlightKeyCombination,
+  highlightOpacity,
 }) => {
   const r = (rotationDirection === "cw" ? 1 : -1) * rotation;
   return (
@@ -47,7 +48,7 @@ const SwitchComponent: React.FC<SwitchComponentProps> = ({
           keyLabel={keyLabelMap[positionCodeMap[sector.direction]]}
           highlightKeyCombination={highlightKeyCombination}
           strokeWidth={STROKE_WIDTH}
-          highlightOpacity={HIGHLIGHT_OPACITY}
+          highlightOpacity={highlightOpacity}
           fontSize={FONT_SIZE}
         />
       ))}
@@ -58,7 +59,7 @@ const SwitchComponent: React.FC<SwitchComponentProps> = ({
         r="53.68"
         opacity={
           highlightKeyCombination?.positionCodes?.includes(positionCodeMap.c)
-            ? HIGHLIGHT_OPACITY
+            ? highlightOpacity
             : 0
         }
       />

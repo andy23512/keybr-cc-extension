@@ -39,6 +39,7 @@ const Options = () => {
   const selectedKeyboardLayoutId =
     useSettingsStore.use.selectedKeyboardLayoutId();
   const showThumb3Switch = useSettingsStore.use.showThumb3Switch();
+  const highlightKeysEnabled = useSettingsStore.use.highlightKeysEnabled();
   const setSettings = useSettingsStore.use.set();
 
   const [status, setStatus] = useState<string>("");
@@ -132,6 +133,18 @@ const Options = () => {
     browser.storage.local
       .set({
         showThumb3Switch: value,
+      })
+      .then(showSavedMessage);
+  };
+
+  const handleHighlightKeysEnabledChange = (
+    event: ChangeEvent<HTMLInputElement>,
+  ) => {
+    const value = event.target.checked;
+    setSettings("highlightKeysEnabled", value);
+    browser.storage.local
+      .set({
+        highlightKeysEnabled: value,
       })
       .then(showSavedMessage);
   };
@@ -239,6 +252,17 @@ const Options = () => {
                   />
                 }
                 label="Show Thumb 3 Switch"
+              />
+            </li>
+            <li>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={highlightKeysEnabled}
+                    onChange={handleHighlightKeysEnabledChange}
+                  />
+                }
+                label="Highlight Keys"
               />
             </li>
             <li>

@@ -20,12 +20,14 @@ interface LayoutComponentProps {
   keyLabelMap: KeyLabelMap;
   highlightKeyCombination: HighlightKeyCombination | null;
   showThumb3Switch: boolean;
+  highlightOpacity: number;
 }
 
 const LayoutComponent: React.FC<LayoutComponentProps> = ({
   keyLabelMap,
   highlightKeyCombination,
   showThumb3Switch,
+  highlightOpacity,
 }) => {
   const viewBoxWidth = VIEW_BOX_WIDTH;
   const viewBoxHeight = getViewBoxHeight(showThumb3Switch);
@@ -110,6 +112,7 @@ const LayoutComponent: React.FC<LayoutComponentProps> = ({
               keyLabelMap={keyLabelMap}
               positionCodeMap={POSITION_CODE_LAYOUT[side][sw]}
               highlightKeyCombination={highlightKeyCombination}
+              highlightOpacity={highlightOpacity}
             />
           ))}
         </React.Fragment>

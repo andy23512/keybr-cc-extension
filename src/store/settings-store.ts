@@ -13,6 +13,7 @@ interface Settings {
   xPosition: number;
   yPosition: number;
   opacity: number;
+  highlightKeysEnabled: boolean;
 }
 
 interface SettingsState extends Settings {
@@ -29,6 +30,7 @@ const defaultSettings: Settings = {
   xPosition: 0.5,
   yPosition: 1,
   opacity: 1,
+  highlightKeysEnabled: true,
 };
 
 const browserLocalSettingsStorage: PersistStorage<SettingsState> = {
