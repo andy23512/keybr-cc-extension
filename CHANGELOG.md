@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## [8.1](https://github.com/andy23512/keybr-cc-extension/releases/tag/8.1)
 
 - Change repo back to github
 
