@@ -5424,12 +5424,13 @@ tailwindcss@4.1.14, tailwindcss@^4.1.14:
   resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-4.1.14.tgz#a5907cc2202a2a1f5f15bac6f2031e53117e43a8"
   integrity sha512-b7pCxjGO98LnxVkKjaZSDeNuljC4ueKUddjENJOADtubtdo8llTaJy7HwBMeLNSSo2N5QIAgklslK1+Ir8r6CA==
 
-tangent-cc-lib@0.0.37:
-  version "0.0.37"
-  resolved "https://registry.yarnpkg.com/tangent-cc-lib/-/tangent-cc-lib-0.0.37.tgz#21dc399a73fe20cdc5142eabb838d22a80fe726e"
-  integrity sha512-B9o2X5UvJ633KAOVF+Xsw4s7NEqLJxRsiFaJTVcUqVKM4kzT4wfU3IR85RGzu0/95weNPD008U+otUEqEyTxnA==
+tangent-cc-lib@0.0.54:
+  version "0.0.54"
+  resolved "https://registry.yarnpkg.com/tangent-cc-lib/-/tangent-cc-lib-0.0.54.tgz#7ae227197b6f654f1214ccb4e0bd57619a922091"
+  integrity sha512-YkgtQEESyezlipN6j48nnJ+ujkl/IYW/Yv8k/D8L2w4rYRXdEONp5RR4XY5Dbfm+HZG8N3UYdREBL9jCjJjgzw==
   dependencies:
     tslib "^2.3.0"
+    web-serial-polyfill "^1.0.15"
 
 tapable@^1.0.0:
   version "1.1.3"
@@ -5760,6 +5761,11 @@ web-ext@^9.2.0:
     watchpack "2.4.4"
     yargs "17.7.2"
     zip-dir "2.0.0"
+
+web-serial-polyfill@^1.0.15:
+  version "1.0.15"
+  resolved "https://registry.yarnpkg.com/web-serial-polyfill/-/web-serial-polyfill-1.0.15.tgz#0c0b4cd5f32b8c07243d2ffeea484892f46986b1"
+  integrity sha512-usZN7kGRkEWr8DzRWxW+og55L1fHo4hNIwxCSCfWKpM+i0L+2AwzupMvkDFxnJNqUFOhLaD3PlgAOJxUOUrAoA==
 
 webextension-polyfill@^0.12.0:
   version "0.12.0"

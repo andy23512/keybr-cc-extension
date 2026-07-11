@@ -53,22 +53,29 @@ const LayoutContainerComponent: FC<LayoutContainerProps> = ({ nextText }) => {
   );
   const charactersDevicePositionCodes = [...characterKeyCodeMap.keys()]
     .map((c) => {
-      const characterKeyCode = characterKeyCodeMap.get(c);
-      if (!characterKeyCode) {
+      const characterKeyCodes = characterKeyCodeMap.get(c);
+      if (!characterKeyCodes || characterKeyCodes.length === 0) {
         return null;
       }
-      const actionCodes =
-        getCharacterActionCodesFromCharacterKeyCode(characterKeyCode);
-      if (actionCodes.length === 0) {
-        return null;
-      }
-      return {
-        c,
-        characterDeviceKeys: getKeyCombinationsFromActionCodes(
+      for (const characterKeyCode of characterKeyCodes) {
+        const actionCodes =
+          getCharacterActionCodesFromCharacterKeyCode(characterKeyCode);
+        if (actionCodes.length === 0) {
+          continue;
+        }
+        const keyCombinations = getKeyCombinationsFromActionCodes(
           actionCodes,
           deviceLayout,
-        ),
-      };
+        );
+        if (!keyCombinations || keyCombinations.length === 0) {
+          continue;
+        }
+        return {
+          c,
+          characterDeviceKeys: keyCombinations,
+        };
+      }
+      return null;
     })
     .filter(nonNullable);
   const modifierKeyPositionCodeMap =
