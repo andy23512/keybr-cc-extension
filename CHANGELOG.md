@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## [8.2](https://github.com/andy23512/keybr-cc-extension/releases/tag/8.2)
 
 - Fix highlight bug of |\ character
 
