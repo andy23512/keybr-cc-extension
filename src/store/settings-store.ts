@@ -1,10 +1,11 @@
-import { DeviceLayout } from "tangent-cc-lib";
+import { DeviceLayout, LayoutType } from "tangent-cc-lib";
 import browser, { Storage } from "webextension-polyfill";
 import { create, Mutate, StoreApi } from "zustand";
 import { persist, PersistStorage, StorageValue } from "zustand/middleware";
 import { createSelectors } from "./create-selectors";
 
 interface Settings {
+  layoutType: LayoutType;
   layout: string;
   customDeviceLayouts: DeviceLayout[];
   showThumb3Switch: boolean;
@@ -14,6 +15,13 @@ interface Settings {
   yPosition: number;
   opacity: number;
   highlightKeysEnabled: boolean;
+
+  liteLayout: string;
+  liteCustomDeviceLayouts: DeviceLayout[];
+  liteHeight: number;
+  liteXPosition: number;
+  liteYPosition: number;
+  liteOpacity: number;
 }
 
 interface SettingsState extends Settings {
@@ -22,6 +30,7 @@ interface SettingsState extends Settings {
 }
 
 const defaultSettings: Settings = {
+  layoutType: "3d",
   layout: "cc1",
   customDeviceLayouts: [],
   showThumb3Switch: true,
@@ -31,6 +40,12 @@ const defaultSettings: Settings = {
   yPosition: 1,
   opacity: 1,
   highlightKeysEnabled: true,
+  liteLayout: "cclite",
+  liteCustomDeviceLayouts: [],
+  liteHeight: 250,
+  liteXPosition: 0.5,
+  liteYPosition: 1,
+  liteOpacity: 1,
 };
 
 const browserLocalSettingsStorage: PersistStorage<SettingsState> = {
@@ -66,17 +81,26 @@ const withLocalSettingStorageEvents = (store: StoreWithPersist) => {
 export const useSettingsStore = createSelectors(
   create(
     persist<SettingsState>(
-      (set) => ({
+      (set, get) => ({
         ...defaultSettings,
         set: <K extends keyof Settings>(key: K, value: Settings[K]) =>
           set({ [key]: value }),
         resetLayoutDisplay: () =>
-          set({
-            height: defaultSettings.height,
-            xPosition: defaultSettings.xPosition,
-            yPosition: defaultSettings.yPosition,
-            opacity: defaultSettings.opacity,
-          }),
+          set(
+            get().layoutType === "3d"
+              ? {
+                  height: defaultSettings.height,
+                  xPosition: defaultSettings.xPosition,
+                  yPosition: defaultSettings.yPosition,
+                  opacity: defaultSettings.opacity,
+                }
+              : {
+                  liteHeight: defaultSettings.liteHeight,
+                  liteXPosition: defaultSettings.liteXPosition,
+                  liteYPosition: defaultSettings.liteYPosition,
+                  liteOpacity: defaultSettings.liteOpacity,
+                },
+          ),
       }),
       {
         name: "settings",

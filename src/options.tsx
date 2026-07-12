@@ -15,14 +15,23 @@ import {
   SelectChangeEvent,
   Snackbar,
   TextField,
+  ToggleButton,
+  ToggleButtonGroup,
   Typography,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, MouseEvent, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { downloadDeviceLayout, KeyboardLayout } from "tangent-cc-lib";
+import {
+  downloadDeviceLayout,
+  KeyboardLayout,
+  LayoutType,
+} from "tangent-cc-lib";
 import browser from "webextension-polyfill";
-import { PRESET_DEVICE_LAYOUTS } from "./data/device-layouts";
+import {
+  LITE_PRESET_DEVICE_LAYOUTS,
+  PRESET_DEVICE_LAYOUTS,
+} from "./data/device-layouts";
 import { KEYBOARD_LAYOUTS } from "./data/keyboard-layouts";
 import "./options.css";
 import { useSettingsStore } from "./store/settings-store";
@@ -34,8 +43,14 @@ const darkTheme = createTheme({
 });
 
 const Options = () => {
-  const layout = useSettingsStore.use.layout();
-  const customDeviceLayouts = useSettingsStore.use.customDeviceLayouts();
+  const layoutType = useSettingsStore.use.layoutType();
+  const isLiteLayoutType = layoutType === "lite";
+  const layout = isLiteLayoutType
+    ? useSettingsStore.use.liteLayout()
+    : useSettingsStore.use.layout();
+  const customDeviceLayouts = isLiteLayoutType
+    ? useSettingsStore.use.liteCustomDeviceLayouts()
+    : useSettingsStore.use.customDeviceLayouts();
   const selectedKeyboardLayoutId =
     useSettingsStore.use.selectedKeyboardLayoutId();
   const showThumb3Switch = useSettingsStore.use.showThumb3Switch();
@@ -50,6 +65,18 @@ const Options = () => {
   const selectedKeyboardLayout =
     KEYBOARD_LAYOUTS.find((k) => k.id === selectedKeyboardLayoutId) ??
     defaultKeyboardLayout;
+
+  const handleLayoutTypeChange = (
+    _: MouseEvent<HTMLElement>,
+    nextLayoutType: LayoutType,
+  ) => {
+    setSettings("layoutType", nextLayoutType);
+    browser.storage.local
+      .set({
+        layoutType: nextLayoutType,
+      })
+      .then(showSavedMessage);
+  };
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
@@ -72,7 +99,9 @@ const Options = () => {
         layoutItem = data.history[0].find(
           (item: any) =>
             item.type === "layout" &&
-            ["ONE", "TWO", "M4G"].includes(item.device),
+            (isLiteLayoutType
+              ? ["LITE"].includes(item.device)
+              : ["ONE", "TWO", "M4G"].includes(item.device)),
         );
       } else {
         layoutItem = data;
@@ -95,12 +124,17 @@ const Options = () => {
       } else {
         nextCustomDeviceLayouts.push(deviceLayout);
       }
-      setSettings("layout", nextLayout);
-      setSettings("customDeviceLayouts", nextCustomDeviceLayouts);
+      setSettings(isLiteLayoutType ? "liteLayout" : "layout", nextLayout);
+      setSettings(
+        isLiteLayoutType ? "liteCustomDeviceLayouts" : "customDeviceLayouts",
+        nextCustomDeviceLayouts,
+      );
       browser.storage.local
         .set({
-          layout: nextLayout,
-          customDeviceLayouts: nextCustomDeviceLayouts,
+          [isLiteLayoutType ? "liteLayout" : "layout"]: nextLayout,
+          [isLiteLayoutType
+            ? "liteCustomDeviceLayouts"
+            : "customDeviceLayouts"]: nextCustomDeviceLayouts,
         })
         .then(showSavedMessage);
     };
@@ -115,11 +149,11 @@ const Options = () => {
         : nextLayout === "cc1"
         ? true
         : showThumb3Switch;
-    setSettings("layout", nextLayout);
+    setSettings(isLiteLayoutType ? "liteLayout" : "layout", nextLayout);
     setSettings("showThumb3Switch", nextShowThumb3Switch);
     browser.storage.local
       .set({
-        layout: nextLayout,
+        [isLiteLayoutType ? "liteLayout" : "layout"]: nextLayout,
         showThumb3Switch: nextShowThumb3Switch,
       })
       .then(showSavedMessage);
@@ -175,7 +209,9 @@ const Options = () => {
 
   function handleDeviceLayoutExport() {
     const deviceLayout = [
-      ...PRESET_DEVICE_LAYOUTS,
+      ...(isLiteLayoutType
+        ? LITE_PRESET_DEVICE_LAYOUTS
+        : PRESET_DEVICE_LAYOUTS),
       ...customDeviceLayouts,
     ].find((deviceLayout) => deviceLayout.id === layout);
     if (!deviceLayout) {
@@ -194,6 +230,20 @@ const Options = () => {
       <div className="p-3 flex flex-col items-center">
         <div className="mt-4">
           <ol className="list-inside list-decimal text-base space-y-2">
+            <li>
+              Select a layout type.
+              <br />
+              <ToggleButtonGroup
+                sx={{ mt: 1 }}
+                color="primary"
+                value={layoutType}
+                exclusive
+                onChange={handleLayoutTypeChange}
+              >
+                <ToggleButton value="3d">3D input device</ToggleButton>
+                <ToggleButton value="lite">Lite</ToggleButton>
+              </ToggleButtonGroup>
+            </li>
             <li>
               (Optional) Import a device layout file (the backup file from
               CharaChorder Device Manager website).
@@ -217,21 +267,33 @@ const Options = () => {
             <li>
               Select a loaded device layout.
               <div className="mt-2 flex gap-2">
-                <Select value={layout} onChange={handleLayoutChange}>
-                  <MenuItem value="cc1">
-                    CharaChorder One / CharaChorder Two / CCU - Default
-                  </MenuItem>
-                  <MenuItem value="m4g">Master Forge - Default</MenuItem>
-                  <MenuItem value="cc1-left-hand-only">
-                    CharaChorder One / CharaChorder Two / CCU - Left Hand Only
-                  </MenuItem>
-                  <MenuItem value="cc1-right-hand-only">
-                    CharaChorder One / CharaChorder Two / CCU - Right Hand Only
-                  </MenuItem>
-                  {customDeviceLayouts.map((layout) => (
-                    <MenuItem value={layout.id}>{layout.name}</MenuItem>
-                  ))}
-                </Select>
+                {isLiteLayoutType ? (
+                  <Select value={layout} onChange={handleLayoutChange}>
+                    <MenuItem value="cclite">
+                      CharaChorder Lite - Default
+                    </MenuItem>
+                    {customDeviceLayouts.map((layout) => (
+                      <MenuItem value={layout.id}>{layout.name}</MenuItem>
+                    ))}
+                  </Select>
+                ) : (
+                  <Select value={layout} onChange={handleLayoutChange}>
+                    <MenuItem value="cc1">
+                      CharaChorder One / CharaChorder Two / CCU - Default
+                    </MenuItem>
+                    <MenuItem value="m4g">Master Forge - Default</MenuItem>
+                    <MenuItem value="cc1-left-hand-only">
+                      CharaChorder One / CharaChorder Two / CCU - Left Hand Only
+                    </MenuItem>
+                    <MenuItem value="cc1-right-hand-only">
+                      CharaChorder One / CharaChorder Two / CCU - Right Hand
+                      Only
+                    </MenuItem>
+                    {customDeviceLayouts.map((layout) => (
+                      <MenuItem value={layout.id}>{layout.name}</MenuItem>
+                    ))}
+                  </Select>
+                )}
                 <Button
                   component="label"
                   role={undefined}
@@ -248,6 +310,7 @@ const Options = () => {
                 control={
                   <Checkbox
                     checked={showThumb3Switch}
+                    disabled={isLiteLayoutType}
                     onChange={handleShowThumb3SwitchChange}
                   />
                 }
