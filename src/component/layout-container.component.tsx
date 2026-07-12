@@ -26,6 +26,7 @@ import {
 import { KEYBOARD_LAYOUTS } from "../data/keyboard-layouts";
 import { useSettingsStore } from "../store/settings-store";
 import { getHighlightKeyCombinationFromText } from "../util/layout.util";
+import CCLiteLayoutComponent from "./cclite-layout.component";
 import LayoutComponent from "./layout.component";
 
 interface LayoutContainerProps {
@@ -33,8 +34,14 @@ interface LayoutContainerProps {
 }
 
 const LayoutContainerComponent: FC<LayoutContainerProps> = ({ nextText }) => {
-  const layout = useSettingsStore.use.layout();
-  const customDeviceLayouts = useSettingsStore.use.customDeviceLayouts();
+  const layoutType = useSettingsStore.use.layoutType();
+  const isLiteLayoutType = layoutType === "lite";
+  const layout = isLiteLayoutType
+    ? useSettingsStore.use.liteLayout()
+    : useSettingsStore.use.layout();
+  const customDeviceLayouts = isLiteLayoutType
+    ? useSettingsStore.use.liteCustomDeviceLayouts()
+    : useSettingsStore.use.customDeviceLayouts();
   const selectedKeyboardLayoutId =
     useSettingsStore.use.selectedKeyboardLayoutId();
   const showThumb3Switch = useSettingsStore.use.showThumb3Switch();
@@ -218,6 +225,7 @@ const LayoutContainerComponent: FC<LayoutContainerProps> = ({ nextText }) => {
           layerShiftKeyPositionCodeMap,
           modifierKeyPositionCodeMap,
           HIGHLIGHT_SETTING,
+          layoutType,
         );
     });
     return highlightCharacterKeyMap;
@@ -229,12 +237,20 @@ const LayoutContainerComponent: FC<LayoutContainerProps> = ({ nextText }) => {
 
   return (
     <div className="bg-(--Keyboard-frame__color) rounded-lg font-(family-name:--default-font-family) h-full outline-8 outline-offset-0 outline-(--Keyboard-frame__color)">
-      <LayoutComponent
-        showThumb3Switch={showThumb3Switch}
-        keyLabelMap={keyLabelMap}
-        highlightKeyCombination={highlightKeyCombination}
-        highlightOpacity={highlightKeysEnabled ? 0.5 : 0}
-      />
+      {isLiteLayoutType ? (
+        <CCLiteLayoutComponent
+          keyLabelMap={keyLabelMap}
+          highlightKeyCombination={highlightKeyCombination}
+          highlightOpacity={highlightKeysEnabled ? 0.5 : 0}
+        />
+      ) : (
+        <LayoutComponent
+          showThumb3Switch={showThumb3Switch}
+          keyLabelMap={keyLabelMap}
+          highlightKeyCombination={highlightKeyCombination}
+          highlightOpacity={highlightKeysEnabled ? 0.5 : 0}
+        />
+      )}
     </div>
   );
 };
