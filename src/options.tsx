@@ -124,11 +124,8 @@ const Options = () => {
       } else {
         nextCustomDeviceLayouts.push(deviceLayout);
       }
-      setSettings(isLiteLayoutType ? "liteLayout" : "layout", nextLayout);
-      setSettings(
-        isLiteLayoutType ? "liteCustomDeviceLayouts" : "customDeviceLayouts",
-        nextCustomDeviceLayouts,
-      );
+      setSettings("layout", nextLayout);
+      setSettings("customDeviceLayouts", nextCustomDeviceLayouts);
       browser.storage.local
         .set({
           [isLiteLayoutType ? "liteLayout" : "layout"]: nextLayout,
@@ -149,7 +146,7 @@ const Options = () => {
         : nextLayout === "cc1"
         ? true
         : showThumb3Switch;
-    setSettings(isLiteLayoutType ? "liteLayout" : "layout", nextLayout);
+    setSettings("layout", nextLayout);
     setSettings("showThumb3Switch", nextShowThumb3Switch);
     browser.storage.local
       .set({

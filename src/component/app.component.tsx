@@ -5,12 +5,13 @@ import Moveable from "react-moveable";
 import { useNextText } from "../hook/use-next-text";
 import { useSettingsStore } from "../store/settings-store";
 import { getViewBoxAspectRatio } from "../util/layout-dimension.util";
+import { LITE_ASPECT_RATIO } from "../util/lite.util";
 import "./app.component.css";
 import LayoutContainerComponent from "./layout-container.component";
 
 function AppComponent() {
   const containerElement = document.querySelector(
-    "#keybr-cc-extension-root"
+    "#keybr-cc-extension-root",
   ) as HTMLDivElement;
   const mainDivRef = useRef(null);
   const infoButtonRef = useRef(null);
@@ -18,17 +19,29 @@ function AppComponent() {
   const [editMode, setEditMode] = useState(false);
   const [infoPopoverOpen, setInfoPopoverOpen] = useState<boolean>(false);
   const [containerWidth, setContainerWidth] = useState<number>(
-    containerElement.clientWidth
+    containerElement.clientWidth,
   );
   const [containerHeight, setContainerHeight] = useState<number>(
-    containerElement.clientHeight
+    containerElement.clientHeight,
   );
-  const height = useSettingsStore.use.height();
-  const xPosition = useSettingsStore.use.xPosition();
-  const yPosition = useSettingsStore.use.yPosition();
+  const layoutType = useSettingsStore.use.layoutType();
+  const isLiteLayoutType = layoutType === "lite";
+  const height = isLiteLayoutType
+    ? useSettingsStore.use.liteHeight()
+    : useSettingsStore.use.height();
+  const xPosition = isLiteLayoutType
+    ? useSettingsStore.use.liteXPosition()
+    : useSettingsStore.use.xPosition();
+  const yPosition = isLiteLayoutType
+    ? useSettingsStore.use.liteYPosition()
+    : useSettingsStore.use.yPosition();
+  const opacity = isLiteLayoutType
+    ? useSettingsStore.use.liteOpacity()
+    : useSettingsStore.use.opacity();
   const showThumb3Switch = useSettingsStore.use.showThumb3Switch();
-  const opacity = useSettingsStore.use.opacity();
-  const width = height * getViewBoxAspectRatio(showThumb3Switch);
+  const width = isLiteLayoutType
+    ? height * LITE_ASPECT_RATIO
+    : height * getViewBoxAspectRatio(showThumb3Switch);
   const leftMin = 8;
   const leftMax = containerWidth - 8 - width;
   const left = leftMin + (leftMax - leftMin) * xPosition;
@@ -144,7 +157,7 @@ function AppComponent() {
                 "text-white": editMode,
                 "opacity-100": editMode,
                 "opacity-50": !editMode,
-              }
+              },
             )}
             onClick={handleSettingButtonClick}
           >
@@ -198,12 +211,12 @@ function AppComponent() {
           const nextLeftMax = containerWidth - 8 - box.width;
           const nextXPosition = Math.max(
             Math.min((box.left - leftMin) / (nextLeftMax - leftMin), 1),
-            0
+            0,
           );
           const nextTopMax = containerHeight - 8 - box.height;
           const nextYPosition = Math.max(
             Math.min((box.top - topMin) / (nextTopMax - topMin), 1),
-            0
+            0,
           );
           const nextHeight = box.height;
           setSettings("xPosition", nextXPosition);
@@ -224,12 +237,12 @@ function AppComponent() {
           const nextLeftMax = containerWidth - 8 - box.width;
           const nextXPosition = Math.max(
             Math.min((box.left - leftMin) / (nextLeftMax - leftMin), 1),
-            0
+            0,
           );
           const nextTopMax = containerHeight - 8 - box.height;
           const nextYPosition = Math.max(
             Math.min((box.top - topMin) / (nextTopMax - topMin), 1),
-            0
+            0,
           );
           const nextHeight = box.height;
           setSettings("xPosition", nextXPosition);

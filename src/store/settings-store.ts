@@ -48,6 +48,15 @@ const defaultSettings: Settings = {
   liteOpacity: 1,
 };
 
+const liteSettingKeyMap: Partial<Record<keyof Settings, keyof Settings>> = {
+  layout: "liteLayout",
+  customDeviceLayouts: "liteCustomDeviceLayouts",
+  height: "liteHeight",
+  xPosition: "liteXPosition",
+  yPosition: "liteYPosition",
+  opacity: "liteOpacity",
+};
+
 const browserLocalSettingsStorage: PersistStorage<SettingsState> = {
   getItem: async (_: string): Promise<StorageValue<SettingsState>> => {
     const value = await browser.storage.local.get({
@@ -84,7 +93,15 @@ export const useSettingsStore = createSelectors(
       (set, get) => ({
         ...defaultSettings,
         set: <K extends keyof Settings>(key: K, value: Settings[K]) =>
-          set({ [key]: value }),
+          set((state) => {
+            if (state.layoutType === "lite") {
+              const liteKey = liteSettingKeyMap[key];
+              if (liteKey) {
+                return { [liteKey]: value } as Partial<SettingsState>;
+              }
+            }
+            return { [key]: value } as Pick<Settings, K>;
+          }),
         resetLayoutDisplay: () =>
           set(
             get().layoutType === "3d"

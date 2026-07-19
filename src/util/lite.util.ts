@@ -2,6 +2,7 @@ const KEY_SIZE = 10;
 const GAP = 1;
 const KEYBOARD_WIDTH = 163;
 const KEYBOARD_HEIGHT = 5 * KEY_SIZE + 4 * GAP;
+export const LITE_ASPECT_RATIO = KEYBOARD_WIDTH / KEYBOARD_HEIGHT;
 const ROW3_EQUAL_KEY_WIDTH = 128 / 13;
 
 // CCLite switch matrix (row 0 = top, row 4 = bottom)
