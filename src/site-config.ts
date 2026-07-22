@@ -18,7 +18,7 @@ function readNextText(): string | null {
   if (nextText && nextTextElement) {
     nextText += nextTextElement.textContent;
   }
-  if (nextText === "") {
+  if (nextText === "") {
     nextText = " ";
   }
   return nextText;
