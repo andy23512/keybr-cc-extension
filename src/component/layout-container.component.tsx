@@ -36,12 +36,8 @@ interface LayoutContainerProps {
 const LayoutContainerComponent: FC<LayoutContainerProps> = ({ nextText }) => {
   const layoutType = useSettingsStore.use.layoutType();
   const isLiteLayoutType = layoutType === "lite";
-  const layout = isLiteLayoutType
-    ? useSettingsStore.use.liteLayout()
-    : useSettingsStore.use.layout();
-  const customDeviceLayouts = isLiteLayoutType
-    ? useSettingsStore.use.liteCustomDeviceLayouts()
-    : useSettingsStore.use.customDeviceLayouts();
+  const layout = useSettingsStore.use.currentLayout();
+  const customDeviceLayouts = useSettingsStore.use.currentCustomDeviceLayouts();
   const selectedKeyboardLayoutId =
     useSettingsStore.use.selectedKeyboardLayoutId();
   const showThumb3Switch = useSettingsStore.use.showThumb3Switch();

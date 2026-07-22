@@ -26,18 +26,10 @@ function AppComponent() {
   );
   const layoutType = useSettingsStore.use.layoutType();
   const isLiteLayoutType = layoutType === "lite";
-  const height = isLiteLayoutType
-    ? useSettingsStore.use.liteHeight()
-    : useSettingsStore.use.height();
-  const xPosition = isLiteLayoutType
-    ? useSettingsStore.use.liteXPosition()
-    : useSettingsStore.use.xPosition();
-  const yPosition = isLiteLayoutType
-    ? useSettingsStore.use.liteYPosition()
-    : useSettingsStore.use.yPosition();
-  const opacity = isLiteLayoutType
-    ? useSettingsStore.use.liteOpacity()
-    : useSettingsStore.use.opacity();
+  const height = useSettingsStore.use.currentHeight();
+  const xPosition = useSettingsStore.use.currentXPosition();
+  const yPosition = useSettingsStore.use.currentYPosition();
+  const opacity = useSettingsStore.use.currentOpacity();
   const showThumb3Switch = useSettingsStore.use.showThumb3Switch();
   const width = isLiteLayoutType
     ? height * LITE_ASPECT_RATIO

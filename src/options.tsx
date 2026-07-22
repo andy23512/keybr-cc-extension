@@ -27,7 +27,6 @@ import {
   KeyboardLayout,
   LayoutType,
 } from "tangent-cc-lib";
-import browser from "webextension-polyfill";
 import {
   LITE_PRESET_DEVICE_LAYOUTS,
   PRESET_DEVICE_LAYOUTS,
@@ -45,12 +44,8 @@ const darkTheme = createTheme({
 const Options = () => {
   const layoutType = useSettingsStore.use.layoutType();
   const isLiteLayoutType = layoutType === "lite";
-  const layout = isLiteLayoutType
-    ? useSettingsStore.use.liteLayout()
-    : useSettingsStore.use.layout();
-  const customDeviceLayouts = isLiteLayoutType
-    ? useSettingsStore.use.liteCustomDeviceLayouts()
-    : useSettingsStore.use.customDeviceLayouts();
+  const layout = useSettingsStore.use.currentLayout();
+  const customDeviceLayouts = useSettingsStore.use.currentCustomDeviceLayouts();
   const selectedKeyboardLayoutId =
     useSettingsStore.use.selectedKeyboardLayoutId();
   const showThumb3Switch = useSettingsStore.use.showThumb3Switch();
@@ -71,11 +66,7 @@ const Options = () => {
     nextLayoutType: LayoutType,
   ) => {
     setSettings("layoutType", nextLayoutType);
-    browser.storage.local
-      .set({
-        layoutType: nextLayoutType,
-      })
-      .then(showSavedMessage);
+    showSavedMessage();
   };
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -126,14 +117,7 @@ const Options = () => {
       }
       setSettings("layout", nextLayout);
       setSettings("customDeviceLayouts", nextCustomDeviceLayouts);
-      browser.storage.local
-        .set({
-          [isLiteLayoutType ? "liteLayout" : "layout"]: nextLayout,
-          [isLiteLayoutType
-            ? "liteCustomDeviceLayouts"
-            : "customDeviceLayouts"]: nextCustomDeviceLayouts,
-        })
-        .then(showSavedMessage);
+      showSavedMessage();
     };
     reader.readAsText(file);
   };
@@ -148,12 +132,7 @@ const Options = () => {
         : showThumb3Switch;
     setSettings("layout", nextLayout);
     setSettings("showThumb3Switch", nextShowThumb3Switch);
-    browser.storage.local
-      .set({
-        [isLiteLayoutType ? "liteLayout" : "layout"]: nextLayout,
-        showThumb3Switch: nextShowThumb3Switch,
-      })
-      .then(showSavedMessage);
+    showSavedMessage();
   };
 
   const handleShowThumb3SwitchChange = (
@@ -161,11 +140,7 @@ const Options = () => {
   ) => {
     const value = event.target.checked;
     setSettings("showThumb3Switch", value);
-    browser.storage.local
-      .set({
-        showThumb3Switch: value,
-      })
-      .then(showSavedMessage);
+    showSavedMessage();
   };
 
   const handleHighlightKeysEnabledChange = (
@@ -173,11 +148,7 @@ const Options = () => {
   ) => {
     const value = event.target.checked;
     setSettings("highlightKeysEnabled", value);
-    browser.storage.local
-      .set({
-        highlightKeysEnabled: value,
-      })
-      .then(showSavedMessage);
+    showSavedMessage();
   };
 
   const handleSelectedKeyboardLayoutChange = (
@@ -186,11 +157,7 @@ const Options = () => {
   ) => {
     const value = newValue?.id ?? "us";
     setSettings("selectedKeyboardLayoutId", value);
-    browser.storage.local
-      .set({
-        selectedKeyboardLayoutId: value,
-      })
-      .then(showSavedMessage);
+    showSavedMessage();
   };
 
   const getKeyboardLayoutOptionLabel = (keyboardLayout: KeyboardLayout) =>

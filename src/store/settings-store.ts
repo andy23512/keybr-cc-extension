@@ -29,6 +29,8 @@ interface SettingsState extends Settings {
   resetLayoutDisplay: () => void;
 }
 
+type LayoutDependentSettingKey = keyof typeof liteSettingKeyMap;
+
 const defaultSettings: Settings = {
   layoutType: "3d",
   layout: "cc1",
@@ -87,7 +89,17 @@ const withLocalSettingStorageEvents = (store: StoreWithPersist) => {
   };
 };
 
-export const useSettingsStore = createSelectors(
+const selectLayoutDependentSetting =
+  <K extends LayoutDependentSettingKey>(key: K) =>
+  (state: SettingsState): Settings[K] => {
+    const liteKey = liteSettingKeyMap[key];
+    if (state.layoutType === "lite" && liteKey) {
+      return state[liteKey] as unknown as Settings[K];
+    }
+    return state[key];
+  };
+
+const baseSettingsStore = createSelectors(
   create(
     persist<SettingsState>(
       (set, get) => ({
@@ -132,4 +144,23 @@ export const useSettingsStore = createSelectors(
     ),
   ),
 );
+
+export const useSettingsStore = Object.assign(baseSettingsStore, {
+  use: {
+    ...baseSettingsStore.use,
+    currentLayout: () =>
+      baseSettingsStore(selectLayoutDependentSetting("layout")),
+    currentCustomDeviceLayouts: () =>
+      baseSettingsStore(selectLayoutDependentSetting("customDeviceLayouts")),
+    currentHeight: () =>
+      baseSettingsStore(selectLayoutDependentSetting("height")),
+    currentXPosition: () =>
+      baseSettingsStore(selectLayoutDependentSetting("xPosition")),
+    currentYPosition: () =>
+      baseSettingsStore(selectLayoutDependentSetting("yPosition")),
+    currentOpacity: () =>
+      baseSettingsStore(selectLayoutDependentSetting("opacity")),
+  },
+});
+
 withLocalSettingStorageEvents(useSettingsStore);
