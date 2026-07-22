@@ -28,7 +28,7 @@
     "@fontsource/roboto": "^5.2.8",
     "@mui/material": "^7.3.4",
     "@redux-devtools/extension": "^3.3.0",
-    "cc-extension-core": "link:../cc-extension-core/cc-extension-core",
+    "cc-extension-core": "0.0.1",
     "classnames": "^2.5.1",
     "eventemitter2": "^6.4.9",
     "react": "^18.2.0",
