@@ -18,6 +18,11 @@ function readNextText(): string | null {
   if (nextText && nextTextElement) {
     nextText += nextTextElement.textContent;
   }
+  // The literal below is U+E000, not an empty string: Keybr draws the space
+  // character as a glyph in its own font's private use area. Comparing for
+  // equality rather than replacing occurrences is deliberate — on Keybr that
+  // character only ever arrives on its own, so there is nothing to replace
+  // mid-string.
   if (nextText === "") {
     nextText = " ";
   }
