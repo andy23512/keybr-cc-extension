@@ -1,4 +1,1 @@
-module.exports = {
-  content: ["./src/**/*.{ts,tsx}", "./public/index.html"],
-  plugins: [],
-};
+module.exports = require("cc-extension-core/tailwind");

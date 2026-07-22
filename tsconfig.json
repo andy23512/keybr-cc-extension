@@ -10,9 +10,10 @@
     "outDir": "dist/js",
     "noEmitOnError": true,
     "jsx": "react-jsx",
-    "typeRoots": ["node_modules/@types"]
+    "typeRoots": ["node_modules/@types"],
+    "skipLibCheck": true
   },
-  "files": ["src/global.d.ts"],
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
   "ts-node": {
     "files": true
   }

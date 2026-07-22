@@ -1,0 +1,14 @@
+@import "tailwindcss";
+@import "cc-extension-core/style.css";
+
+/*
+ * Map the core's semantic custom properties onto Keybr's own theme variables,
+ * so the overlay follows whatever theme the user has selected on the site.
+ */
+:root {
+  --cc-frame-color: var(--Keyboard-frame__color);
+  --cc-key-color: var(--KeyboardKey-button__color);
+  --cc-symbol-color: var(--KeyboardKey-symbol__color);
+  --cc-pointer-color: var(--KeyboardKey-pointer__color);
+  --cc-font-family: var(--default-font-family);
+}

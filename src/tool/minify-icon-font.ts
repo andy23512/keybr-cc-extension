@@ -1,25 +1,19 @@
-import { ast, query } from "@phenomnomnominal/tsquery";
+import { ICONS } from "cc-extension-core";
 import { subset } from "@web-alchemy/fonttools";
 import type { Font } from "fontkit";
 import { openSync as fontkitOpenSync } from "fontkit";
 import { readFileSync, writeFileSync } from "fs";
 
+const SOURCE_FONT = "./src/asset/material-symbols-rounded-latin-full-normal.woff2";
+const OUTPUT_FONT = "./public/material-symbols-rounded-latin-full-normal.min.woff2";
+
 (async () => {
-  const iconTypesAst = ast(
-    readFileSync("./src/model/icon.model.ts", { encoding: "utf-8" })
-  );
+  const font = fontkitOpenSync(SOURCE_FONT) as Font;
 
-  const icons = query(iconTypesAst, "UnionType StringLiteral").map(
-    (node) => (node as any).text
-  );
-  console.log(icons);
-  const font = fontkitOpenSync(
-    "./src/asset/material-symbols-rounded-latin-full-normal.woff2"
-  ) as Font;
-
+  // a-z and 0-9, so ligature lookup still works for the icon names themselves.
   const glyphs = ["5f-7a", "30-39"];
 
-  for (const icon of icons) {
+  for (const icon of ICONS) {
     const iconGlyphs = font.layout(icon).glyphs;
     if (iconGlyphs.length === 0) {
       console.error(`${icon} not found in font.`);
@@ -35,16 +29,12 @@ import { readFileSync, writeFileSync } from "fs";
 
   glyphs.sort();
 
-  const inputFileBuffer = readFileSync(
-    "./src/asset/material-symbols-rounded-latin-full-normal.woff2"
-  );
+  const inputFileBuffer = readFileSync(SOURCE_FONT);
   const outputFileBuffer = await subset(inputFileBuffer, {
     unicodes: glyphs.join(","),
     "no-layout-closure": true,
     flavor: "woff2",
   });
-  writeFileSync(
-    "./public/material-symbols-rounded-latin-full-normal.min.woff2",
-    outputFileBuffer
-  );
+  writeFileSync(OUTPUT_FONT, outputFileBuffer);
+  console.log(`Subset ${ICONS.length} icons into ${OUTPUT_FONT}.`);
 })();

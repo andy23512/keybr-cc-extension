@@ -1,5 +1,3 @@
-import browser from "webextension-polyfill";
+import { registerBackground } from "cc-extension-core/background";
 
-browser.action.onClicked.addListener(() => {
-  browser.runtime.openOptionsPage();
-});
+registerBackground();

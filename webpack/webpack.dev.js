@@ -1,15 +1,6 @@
-const { merge } = require("webpack-merge");
-const common = require("./webpack.common.js");
-const LiveReloadPlugin = require("webpack-livereload-plugin");
+const path = require("path");
+const { createDevConfig } = require("cc-extension-core/webpack");
 
-module.exports = merge(common, {
-  devtool: "inline-source-map",
-  mode: "development",
-  plugins: [
-    new LiveReloadPlugin({
-      appendScriptTag: true,
-      protocol: "http",
-      hostname: "localhost",
-    }),
-  ],
+module.exports = createDevConfig({
+  extensionRoot: path.join(__dirname, ".."),
 });
