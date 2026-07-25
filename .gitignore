@@ -5,3 +5,5 @@ tmp/
 
 .DS_Store
 *.zip
+test-results
+playwright-report

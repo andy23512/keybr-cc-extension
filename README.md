@@ -74,3 +74,30 @@ yarn watch
 1. Go to "about:debugging#/runtime/this-firefox".
 2. Click "Load Temporary Add-on".
 3. Select any file under the "dist" directory.
+
+### Test
+
+Unit tests (jsdom) cover the site adapter in `src/site-config.ts`:
+
+```
+yarn test
+```
+
+End-to-end tests drive the built extension in a real browser. Build first
+(`yarn build`), then:
+
+```
+yarn e2e          # hermetic: replays a recorded keybr.com snapshot, deterministic
+yarn e2e:canary   # live: runs against the real keybr.com, may be flaky
+yarn e2e:record   # re-capture the snapshot when the canary suite reports drift
+```
+
+Two constraints are enforced by the harness and cannot be worked around:
+
+- The suite runs **headed**. Playwright's headless shell cannot run
+  extensions.
+- It needs Playwright's own Chromium at the build matching the installed
+  `@playwright/test`. Run `npx playwright install chromium` once. A mismatched
+  browser loads the extension but silently never executes its code; the
+  harness detects this at startup and fails with an explanation rather than a
+  confusing timeout.

@@ -14,7 +14,10 @@
     "style": "prettier --write \"src/**/*.{ts,tsx}\"",
     "pack-firefox": "cd dist && zip -r -FS ../keybr-cc-extension-firefox.zip *",
     "pack-chrome": "zip -r -FS keybr-cc-extension-chrome.zip dist",
-    "pack-source-code": "zip -r -FS keybr-cc-extension-source.zip package.json postcss.config.cjs public README.md src tailwind.config.cjs tsconfig.json webpack yarn.lock"
+    "pack-source-code": "zip -r -FS keybr-cc-extension-source.zip package.json postcss.config.cjs public README.md src tailwind.config.cjs tsconfig.json webpack yarn.lock",
+    "e2e": "playwright test e2e/overlay.spec.mjs",
+    "e2e:canary": "playwright test e2e/canary.spec.mjs",
+    "e2e:record": "node e2e/record-snapshot.mjs"
   },
   "author": "",
   "license": "MIT",
@@ -41,6 +44,7 @@
     "zustand": "^5.0.8"
   },
   "devDependencies": {
+    "@playwright/test": "1.62.0",
     "@tailwindcss/postcss": "^4.1.14",
     "@types/chrome": "0.0.158",
     "@types/fontkit": "^2.0.8",
