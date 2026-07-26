@@ -133,6 +133,23 @@ export async function replaySnapshot(context) {
   });
 }
 
+/**
+ * Seeds the extension's settings before the overlay reads them.
+ *
+ * Settings persist as flat keys in `browser.storage.local`, so writing them
+ * from any extension page (here, the options page) is enough — the content
+ * script reads them on load. Use this to exercise the overlay under non-default
+ * settings without driving the options UI.
+ */
+export async function seedSettings(context, extensionId, settings) {
+  const page = await context.newPage();
+  await page.goto(`chrome-extension://${extensionId}/options.html`, {
+    waitUntil: "load",
+  });
+  await page.evaluate((s) => chrome.storage.local.set(s), settings);
+  await page.close();
+}
+
 /** Opens the site and waits for the overlay to finish its first render. */
 export async function openOverlay(context) {
   const page = await context.newPage();
@@ -153,10 +170,16 @@ export function readOverlayState(page) {
   return page.evaluate((overlayRoot) => {
     const root = document.querySelector(overlayRoot);
     const style = getComputedStyle(document.documentElement);
+    const layoutSvg = root.querySelector("svg");
     const highlighted = [...root.querySelectorAll('[opacity="0.5"]')];
     return {
       svgCount: root.querySelectorAll("svg").length,
       labelCount: root.querySelectorAll("text").length,
+      // The layout SVG identifies which layout rendered: `layout` for the 3D
+      // devices, `cclite-layout` for Lite. Its viewBox height encodes the
+      // thumb-3 row (a 5th row appears only when that switch is shown).
+      layoutSvgClass: layoutSvg?.getAttribute("class") ?? null,
+      layoutViewBox: layoutSvg?.getAttribute("viewBox") ?? null,
       highlightCount: highlighted.length,
       highlightClass: highlighted[0]?.getAttribute("class") ?? null,
       semanticVars: {
@@ -189,4 +212,31 @@ export function readNextTextFromPage(page) {
     },
     [CURSOR_SELECTOR, REST_SELECTOR],
   );
+}
+
+/** The number of keys the overlay is currently highlighting. */
+export function readHighlightCount(page) {
+  return page.evaluate(
+    (overlayRoot) =>
+      document.querySelectorAll(`${overlayRoot} [opacity="0.5"]`).length,
+    OVERLAY_ROOT,
+  );
+}
+
+/**
+ * Renders the overlay once under the given seeded settings and returns its
+ * state, cleaning up the browser afterwards. Convenience for the settings-state
+ * matrix, where each case needs a fresh context so seeds do not leak.
+ */
+export async function renderOverlayWithSettings(settings) {
+  const { context, extensionId } = await launchWithExtension();
+  try {
+    await seedSettings(context, extensionId, settings);
+    await replaySnapshot(context);
+    const { page, pageErrors } = await openOverlay(context);
+    const state = await readOverlayState(page);
+    return { ...state, pageErrors };
+  } finally {
+    await context.close();
+  }
 }

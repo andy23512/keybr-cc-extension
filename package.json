@@ -15,7 +15,7 @@
     "pack-firefox": "cd dist && zip -r -FS ../keybr-cc-extension-firefox.zip *",
     "pack-chrome": "zip -r -FS keybr-cc-extension-chrome.zip dist",
     "pack-source-code": "zip -r -FS keybr-cc-extension-source.zip package.json postcss.config.cjs public README.md src tailwind.config.cjs tsconfig.json webpack yarn.lock",
-    "e2e": "playwright test e2e/overlay.spec.mjs",
+    "e2e": "playwright test e2e/overlay.spec.mjs e2e/overlay-states.spec.mjs e2e/sync.spec.mjs",
     "e2e:canary": "playwright test e2e/canary.spec.mjs",
     "e2e:record": "node e2e/record-snapshot.mjs"
   },
