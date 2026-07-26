@@ -101,3 +101,10 @@ Two constraints are enforced by the harness and cannot be worked around:
   browser loads the extension but silently never executes its code; the
   harness detects this at startup and fails with an explanation rather than a
   confusing timeout.
+
+### Release smoke test
+
+Automated tests cover the logic and rendering; the interactive behaviour
+(edit-mode dragging, file import/export, live typing, theming) is verified by
+hand before a release. The shared checklist lives in cc-extension-core:
+[RELEASE-SMOKE.md](https://github.com/andy23512/cc-extension-core/blob/main/RELEASE-SMOKE.md).
