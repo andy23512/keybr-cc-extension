@@ -224,6 +224,26 @@ export function readHighlightCount(page) {
 }
 
 /**
+ * Reads the labels printed on each highlighted key.
+ *
+ * A key's labels are the sibling `<text>` elements inside the same `<g>` as the
+ * highlight shape — the characters that key produces across layers and
+ * modifiers. The character the user is about to type is one of them, which is
+ * how a test can check the *right* key lit up, not merely that one did.
+ */
+export function readHighlightedKeyLabels(page) {
+  return page.evaluate((overlayRoot) => {
+    const root = document.querySelector(overlayRoot);
+    return [...root.querySelectorAll('[opacity="0.5"]')].map((shape) => {
+      const group = shape.closest("g");
+      return group
+        ? [...group.querySelectorAll("text")].map((t) => t.textContent)
+        : [];
+    });
+  }, OVERLAY_ROOT);
+}
+
+/**
  * Renders the overlay once under the given seeded settings and returns its
  * state, cleaning up the browser afterwards. Convenience for the settings-state
  * matrix, where each case needs a fresh context so seeds do not leak.

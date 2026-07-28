@@ -14,6 +14,7 @@ import { expect, test } from "@playwright/test";
 import {
   launchWithExtension,
   openOverlay,
+  readHighlightedKeyLabels,
   readNextTextFromPage,
   readOverlayState,
   replaySnapshot,
@@ -62,5 +63,18 @@ test.describe("overlay on a recorded keybr page", () => {
     expect(text).not.toBe("");
     expect(state.highlightCount).toBe(1);
     expect(state.highlightClass).toContain("--cc-pointer-color");
+  });
+
+  test("highlights the key that produces the next character", async () => {
+    const { text } = await readNextTextFromPage(page);
+    const nextChar = text[0];
+    const highlightedLabels = await readHighlightedKeyLabels(page);
+    // The one highlighted key must carry the character about to be typed —
+    // this is the whole point of the overlay, not just that *a* key lit up.
+    expect(highlightedLabels).toHaveLength(1);
+    expect(
+      highlightedLabels[0].map((label) => label.toLowerCase()),
+      `the highlighted key should produce "${nextChar}"`,
+    ).toContain(nextChar.toLowerCase());
   });
 });
