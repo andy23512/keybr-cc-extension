@@ -1,5 +1,10 @@
 # Changelog
 
+## [9.0](https://github.com/andy23512/keybr-cc-extension/releases/tag/9.0)
+
+- Support CharaChorder Lite device layout
+- Fix space not highlighted issue
+
 ## [8.2](https://github.com/andy23512/keybr-cc-extension/releases/tag/8.2)
 
 - Fix highlight bug of |\ character
