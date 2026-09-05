@@ -7,10 +7,10 @@ import { SiteConfig } from "cc-extension-core";
  */
 function readNextText(): string | null {
   const currentCharacterElement = document.querySelector(
-    'div[dir="ltr"] span[class]',
+    'div[dir="ltr"] span[class]'
   );
   const nextTextElement = document.querySelector(
-    'div[dir="ltr"] span[class] ~ span',
+    'div[dir="ltr"] span[class] ~ span'
   );
   let nextText = currentCharacterElement
     ? currentCharacterElement.textContent

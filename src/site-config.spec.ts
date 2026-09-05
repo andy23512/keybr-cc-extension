@@ -23,9 +23,7 @@ describe("keybr readNextText", () => {
   });
 
   it("joins the character under the cursor with the rest of the word", () => {
-    render(
-      '<div dir="ltr"><span class="cursor">t</span><span>he</span></div>',
-    );
+    render('<div dir="ltr"><span class="cursor">t</span><span>he</span></div>');
     expect(readNextText()).toBe("the");
   });
 
@@ -41,7 +39,7 @@ describe("keybr readNextText", () => {
 
   it("ignores spans that carry no class before the cursor", () => {
     render(
-      '<div dir="ltr"><span>done</span><span class="cursor">n</span><span>ext</span></div>',
+      '<div dir="ltr"><span>done</span><span class="cursor">n</span><span>ext</span></div>'
     );
     expect(readNextText()).toBe("next");
   });

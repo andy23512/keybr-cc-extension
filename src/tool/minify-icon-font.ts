@@ -4,8 +4,10 @@ import type { Font } from "fontkit";
 import { openSync as fontkitOpenSync } from "fontkit";
 import { readFileSync, writeFileSync } from "fs";
 
-const SOURCE_FONT = "./src/asset/material-symbols-rounded-latin-full-normal.woff2";
-const OUTPUT_FONT = "./public/material-symbols-rounded-latin-full-normal.min.woff2";
+const SOURCE_FONT =
+  "./src/asset/material-symbols-rounded-latin-full-normal.woff2";
+const OUTPUT_FONT =
+  "./public/material-symbols-rounded-latin-full-normal.min.woff2";
 
 (async () => {
   const font = fontkitOpenSync(SOURCE_FONT) as Font;
