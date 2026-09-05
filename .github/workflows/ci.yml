@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.8.0"
+          cache: yarn
+      - run: yarn install --frozen-lockfile
+      - name: Check formatting
+        run: npx prettier --check "src/**/*.{ts,tsx}"
+      - run: yarn test
+
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.8.0"
+          cache: yarn
+      - run: yarn install --frozen-lockfile
+      - run: yarn build
+      - name: Install Playwright's Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Run hermetic e2e suite
+        # Headed only: see e2e/harness.mjs -- the extension's service worker
+        # never starts under Playwright's headless shell. xvfb-run supplies
+        # the virtual display GitHub-hosted runners don't have.
+        run: xvfb-run -a yarn e2e
+      - name: Upload Playwright report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            test-results/
+            playwright-report/
+          retention-days: 7
