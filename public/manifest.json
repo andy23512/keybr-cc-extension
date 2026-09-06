@@ -3,8 +3,8 @@
 
   "name": "Keybr CC Extension",
   "short_name": "Keybr CC Ext",
-  "description": "An unofficial browser extension for showing layout of CharaChorder input devices on Keybr",
-  "version": "9.0",
+  "description": "An unofficial browser extension for showing layout of CharaChorder devices on Keybr",
+  "version": "9.1",
   "browser_specific_settings": {
     "gecko": {
       "id": "@keybr-cc-extension-new.andy23512",

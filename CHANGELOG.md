@@ -1,5 +1,9 @@
 # Changelog
 
+## [9.1](https://github.com/andy23512/keybr-cc-extension/releases/tag/9.1)
+
+- Fix CharaChorder Lite layout falling back to CC1 device layout
+
 ## [9.0](https://github.com/andy23512/keybr-cc-extension/releases/tag/9.0)
 
 - Support CharaChorder Lite device layout
